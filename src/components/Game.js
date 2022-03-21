@@ -23,13 +23,13 @@ const shake = keyframes`
   }
 `;
 
-const rotate = keyframes`
+const flip = keyframes`
   from {
-    transform: rotateX(180deg);
+    transform: rotateX(-90deg);
   }
 
   to {
-    transform: rotateX(1800deg);
+    transform: rotateX(0);
   }
 `;
 
@@ -38,9 +38,9 @@ const animation = (props) =>
     animation: ${shake} 0.6s linear;
   `;
 
-const rotateAnimation = (props) =>
+const flipAnimation = (props) =>
   css`
-    animation: ${rotate} 3s linear infinite;
+    animation: ${flip} 250ms ease-in;
   `;
 
 const GameContainer = styled.div`
@@ -92,7 +92,6 @@ const Row = styled.div`
 `;
 
 const Tile = styled.div`
-  width: 100%;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -102,7 +101,7 @@ const Tile = styled.div`
   vertical-align: middle;
   color: black;
   text-transform: uppercase;
-  ${({ flipIn }) => flipIn && rotateAnimation};
+  ${({ isFlipping }) => isFlipping && flipAnimation};
   transition: transform 0.25s ease-in-out;
   user-select: none;
   border: 2px solid
@@ -299,6 +298,9 @@ const Game = () => {
                   <Tile
                     key={tileIdx}
                     hasLetter={tile !== ""}
+                    isFlipping={
+                      (currentTileFlip === tileIdx && currentRow) === rowIdx
+                    }
                     cellColor={cellStatuses[rowIdx][tileIdx]}
                   >
                     {tile}
