@@ -23,9 +23,24 @@ const shake = keyframes`
   }
 `;
 
+const rotate = keyframes`
+  from {
+    transform: rotateX(180deg);
+  }
+
+  to {
+    transform: rotateX(1800deg);
+  }
+`;
+
 const animation = (props) =>
   css`
     animation: ${shake} 0.6s linear;
+  `;
+
+const rotateAnimation = (props) =>
+  css`
+    animation: ${rotate} 3s linear infinite;
   `;
 
 const GameContainer = styled.div`
@@ -87,10 +102,16 @@ const Tile = styled.div`
   vertical-align: middle;
   color: black;
   text-transform: uppercase;
+  ${({ flipIn }) => flipIn && rotateAnimation};
+  transition: transform 0.25s ease-in-out;
   user-select: none;
   border: 2px solid
-    ${({ cellColor }) =>
-      cellColor === status.unguessed ? "#d3d6da" : cellColor};
+    ${({ cellColor, hasLetter }) =>
+      cellColor === status.unguessed
+        ? hasLetter
+          ? "#86888a"
+          : "#d3d6da"
+        : cellColor};
   color: ${({ cellColor }) =>
     cellColor === status.unguessed ? "black" : "white"};
   background-color: ${({ cellColor }) =>
@@ -119,7 +140,9 @@ const Game = () => {
   const [currentCol, setCurrentCol] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
   const [rowErrorIdx, setRowErrorIdx] = useState(null);
+  const [guessedWord, setGuessedWord] = useState("");
   const [gameState, setGameState] = useState("active");
+  const [currentTileFlip, setCurrentTileFlip] = useState(null);
   const [winningRow, setWinningRow] = useState(null);
   const [cellStatuses, setCellStatuses] = useState(
     Array(6).fill(Array(5).fill(status.unguessed))
@@ -153,23 +176,23 @@ const Game = () => {
     return [true];
   };
 
-  const setCellColors = (word) => {
-    setCellStatuses((curr) => {
-      const newCellStatuses = [...curr];
-      const newRow = [...curr[currentRow]];
-      for (let i = 0; i < 5; i++) {
-        if (word[i] === answer[i]) {
-          newRow[i] = status.green;
-        } else if (answer.includes(word[i])) {
-          newRow[i] = status.yellow;
-        } else {
-          newRow[i] = status.gray;
-        }
-      }
-      newCellStatuses[currentRow] = newRow;
-      return newCellStatuses;
-    });
-  };
+  //   const setCellColors = (word) => {
+  //     setCellStatuses((curr) => {
+  //       const newCellStatuses = [...curr];
+  //       const newRow = [...curr[currentRow]];
+  //       for (let i = 0; i < 5; i++) {
+  //         if (word[i] === answer[i]) {
+  //           newRow[i] = status.green;
+  //         } else if (answer.includes(word[i])) {
+  //           newRow[i] = status.yellow;
+  //         } else {
+  //           newRow[i] = status.gray;
+  //         }
+  //       }
+  //       newCellStatuses[currentRow] = newRow;
+  //       return newCellStatuses;
+  //     });
+  //   };
 
   const setKeyboardColors = (word) => {
     setLetterStatuses((curr) => {
@@ -187,7 +210,44 @@ const Game = () => {
       return newLetterStatuses;
     });
   };
+
+  useEffect(() => {
+    if (currentTileFlip === null) return;
+    if (!guessedWord) return;
+    if (currentTileFlip === 5) {
+      setKeyboardColors(guessedWord);
+      if (guessedWord === "TRUMP") {
+        setWinningRow(currentRow);
+        setGameState("inactive");
+      }
+      setCurrentTileFlip(null);
+      setGuessedWord("");
+      setCurrentRow((curr) => curr + 1);
+      setCurrentCol(0);
+      return;
+    }
+    setTimeout(() => {
+      setCellStatuses((curr) => {
+        const newCellStatuses = [...curr];
+        const newRow = [...curr[currentRow]];
+        if (guessedWord[currentTileFlip] === answer[currentTileFlip]) {
+          newRow[currentTileFlip] = status.green;
+        } else if (answer.includes(guessedWord[currentTileFlip])) {
+          newRow[currentTileFlip] = status.yellow;
+        } else {
+          newRow[currentTileFlip] = status.gray;
+        }
+        newCellStatuses[currentRow] = newRow;
+        return newCellStatuses;
+      });
+      setCurrentTileFlip((curr) => curr + 1);
+    }, 250);
+  }, [currentRow, currentTileFlip, guessedWord]);
+
   const onEnterPress = () => {
+    // prevents pressing enter multiple times while tiles are changing color
+    if (guessedWord) return;
+
     const word = board[currentRow].join("");
     const [valid, err] = isValidWord(word);
     if (!valid) {
@@ -195,19 +255,9 @@ const Game = () => {
       setRowErrorIdx(currentRow);
       return;
     }
-    if (currentRow === 5) {
-      setGameState("inactive");
-      return;
-    }
-    setCellColors(word);
-    setKeyboardColors(word);
-    if (word === "TRUMP") {
-      setWinningRow(currentRow);
-      setGameState("inactive");
-    } else {
-      setCurrentRow((curr) => curr + 1);
-      setCurrentCol(0);
-    }
+
+    setGuessedWord(word);
+    setCurrentTileFlip(0);
   };
   const onDeletePress = () => {
     if (currentCol === 0) return;
@@ -246,7 +296,11 @@ const Game = () => {
                 winningRow === rowIdx ? (
                   <WinningTile key={tileIdx} />
                 ) : (
-                  <Tile key={tileIdx} cellColor={cellStatuses[rowIdx][tileIdx]}>
+                  <Tile
+                    key={tileIdx}
+                    hasLetter={tile !== ""}
+                    cellColor={cellStatuses[rowIdx][tileIdx]}
+                  >
                     {tile}
                   </Tile>
                 )
