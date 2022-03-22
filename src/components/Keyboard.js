@@ -13,6 +13,7 @@ const Container = styled.div`
 
 const LetterButton = styled.button`
   height: 58px;
+  width: 38px;
   border-radius: 4px;
   border: 0;
   font-weight: bold;
@@ -22,7 +23,12 @@ const LetterButton = styled.button`
     letterColor === status.unguessed ? "#d3d6da" : letterColor};
   color: ${({ letterColor }) =>
     letterColor === status.unguessed ? "black" : "white"};
-  flex: 1;
+`;
+
+const HalfStep = styled.div`
+  height: 58px;
+  width: 19px;
+  margin: 0 6px 0 0;
 `;
 
 const NonLetterButton = styled.button`
@@ -43,66 +49,54 @@ const Row = styled.div`
   justify-content: space-between;
 `;
 
-const Keyboard = ({
-  letterStatuses,
-  addLetter,
-  onEnterPress,
-  onDeletePress,
-  gameDisabled,
-}) => {
+const Keyboard = ({ guesses, onAddLetter, onEnterPress, onDeletePress }) => {
   const onKeyButtonPress = (letter) => {
-    letter = letter.toLowerCase();
-    window.dispatchEvent(
-      new KeyboardEvent("keydown", {
-        key: letter,
-      })
-    );
+    // letter = letter.toLowerCase();
+    // window.dispatchEvent(
+    //   new KeyboardEvent("keydown", {
+    //     key: letter,
+    //   })
+    // );
   };
 
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (gameDisabled) return;
-
-      const letter = event.key.toUpperCase();
-      const areAnyModifiersPressed =
-        event.ctrlKey || event.shiftKey || event.altKey || event.metaKey;
-
-      if (!areAnyModifiersPressed && letters.includes(letter)) {
-        addLetter(letter);
-        event.preventDefault();
-      } else if (letter === "ENTER") {
-        onEnterPress();
-        event.preventDefault();
-      } else if (letter === "BACKSPACE") {
-        onDeletePress();
-        event.preventDefault();
-      }
-    },
-    [addLetter, onEnterPress, onDeletePress, gameDisabled]
-  );
-
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+    const listener = (e) => {
+      if (e.code === "Enter") {
+        onEnterPress();
+      } else if (e.code === "Backspace") {
+        onDeletePress();
+      } else {
+        const key = e.key.toUpperCase();
+        if (key.length === 1 && key >= "A" && key <= "Z") {
+          onAddLetter(key);
+        }
+      }
+    };
+    window.addEventListener("keyup", listener);
+    return () => {
+      window.removeEventListener("keyup", listener);
+    };
+  }, [onEnterPress, onDeletePress, onAddLetter]);
 
   return (
     <Container>
       {keyboardLetters.map((row, idx) => (
         <Row key={idx}>
+          {idx === 1 && <HalfStep />}
           {idx === keyboardLetters.length - 1 && (
             <NonLetterButton onClick={onEnterPress}>ENTER</NonLetterButton>
           )}
           {row.map((letter) => (
             <LetterButton
               key={letter}
-              letterColor={letterStatuses[letter]}
+              //   letterColor={letterStatuses[letter]}
               onClick={() => onKeyButtonPress(letter)}
             >
               {letter}
             </LetterButton>
           ))}
+          {idx === 1 && <HalfStep />}
+
           {idx === keyboardLetters.length - 1 && (
             <NonLetterButton onClick={onDeletePress}>
               <svg
