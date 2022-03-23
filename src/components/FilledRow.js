@@ -39,7 +39,7 @@ const FilledRow = ({ winningRow, word, isRevealing }) => {
       {[...word].map((letter, tileIdx) => (
         <Tile
           key={tileIdx}
-          animationDelay={`${tileIdx * 300}ms`}
+          animationDelay={`${tileIdx * 350}ms`}
           isRevealing={isRevealing}
           cellColor={cellColors[tileIdx]}
           letter={letter}

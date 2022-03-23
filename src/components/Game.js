@@ -43,7 +43,7 @@ const Board = styled.div`
   display: grid;
   grid-template-rows: repeat(6, 1fr);
   grid-gap: 5px;
-  padding: 10px;
+  padding: 25px;
   box-sizing: border-box;
   height: 420px;
   width: 350px;
@@ -85,7 +85,7 @@ const Game = () => {
 
     setTimeout(() => {
       setIsRevealing(false);
-    }, 5 * 300);
+    }, 5 * 350);
   }, [currentGuess, errorMsg, guesses, isRevealing]);
 
   const onDeletePress = useCallback(() => {

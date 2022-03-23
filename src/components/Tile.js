@@ -20,7 +20,7 @@ const flip = (props) => keyframes`
 
 const flipAnimation = (props) =>
   css`
-    animation: ${flip} 300ms linear backwards;
+    animation: ${flip} 350ms linear backwards;
     animation-delay: ${props.animationDelay};
   `;
 
@@ -35,7 +35,7 @@ const offsetFlip = (props) => keyframes`
 
 const offSetFlipAnimation = (props) =>
   css`
-    animation: ${offsetFlip} 300ms linear backwards;
+    animation: ${offsetFlip} 350ms linear backwards;
     animation-delay: ${props.animationDelay};
   `;
 
