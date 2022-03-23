@@ -39,6 +39,25 @@ const offSetFlipAnimation = (props) =>
     animation-delay: ${props.animationDelay};
   `;
 
+const onFill = (props) => keyframes`
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+`;
+
+const onFillAnimation = (props) => css`
+  animation: ${onFill} 100ms linear;
+`;
+
 const LetterContainer = styled.div`
   ${({ isRevealing }) => isRevealing && offSetFlipAnimation}
 `;
@@ -54,10 +73,13 @@ const TileContainer = styled.div`
   text-transform: uppercase;
   transition: transform 0.25s ease-in-out;
   user-select: none;
+  ${({ hasLetter, isCurrentRow }) =>
+    hasLetter && isCurrentRow && onFillAnimation}
   color: ${({ isCurrentRow }) => (isCurrentRow ? "black" : "white")};
   ${({ isRevealing }) => isRevealing && flipAnimation}
   border: 2px solid
-    ${({ cellColor, hasLetter }) => (hasLetter ? cellColor : "#d3d6da")};
+    ${({ hasLetter, cellColor }) =>
+    hasLetter ? (cellColor ? cellColor : status.gray) : "#d3d6da"};
   background-color: ${({ cellColor }) =>
     cellColor === status.unguessed ? "white" : cellColor};
 `;

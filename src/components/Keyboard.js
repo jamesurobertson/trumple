@@ -68,9 +68,9 @@ const Keyboard = ({
         }
       }
     };
-    window.addEventListener("keyup", listener);
+    window.addEventListener("keydown", listener);
     return () => {
-      window.removeEventListener("keyup", listener);
+      window.removeEventListener("keydown", listener);
     };
   }, [onEnterPress, onDeletePress, onAddLetter]);
 

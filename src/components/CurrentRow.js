@@ -11,7 +11,6 @@ const CurrentRow = ({ word, hasError }) => {
         <Tile
           key={idx}
           hasLetter={tile !== ""}
-          style={{ animationDelay: `${idx * 300}ms` }}
           letter={tile}
           isCurrentRow={true}
         ></Tile>
