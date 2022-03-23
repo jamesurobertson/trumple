@@ -4,14 +4,16 @@ import { status } from "../constants";
 const flip = (props) => keyframes`
   0% {
     transform: rotateX(0deg);
-    background-color: white;
+    background-color: ${props.theme.backgroundColor};
     border-color: #86888a;
-    color: black;
+    color: ${props.theme.tileColorCurrent};
   }
 
   50%{
     background-color: ${props.cellColor};
     border-color: ${props.cellColor};
+    color: ${props.theme.tileColorFilled};
+
   }
   100% {
     transform: rotateX(180deg);
@@ -75,7 +77,8 @@ const TileContainer = styled.div`
   user-select: none;
   ${({ hasLetter, isCurrentRow }) =>
     hasLetter && isCurrentRow && onFillAnimation}
-  color: ${({ isCurrentRow }) => (isCurrentRow ? "black" : "white")};
+  color: ${({ isCurrentRow, theme }) =>
+    isCurrentRow ? theme.tileColorCurrent : theme.tileColorFilled};
   ${({ isRevealing }) => isRevealing && flipAnimation}
   border: 2px solid
     ${({ hasLetter, cellColor }) =>

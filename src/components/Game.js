@@ -7,22 +7,27 @@ import CurrentRow from "./CurrentRow";
 import { letters, status } from "../constants";
 import { isValidWord } from "../utils";
 
-const GameContainer = styled.div`
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-  height: calc(100% - 50px);
+const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  font-family: "Clear Sans", "Helvetica Neue", "Arial", "sans-serif";
-`;
-
-const Container = styled.div`
-  display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  height: calc(100% - 50px);
   overflow: hidden;
+  flex: 1;
+`;
+
+const Board = styled.div`
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  height: 420px;
+  width: 350px;
 `;
 
 const ErrorMsgContainer = styled.div`
@@ -37,16 +42,7 @@ const ErrorMsgContainer = styled.div`
   color: white;
   font-weight: bold;
   background-color: #181a18;
-`;
-
-const Board = styled.div`
-  display: grid;
-  grid-template-rows: repeat(6, 1fr);
-  grid-gap: 5px;
-  padding: 25px;
-  box-sizing: border-box;
-  height: 420px;
-  width: 350px;
+  z-index: 100;
 `;
 
 const Game = () => {
@@ -96,14 +92,15 @@ const Game = () => {
     if (errorMsg.length === 0) return;
     setTimeout(() => {
       setErrorMsg("");
-    }, 1200);
+    }, 1000);
   }, [errorMsg]);
 
   useEffect(() => {
     if (isRevealing) return;
     setKeyboardColors((curr) => {
       const copy = { ...curr };
-      [...(guesses[guesses.length - 1] || "")].forEach((char, i) => {
+      if (guesses.length === 0) return copy;
+      [...guesses[guesses.length - 1]].forEach((char, i) => {
         if (copy[char] === status.green) return;
         if ("TRUMP"[i] === char) {
           copy[char] = status.green;
@@ -121,9 +118,16 @@ const Game = () => {
     guesses.length < 5 ? Array.from(Array(5 - guesses.length)) : [];
 
   return (
-    <GameContainer>
+    <BoardContainer>
       {errorMsg && <ErrorMsgContainer>{errorMsg}</ErrorMsgContainer>}
-      <Container>
+      <div
+        style={{
+          display: "flex",
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Board>
           {guesses.map((word, i) => (
             <FilledRow
@@ -139,7 +143,7 @@ const Game = () => {
             <EmptyRow key={i} />
           ))}
         </Board>
-      </Container>
+      </div>
       <Keyboard
         onAddLetter={onAddLetter}
         onEnterPress={onEnterPress}
@@ -147,7 +151,7 @@ const Game = () => {
         guesses={guesses}
         keyboardColors={keyboardColors}
       />
-    </GameContainer>
+    </BoardContainer>
   );
 };
 

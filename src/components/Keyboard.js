@@ -6,14 +6,19 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 0.75rem;
-  user-select: none;
   height: auto;
+  width: 100%;
+  box-sizing: border-box;
+  user-select: none;
+  padding: 10px;
 `;
 
 const LetterButton = styled.button`
   height: 58px;
-  width: 38px;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
   border-radius: 4px;
   border: 0;
   font-weight: bold;
@@ -23,30 +28,37 @@ const LetterButton = styled.button`
     letterColor === status.unguessed ? "#d3d6da" : letterColor};
   color: ${({ letterColor }) =>
     letterColor === status.unguessed ? "black" : "white"};
+
+  &:last-child {
+    margin: 0;
+  }
 `;
 
 const HalfStep = styled.div`
   height: 58px;
-  width: 19px;
-  margin: 0 6px 0 0;
+  margin: 0 8px 0 0;
 `;
 
 const NonLetterButton = styled.button`
+  display: block;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
   height: 58px;
   border-radius: 4px;
   border: 0;
   font-weight: bold;
   margin: 0 6px 0 0;
   background-color: #d3d6da;
-  flex: 1;
 `;
 
 const Row = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin: 0 auto 8px;
   touch-action: manipulation;
   width: 100%;
-  justify-content: space-between;
 `;
 
 const Keyboard = ({
@@ -97,17 +109,14 @@ const Keyboard = ({
             <NonLetterButton onClick={onDeletePress}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
+                height="24"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
+                width="24"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"
-                />
+                  fill="black"
+                  d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"
+                ></path>
               </svg>
             </NonLetterButton>
           )}
