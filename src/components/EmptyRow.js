@@ -1,14 +1,12 @@
-import { RowContainer } from "./Row";
+import { RowContainer } from "./FilledRow";
 import Tile from "./Tile";
 
-const EmptyRow = () => {
-  return (
-    <RowContainer>
-      {Array.from(Array(5)).map((_, i) => (
-        <Tile key={i} />
-      ))}
-    </RowContainer>
-  );
-};
+const EmptyRow = () => (
+  <RowContainer>
+    {Array.from(Array(5)).map((_, i) => (
+      <Tile key={i} />
+    ))}
+  </RowContainer>
+);
 
 export default EmptyRow;

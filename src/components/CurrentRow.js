@@ -1,4 +1,4 @@
-import { RowContainer } from "./Row";
+import { RowContainer } from "./FilledRow";
 import Tile from "./Tile";
 
 const CurrentRow = ({ word, hasError }) => {
@@ -11,7 +11,7 @@ const CurrentRow = ({ word, hasError }) => {
         <Tile
           key={idx}
           hasLetter={tile !== ""}
-          style={{ animationDelay: `${idx * 0.35}ms` }}
+          style={{ animationDelay: `${idx * 300}ms` }}
           letter={tile}
           isCurrentRow={true}
         ></Tile>

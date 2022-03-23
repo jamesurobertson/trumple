@@ -1,5 +1,5 @@
-import { keyboardLetters, status, letters } from "../constants";
-import { useEffect, useCallback } from "react";
+import { keyboardLetters, status } from "../constants";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -49,16 +49,12 @@ const Row = styled.div`
   justify-content: space-between;
 `;
 
-const Keyboard = ({ guesses, onAddLetter, onEnterPress, onDeletePress }) => {
-  const onKeyButtonPress = (letter) => {
-    // letter = letter.toLowerCase();
-    // window.dispatchEvent(
-    //   new KeyboardEvent("keydown", {
-    //     key: letter,
-    //   })
-    // );
-  };
-
+const Keyboard = ({
+  onAddLetter,
+  onEnterPress,
+  onDeletePress,
+  keyboardColors,
+}) => {
   useEffect(() => {
     const listener = (e) => {
       if (e.code === "Enter") {
@@ -89,8 +85,8 @@ const Keyboard = ({ guesses, onAddLetter, onEnterPress, onDeletePress }) => {
           {row.map((letter) => (
             <LetterButton
               key={letter}
-              //   letterColor={letterStatuses[letter]}
-              onClick={() => onKeyButtonPress(letter)}
+              letterColor={keyboardColors[letter]}
+              onClick={() => onAddLetter(letter)}
             >
               {letter}
             </LetterButton>

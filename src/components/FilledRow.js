@@ -1,5 +1,6 @@
 import styled, { keyframes, css } from "styled-components";
 import Tile from "./Tile";
+import { guessColor } from "../utils";
 
 const shake = keyframes`
     10%, 90% {
@@ -31,18 +32,14 @@ export const RowContainer = styled.div`
   ${({ shakeErr }) => shakeErr && animation}
 `;
 
-const Row = ({ winningRow, word, isRevealing }) => {
-  const cellColors = [...word].map((letter, i) => {
-    if ("TRUMP"[i] === letter) return "#6aaa64";
-    else if ("TRUMP".includes(letter)) return "#c9b458";
-    else return "#787c7e";
-  });
+const FilledRow = ({ winningRow, word, isRevealing }) => {
+  const cellColors = [...word].map((_, i) => guessColor("TRUMP", word, i));
   return (
     <RowContainer>
       {[...word].map((letter, tileIdx) => (
         <Tile
           key={tileIdx}
-          animationDelay={`${tileIdx * 350}ms`}
+          animationDelay={`${tileIdx * 300}ms`}
           isRevealing={isRevealing}
           cellColor={cellColors[tileIdx]}
           letter={letter}
@@ -52,4 +49,4 @@ const Row = ({ winningRow, word, isRevealing }) => {
   );
 };
 
-export default Row;
+export default FilledRow;

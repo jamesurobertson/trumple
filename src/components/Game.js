@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Keyboard from "./Keyboard";
-import { words } from "../words";
-import Row from "./Row";
+import FilledRow from "./FilledRow";
 import EmptyRow from "./EmptyRow";
 import CurrentRow from "./CurrentRow";
+import { letters, status } from "../constants";
+import { isValidWord } from "../utils";
 
 const GameContainer = styled.div`
   width: 100%;
@@ -54,22 +54,23 @@ const Game = () => {
   const [currentGuess, setCurrentGuess] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isRevealing, setIsRevealing] = useState(false);
+  const [keyboardColors, setKeyboardColors] = useState(() => {
+    return letters.reduce((map, letter) => {
+      map[letter] = status.unguessed;
+      return map;
+    }, {});
+  });
 
-  const onAddLetter = (letter) => {
-    if (isRevealing) return;
-    if (`${currentGuess}${letter}`.length > 5) return;
-    setCurrentGuess(`${currentGuess}${letter}`);
-  };
+  const onAddLetter = useCallback(
+    (letter) => {
+      if (isRevealing) return;
+      if (`${currentGuess + letter}`.length > 5) return;
+      setCurrentGuess(currentGuess + letter);
+    },
+    [currentGuess, isRevealing]
+  );
 
-  const isValidWord = (word) => {
-    if (word.length < 5) return [false, "Not enough letters."];
-    if (!words.includes(word.toLowerCase())) {
-      return [false, "Not in word list."];
-    }
-    return [true];
-  };
-
-  const onEnterPress = () => {
+  const onEnterPress = useCallback(() => {
     if (isRevealing || errorMsg) return;
     if (guesses.length === 6) return;
     const [valid, err] = isValidWord(currentGuess);
@@ -78,17 +79,18 @@ const Game = () => {
       return;
     }
 
+    setIsRevealing(true);
     setGuesses((curr) => [...curr, currentGuess]);
     setCurrentGuess("");
 
-    setIsRevealing(true);
     setTimeout(() => {
       setIsRevealing(false);
-    }, 5 * 350);
-  };
-  const onDeletePress = () => {
+    }, 5 * 300);
+  }, [currentGuess, errorMsg, guesses, isRevealing]);
+
+  const onDeletePress = useCallback(() => {
     setCurrentGuess((curr) => curr.slice(0, -1));
-  };
+  }, []);
 
   useEffect(() => {
     if (errorMsg.length === 0) return;
@@ -96,6 +98,24 @@ const Game = () => {
       setErrorMsg("");
     }, 1200);
   }, [errorMsg]);
+
+  useEffect(() => {
+    if (isRevealing) return;
+    setKeyboardColors((curr) => {
+      const copy = { ...curr };
+      [...(guesses[guesses.length - 1] || "")].forEach((char, i) => {
+        if (copy[char] === status.green) return;
+        if ("TRUMP"[i] === char) {
+          copy[char] = status.green;
+        } else if ("TRUMP".includes(char)) {
+          copy[char] = status.yellow;
+        } else {
+          copy[char] = status.gray;
+        }
+      });
+      return copy;
+    });
+  }, [guesses, isRevealing]);
 
   const emptyRows =
     guesses.length < 5 ? Array.from(Array(5 - guesses.length)) : [];
@@ -106,7 +126,7 @@ const Game = () => {
       <Container>
         <Board>
           {guesses.map((word, i) => (
-            <Row
+            <FilledRow
               key={i}
               word={word}
               isRevealing={isRevealing && guesses.length - 1 === i}
@@ -125,6 +145,7 @@ const Game = () => {
         onEnterPress={onEnterPress}
         onDeletePress={onDeletePress}
         guesses={guesses}
+        keyboardColors={keyboardColors}
       />
     </GameContainer>
   );
