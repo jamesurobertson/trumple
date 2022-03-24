@@ -10,11 +10,11 @@ const Container = styled.div`
   font-size: 2rem;
 `;
 
-const Header = () => {
+const Header = ({ onClick }) => {
   return (
     <Container>
       <div></div>
-      <div>TRUMPLE</div>
+      <div onClick={onClick}>TRUMPLE</div>
       <div></div>
     </Container>
   );

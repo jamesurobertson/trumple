@@ -25,7 +25,7 @@ const LetterButton = styled.button`
   margin: 0 6px 0 0;
 
   background-color: ${({ letterColor }) =>
-    letterColor === status.unguessed ? "#d3d6da" : letterColor};
+    letterColor === status.unguessed ? "8b8c89" : letterColor};
   color: ${({ letterColor }) =>
     letterColor === status.unguessed ? "black" : "white"};
 
@@ -69,6 +69,9 @@ const Keyboard = ({
 }) => {
   useEffect(() => {
     const listener = (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        return;
+      }
       if (e.code === "Enter") {
         onEnterPress();
       } else if (e.code === "Backspace") {

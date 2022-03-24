@@ -39,9 +39,9 @@ const ErrorMsgContainer = styled.div`
   border: 1px solid #181a18;
   border-radius: 4px;
   padding: 10px;
-  color: white;
+  color: ${({ theme }) => theme.errorColor};
   font-weight: bold;
-  background-color: #181a18;
+  background-color: ${({ theme }) => theme.errorBackgroundColor};
   z-index: 100;
 `;
 

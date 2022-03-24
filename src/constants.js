@@ -34,8 +34,8 @@ export const letters = [
 ];
 
 export const status = {
-  green: "#6aaa64",
-  yellow: "#c9b458",
-  gray: "#787c7e",
+  green: "#40916c",
+  yellow: "#f9c74f",
+  gray: "#8b8c89",
   unguessed: "unguessed",
 };

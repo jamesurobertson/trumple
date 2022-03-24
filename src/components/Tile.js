@@ -5,7 +5,7 @@ const flip = (props) => keyframes`
   0% {
     transform: rotateX(0deg);
     background-color: ${props.theme.backgroundColor};
-    border-color: #86888a;
+    border-color: ${props.theme.tileBorderFilled};
     color: ${props.theme.tileColorCurrent};
   }
 
@@ -81,8 +81,12 @@ const TileContainer = styled.div`
     isCurrentRow ? theme.tileColorCurrent : theme.tileColorFilled};
   ${({ isRevealing }) => isRevealing && flipAnimation}
   border: 2px solid
-    ${({ hasLetter, cellColor }) =>
-    hasLetter ? (cellColor ? cellColor : status.gray) : "#d3d6da"};
+    ${({ hasLetter, cellColor, theme }) =>
+    hasLetter
+      ? cellColor
+        ? cellColor
+        : theme.tileBorderFilled
+      : theme.tileBorderUnfilled};
   background-color: ${({ cellColor }) =>
     cellColor === status.unguessed ? "white" : cellColor};
 `;

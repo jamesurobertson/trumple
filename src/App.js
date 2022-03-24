@@ -19,7 +19,9 @@ function App() {
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <Container>
-        <Header />
+        <Header
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        />
         <Game />
       </Container>
     </ThemeProvider>
