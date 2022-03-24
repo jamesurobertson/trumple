@@ -14,6 +14,5 @@ export const GlobalStyles = createGlobalStyle`
         color: ${({ theme }) => theme.color};
         background-color: ${({ theme }) => theme.backgroundColor};
         font-family: "Clear Sans", "Helvetica Neue", "Arial", "sans-serif";
-        transition: all 0.25s linear;
     }
 `;
