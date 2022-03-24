@@ -7,7 +7,7 @@ import CurrentRow from "./CurrentRow";
 import { letters, status } from "../constants";
 import { isValidWord } from "../utils";
 
-const BoardContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,13 +72,15 @@ const Game = () => {
     const [valid, err] = isValidWord(currentGuess);
     if (!valid) {
       setErrorMsg(err);
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 1000);
       return;
     }
 
     setIsRevealing(true);
     setGuesses((curr) => [...curr, currentGuess]);
     setCurrentGuess("");
-
     setTimeout(() => {
       setIsRevealing(false);
     }, 5 * 350);
@@ -87,13 +89,6 @@ const Game = () => {
   const onDeletePress = useCallback(() => {
     setCurrentGuess((curr) => curr.slice(0, -1));
   }, []);
-
-  useEffect(() => {
-    if (errorMsg.length === 0) return;
-    setTimeout(() => {
-      setErrorMsg("");
-    }, 1000);
-  }, [errorMsg]);
 
   useEffect(() => {
     if (isRevealing) return;
@@ -118,7 +113,7 @@ const Game = () => {
     guesses.length < 5 ? Array.from(Array(5 - guesses.length)) : [];
 
   return (
-    <BoardContainer>
+    <Container>
       {errorMsg && <ErrorMsgContainer>{errorMsg}</ErrorMsgContainer>}
       <div
         style={{
@@ -151,7 +146,7 @@ const Game = () => {
         guesses={guesses}
         keyboardColors={keyboardColors}
       />
-    </BoardContainer>
+    </Container>
   );
 };
 

@@ -25,7 +25,7 @@ const LetterButton = styled.button`
   margin: 0 6px 0 0;
 
   background-color: ${({ letterColor }) =>
-    letterColor === status.unguessed ? "8b8c89" : letterColor};
+    letterColor === status.unguessed ? "#d3d6da" : letterColor};
   color: ${({ letterColor }) =>
     letterColor === status.unguessed ? "black" : "white"};
 

@@ -1,29 +1,17 @@
-import { useState } from "react";
-import styled from "styled-components";
 import { ThemeProvider } from "styled-components";
 import Game from "./components/Game";
 import Header from "./components/Header";
 import { darkTheme, lightTheme } from "./theme";
-
-const Container = styled.div`
-  color: ${({ theme }) => theme.color};
-  background-color: ${({ theme }) => theme.backgroundColor};
-  height: 100%;
-  font-family: "Clear Sans", "Helvetica Neue", "Arial", "sans-serif";
-  display: flex;
-  flex-direction: column;
-`;
+import { GlobalStyles } from "./global";
+import { useTheme } from "./hooks/useTheme";
 
 function App() {
-  const [theme, setTheme] = useState("light");
+  const [theme, toggleTheme] = useTheme();
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-      <Container>
-        <Header
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-        />
-        <Game />
-      </Container>
+      <GlobalStyles />
+      <Header onClick={toggleTheme} theme={theme} />
+      <Game />
     </ThemeProvider>
   );
 }

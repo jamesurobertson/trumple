@@ -79,14 +79,14 @@ const TileContainer = styled.div`
     hasLetter && isCurrentRow && onFillAnimation}
   color: ${({ isCurrentRow, theme }) =>
     isCurrentRow ? theme.tileColorCurrent : theme.tileColorFilled};
-  ${({ isRevealing }) => isRevealing && flipAnimation}
+  ${({ isRevealing }) => isRevealing && flipAnimation};
   border: 2px solid
     ${({ hasLetter, cellColor, theme }) =>
-    hasLetter
-      ? cellColor
+      hasLetter
         ? cellColor
-        : theme.tileBorderFilled
-      : theme.tileBorderUnfilled};
+          ? cellColor
+          : theme.tileBorderFilled
+        : theme.tileBorderUnfilled};
   background-color: ${({ cellColor }) =>
     cellColor === status.unguessed ? "white" : cellColor};
 `;
