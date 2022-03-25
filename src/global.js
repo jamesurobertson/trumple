@@ -10,6 +10,7 @@ export const GlobalStyles = createGlobalStyle`
     body {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         height: 100%;
         color: ${({ theme }) => theme.color};
         background-color: ${({ theme }) => theme.backgroundColor};

@@ -3,14 +3,9 @@ import { useEffect } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: block;
   height: auto;
-  width: 100%;
-  box-sizing: border-box;
-  user-select: none;
-  padding: 10px;
+  margin: 0 8px;
 `;
 
 const LetterButton = styled.button`
@@ -50,15 +45,19 @@ const NonLetterButton = styled.button`
   font-weight: bold;
   margin: 0 6px 0 0;
   background-color: #d3d6da;
+  &:last-child {
+    margin: 0;
+  }
 `;
 
 const Row = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin: 0 auto 8px;
   touch-action: manipulation;
   width: 100%;
+  &:last-child {
+    margin: 0;
+  }
 `;
 
 const Keyboard = ({
@@ -112,9 +111,9 @@ const Keyboard = ({
             <NonLetterButton onClick={onDeletePress}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                height="24"
+                height="24px"
                 viewBox="0 0 24 24"
-                width="24"
+                width="24px"
               >
                 <path
                   fill="black"

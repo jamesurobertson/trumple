@@ -6,18 +6,15 @@ import EmptyRow from "./EmptyRow";
 import CurrentRow from "./CurrentRow";
 import { letters, status } from "../constants";
 import { isValidWord } from "../utils";
+import img from "../trump.png";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
   height: calc(100% - 50px);
-  overflow: hidden;
-  flex: 1;
 `;
 
 const Board = styled.div`
@@ -25,9 +22,17 @@ const Board = styled.div`
   grid-template-rows: repeat(6, 1fr);
   grid-gap: 5px;
   padding: 10px;
-  box-sizing: border-box;
   height: 420px;
   width: 350px;
+`;
+
+const TrumpImg = styled.div`
+  background-image: url(${img});
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 `;
 
 const ErrorMsgContainer = styled.div`
@@ -50,6 +55,7 @@ const Game = () => {
   const [currentGuess, setCurrentGuess] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isRevealing, setIsRevealing] = useState(false);
+  const [isWon, setIsWon] = useState(false);
   const [keyboardColors, setKeyboardColors] = useState(() => {
     return letters.reduce((map, letter) => {
       map[letter] = status.unguessed;
@@ -78,6 +84,10 @@ const Game = () => {
       return;
     }
 
+    console.log(currentGuess);
+    if (currentGuess === "TRUMP") {
+      setIsWon(true);
+    }
     setIsRevealing(true);
     setGuesses((curr) => [...curr, currentGuess]);
     setCurrentGuess("");
@@ -114,6 +124,7 @@ const Game = () => {
 
   return (
     <Container>
+      {isWon && !isRevealing && <TrumpImg />}
       {errorMsg && <ErrorMsgContainer>{errorMsg}</ErrorMsgContainer>}
       <div
         style={{
