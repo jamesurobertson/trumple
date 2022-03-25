@@ -21,9 +21,8 @@ const Board = styled.div`
   display: grid;
   grid-template-rows: repeat(6, 1fr);
   grid-gap: 5px;
-  padding: 10px;
-  height: 420px;
-  width: 350px;
+  height: 350px;
+  width: 280px;
 `;
 
 const TrumpImg = styled.div`

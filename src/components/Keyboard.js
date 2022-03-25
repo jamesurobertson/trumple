@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  display: block;
   height: auto;
   margin: 0 8px;
+  height: 200px;
 `;
 
-const LetterButton = styled.button`
+const LetterButton = styled.div`
   height: 58px;
   display: flex;
   flex: 1;
@@ -34,17 +34,18 @@ const HalfStep = styled.div`
   margin: 0 8px 0 0;
 `;
 
-const NonLetterButton = styled.button`
-  display: block;
-  flex: 1;
+const NonLetterButton = styled.div`
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 58px;
   border-radius: 4px;
   border: 0;
+  padding: 5px;
   font-weight: bold;
   margin: 0 6px 0 0;
   background-color: #d3d6da;
+  color: black;
   &:last-child {
     margin: 0;
   }
