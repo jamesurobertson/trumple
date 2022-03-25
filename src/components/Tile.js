@@ -4,6 +4,7 @@ import { status } from "../constants";
 const flip = (props) => keyframes`
   0% {
     transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
     background-color: ${props.theme.backgroundColor};
     border-color: ${props.theme.tileBorderFilled};
     color: ${props.theme.tileColorCurrent};
@@ -17,6 +18,7 @@ const flip = (props) => keyframes`
   }
   100% {
     transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
   }
 `;
 
@@ -29,9 +31,11 @@ const flipAnimation = (props) =>
 const offsetFlip = (props) => keyframes`
     0% {
         transform: rotateX(0deg);
+        -webkit-transform: rotateX(0deg);
     }
     100% {
         transform: rotateX(180deg);
+        -webkit-transform: rotateX(180deg);
     }
 `;
 
@@ -43,15 +47,18 @@ const offSetFlipAnimation = (props) =>
 
 const onFill = (props) => keyframes`
   0% {
-    transform: scale(1);
+      transform: scale(1);
+      -webkit-transform: scale(1);
   }
 
   50% {
-    transform: scale(1.1);
+      transform: scale(1.1);
+      -webkit-transform: scale(1.1);
   }
 
   100% {
-    transform: scale(1);
+      transform: scale(1);
+      -webkit-transform: scale(1);
   }
 }
 `;
