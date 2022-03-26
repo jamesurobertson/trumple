@@ -83,7 +83,6 @@ const Game = () => {
       return;
     }
 
-    console.log(currentGuess);
     if (currentGuess === "TRUMP") {
       setIsWon(true);
     }
@@ -153,7 +152,6 @@ const Game = () => {
         onAddLetter={onAddLetter}
         onEnterPress={onEnterPress}
         onDeletePress={onDeletePress}
-        guesses={guesses}
         keyboardColors={keyboardColors}
       />
     </Container>
