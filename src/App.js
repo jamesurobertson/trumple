@@ -7,6 +7,7 @@ import { useTheme } from "./hooks/useTheme";
 
 function App() {
   const [theme, toggleTheme] = useTheme();
+
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
