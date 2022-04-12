@@ -8,16 +8,21 @@ const Container = styled.div`
   height: 200px;
 `;
 
-const LetterButton = styled.div`
+const LetterButton = styled.button`
+  font-family: inherit;
+  font-weight: bold;
+  border: 0;
+  padding: 0;
+  margin: 0 6px 0 0;
   height: 58px;
-  display: flex;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
   flex: 1;
+  display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 4px;
-  border: 0;
-  font-weight: bold;
-  margin: 0 6px 0 0;
+  text-transform: uppercase;
 
   background-color: ${({ letterColor }) =>
     letterColor === status.unguessed ? "#d3d6da" : letterColor};
