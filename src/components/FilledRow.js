@@ -1,6 +1,7 @@
 import styled, { keyframes, css } from "styled-components";
 import Tile from "./Tile";
 import { guessColor } from "../utils";
+import { answerWord } from "../config";
 
 const shake = keyframes`
     10%, 90% {
@@ -33,7 +34,7 @@ export const RowContainer = styled.div`
 `;
 
 const FilledRow = ({ winningRow, word, isRevealing }) => {
-  const cellColors = [...word].map((_, i) => guessColor("TRUMP", word, i));
+  const cellColors = [...word].map((_, i) => guessColor(answerWord, word, i));
   return (
     <RowContainer>
       {[...word].map((letter, tileIdx) => (

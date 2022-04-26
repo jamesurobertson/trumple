@@ -106,7 +106,10 @@ const Keyboard = ({
             <LetterButton
               key={letter}
               letterColor={keyboardColors[letter]}
-              onClick={() => onAddLetter(letter)}
+              onClick={() => {
+                console.log(letter);
+                onAddLetter(letter);
+              }}
             >
               {letter}
             </LetterButton>

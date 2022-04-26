@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Keyboard from "./Keyboard";
-import FilledRow from "./FilledRow";
-import EmptyRow from "./EmptyRow";
-import CurrentRow from "./CurrentRow";
 import { letters, status } from "../constants";
 import { isValidWord } from "../utils";
 import img from "../trump.png";
+import { answerWord, maxGuesses } from "../config";
+import Board from "./Board";
 
 const Container = styled.div`
   display: flex;
@@ -17,21 +16,11 @@ const Container = styled.div`
   height: calc(100% - 50px);
 `;
 
-const Board = styled.div`
-  display: grid;
-  grid-template-rows: repeat(6, 1fr);
-  grid-gap: 5px;
-  height: 350px;
-  width: 280px;
-`;
-
 const TrumpImg = styled.div`
   background-image: url(${img});
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  inset: 0;
+  display: ${({ show }) => (show ? "block" : "none")};
 `;
 
 const ErrorMsgContainer = styled.div`
@@ -55,25 +44,26 @@ const Game = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [isRevealing, setIsRevealing] = useState(false);
   const [isWon, setIsWon] = useState(false);
-  const [keyboardColors, setKeyboardColors] = useState(() => {
-    return letters.reduce((map, letter) => {
+  const [keyboardColors, setKeyboardColors] = useState(
+    letters.reduce((map, letter) => {
       map[letter] = status.unguessed;
       return map;
-    }, {});
-  });
+    }, {})
+  );
 
   const onAddLetter = useCallback(
     (letter) => {
-      if (isRevealing) return;
+      if (isRevealing || isWon) return;
       if (`${currentGuess + letter}`.length > 5) return;
-      setCurrentGuess(currentGuess + letter);
+      setCurrentGuess((curr) => curr + letter);
     },
-    [currentGuess, isRevealing]
+    [currentGuess, isRevealing, isWon]
   );
 
   const onEnterPress = useCallback(() => {
-    if (isRevealing || errorMsg) return;
-    if (guesses.length === 6) return;
+    if (isRevealing || errorMsg || isWon) return;
+    if (guesses.length === maxGuesses) return;
+
     const [valid, err] = isValidWord(currentGuess);
     if (!valid) {
       setErrorMsg(err);
@@ -83,16 +73,18 @@ const Game = () => {
       return;
     }
 
-    if (currentGuess === "TRUMP") {
+    if (currentGuess === answerWord) {
       setIsWon(true);
     }
+
     setIsRevealing(true);
-    setGuesses((curr) => [...curr, currentGuess]);
-    setCurrentGuess("");
     setTimeout(() => {
       setIsRevealing(false);
     }, 5 * 350);
-  }, [currentGuess, errorMsg, guesses, isRevealing]);
+
+    setGuesses((curr) => [...curr, currentGuess]);
+    setCurrentGuess("");
+  }, [currentGuess, errorMsg, guesses, isRevealing, isWon]);
 
   const onDeletePress = useCallback(() => {
     setCurrentGuess((curr) => curr.slice(0, -1));
@@ -100,54 +92,44 @@ const Game = () => {
 
   useEffect(() => {
     if (isRevealing) return;
+    if (guesses.length === 0) return;
+
     setKeyboardColors((curr) => {
       const copy = { ...curr };
-      if (guesses.length === 0) return copy;
-      [...guesses[guesses.length - 1]].forEach((char, i) => {
-        if (copy[char] === status.green) return;
-        if ("TRUMP"[i] === char) {
+      const lastGuess = guesses[guesses.length - 1];
+
+      for (let i = 0; i < lastGuess.length; i++) {
+        const char = lastGuess[i];
+        if (copy[char] === status.green) continue;
+        if (answerWord[i] === char) {
           copy[char] = status.green;
-        } else if ("TRUMP".includes(char)) {
+        } else if (answerWord.includes(char)) {
           copy[char] = status.yellow;
         } else {
           copy[char] = status.gray;
         }
-      });
+      }
+
       return copy;
     });
   }, [guesses, isRevealing]);
 
-  const emptyRows =
-    guesses.length < 5 ? Array.from(Array(5 - guesses.length)) : [];
+  useEffect(() => {
+    //preloading image
+    const image = new Image();
+    image.src = img;
+  }, []);
 
   return (
     <Container>
-      {isWon && !isRevealing && <TrumpImg />}
+      <TrumpImg show={isWon && !isRevealing} />
       {errorMsg && <ErrorMsgContainer>{errorMsg}</ErrorMsgContainer>}
-      <div
-        style={{
-          display: "flex",
-          flexGrow: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Board>
-          {guesses.map((word, i) => (
-            <FilledRow
-              key={i}
-              word={word}
-              isRevealing={isRevealing && guesses.length - 1 === i}
-            />
-          ))}
-          {guesses.length < 6 && (
-            <CurrentRow word={currentGuess} hasError={errorMsg} />
-          )}
-          {emptyRows.map((_, i) => (
-            <EmptyRow key={i} />
-          ))}
-        </Board>
-      </div>
+      <Board
+        guesses={guesses}
+        currentGuess={currentGuess}
+        errorMsg={errorMsg}
+        isRevealing={isRevealing}
+      />
       <Keyboard
         onAddLetter={onAddLetter}
         onEnterPress={onEnterPress}
