@@ -6,6 +6,17 @@ export const GlobalStyles = createGlobalStyle`
     *::before {
         box-sizing: border-box
     }
+
+    html,
+    body,
+    #root,
+    .App {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-y: hidden;
+    }
+
     
     body {
         display: flex;
