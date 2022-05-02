@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useReducer } from "react";
+import { useEffect, useCallback, useReducer } from "react";
 import styled from "styled-components";
 import Keyboard from "./Keyboard";
 import { letters, status } from "../constants";
@@ -118,7 +118,7 @@ const Game = () => {
     }, 1000);
   }, [errorMsg]);
 
-  // Sets Keyboard colors after letters are flipped
+  // Sets Keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
     setTimeout(() => {

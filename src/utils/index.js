@@ -1,5 +1,5 @@
-import { status } from "./constants";
-import { words } from "./words";
+import { status } from "../constants";
+import { words } from "../words";
 
 export function guessColor(word, guess, index) {
   // correct (matched) index letter
