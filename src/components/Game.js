@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Keyboard from "./Keyboard";
 import { letters, status } from "../constants";
 import { isValidWord } from "../utils";
-import img from "../trump.png";
 import { answerWord, maxGuesses } from "../config";
 import Board from "./Board";
 
@@ -17,7 +16,7 @@ const Container = styled.div`
 `;
 
 const TrumpImg = styled.div`
-  background-image: url(${img});
+  background-image: url(/images/trump.png);
   position: absolute;
   inset: 0;
 `;
@@ -107,7 +106,7 @@ const Game = () => {
   useEffect(() => {
     //preloading TRUMP image
     const image = new Image();
-    image.src = img;
+    image.src = "/images/trump.png";
   }, []);
 
   // Clears Error Message after 1 second
