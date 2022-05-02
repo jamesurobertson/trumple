@@ -1,5 +1,5 @@
 import { keyboardLetters, status } from "../constants";
-import { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -24,10 +24,8 @@ const LetterButton = styled.button`
   align-items: center;
   text-transform: uppercase;
 
-  background-color: ${({ letterColor }) =>
-    letterColor === status.unguessed ? "#d3d6da" : letterColor};
-  color: ${({ letterColor }) =>
-    letterColor === status.unguessed ? "black" : "white"};
+  background-color: ${({ letterColor }) => (letterColor === status.unguessed ? "#d3d6da" : letterColor)};
+  color: ${({ letterColor }) => (letterColor === status.unguessed ? "black" : "white")};
 
   &:last-child {
     margin: 0;
@@ -66,21 +64,16 @@ const Row = styled.div`
   }
 `;
 
-const Keyboard = ({
-  onAddLetter,
-  onEnterPress,
-  onDeletePress,
-  keyboardColors,
-}) => {
+const Keyboard = ({ onAddLetter, onEnter, onDelete, keyboardColors }) => {
   useEffect(() => {
     const listener = (e) => {
       if (e.ctrlKey || e.metaKey) {
         return;
       }
       if (e.code === "Enter") {
-        onEnterPress();
+        onEnter();
       } else if (e.code === "Backspace") {
-        onDeletePress();
+        onDelete();
       } else {
         const key = e.key.toUpperCase();
         if (key.length === 1 && key >= "A" && key <= "Z") {
@@ -92,49 +85,35 @@ const Keyboard = ({
     return () => {
       window.removeEventListener("keydown", listener);
     };
-  }, [onEnterPress, onDeletePress, onAddLetter]);
+  }, [onEnter, onDelete, onAddLetter]);
 
-  return (
-    <Container>
-      {keyboardLetters.map((row, idx) => (
-        <Row key={idx}>
-          {idx === 1 && <HalfStep />}
-          {idx === keyboardLetters.length - 1 && (
-            <NonLetterButton onClick={onEnterPress}>ENTER</NonLetterButton>
-          )}
-          {row.map((letter) => (
-            <LetterButton
-              key={letter}
-              letterColor={keyboardColors[letter]}
-              onClick={() => {
-                console.log(letter);
-                onAddLetter(letter);
-              }}
-            >
-              {letter}
-            </LetterButton>
-          ))}
-          {idx === 1 && <HalfStep />}
+  const keys = useMemo(() => {
+    return keyboardLetters.map((row, idx) => (
+      <Row key={idx}>
+        {idx === 1 && <HalfStep />}
+        {idx === keyboardLetters.length - 1 && <NonLetterButton onClick={onEnter}>ENTER</NonLetterButton>}
+        {row.map((letter) => (
+          <LetterButton key={letter} letterColor={keyboardColors[letter]} onClick={() => onAddLetter(letter)}>
+            {letter}
+          </LetterButton>
+        ))}
+        {idx === 1 && <HalfStep />}
 
-          {idx === keyboardLetters.length - 1 && (
-            <NonLetterButton onClick={onDeletePress}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 0 24 24"
-                width="24px"
-              >
-                <path
-                  fill="black"
-                  d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"
-                ></path>
-              </svg>
-            </NonLetterButton>
-          )}
-        </Row>
-      ))}
-    </Container>
-  );
+        {idx === keyboardLetters.length - 1 && (
+          <NonLetterButton onClick={onDelete}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+              <path
+                fill="black"
+                d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"
+              ></path>
+            </svg>
+          </NonLetterButton>
+        )}
+      </Row>
+    ));
+  }, [keyboardColors, onDelete, onAddLetter, onEnter]);
+
+  return <Container>{keys}</Container>;
 };
 
 export default Keyboard;

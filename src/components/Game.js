@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useReducer } from "react";
 import styled from "styled-components";
 import Keyboard from "./Keyboard";
 import { letters, status } from "../constants";
@@ -20,7 +20,6 @@ const TrumpImg = styled.div`
   background-image: url(${img});
   position: absolute;
   inset: 0;
-  display: ${({ show }) => (show ? "block" : "none")};
 `;
 
 const ErrorMsgContainer = styled.div`
@@ -38,104 +37,97 @@ const ErrorMsgContainer = styled.div`
   z-index: 100;
 `;
 
-const Game = () => {
-  const [guesses, setGuesses] = useState([]);
-  const [currentGuess, setCurrentGuess] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-  const [isRevealing, setIsRevealing] = useState(false);
-  const [isWon, setIsWon] = useState(false);
-  const [keyboardColors, setKeyboardColors] = useState(
-    letters.reduce((map, letter) => {
-      map[letter] = status.unguessed;
-      return map;
-    }, {})
-  );
+const initialState = {
+  isWon: false,
+  isRevealing: false,
+  guesses: [],
+  currentGuess: "",
+  errorMsg: "",
+  keyboardColors: letters.reduce((map, letter) => {
+    map[letter] = status.unguessed;
+    return map;
+  }, {}),
+};
 
-  const onAddLetter = useCallback(
-    (letter) => {
-      if (isRevealing || isWon) return;
-      if (`${currentGuess + letter}`.length > 5) return;
-      setCurrentGuess((curr) => curr + letter);
-    },
-    [currentGuess, isRevealing, isWon]
-  );
-
-  const onEnterPress = useCallback(() => {
-    if (isRevealing || errorMsg || isWon) return;
-    if (guesses.length === maxGuesses) return;
-
-    const [valid, err] = isValidWord(currentGuess);
-    if (!valid) {
-      setErrorMsg(err);
-      setTimeout(() => {
-        setErrorMsg("");
-      }, 1000);
-      return;
-    }
-
-    if (currentGuess === answerWord) {
-      setIsWon(true);
-    }
-
-    setIsRevealing(true);
-    setTimeout(() => {
-      setIsRevealing(false);
-    }, 5 * 350);
-
-    setGuesses((curr) => [...curr, currentGuess]);
-    setCurrentGuess("");
-  }, [currentGuess, errorMsg, guesses, isRevealing, isWon]);
-
-  const onDeletePress = useCallback(() => {
-    setCurrentGuess((curr) => curr.slice(0, -1));
-  }, []);
-
-  useEffect(() => {
-    if (isRevealing) return;
-    if (guesses.length === 0) return;
-
-    setKeyboardColors((curr) => {
-      const copy = { ...curr };
-      const lastGuess = guesses[guesses.length - 1];
-
-      for (let i = 0; i < lastGuess.length; i++) {
-        const char = lastGuess[i];
-        if (copy[char] === status.green) continue;
-        if (answerWord[i] === char) {
-          copy[char] = status.green;
-        } else if (answerWord.includes(char)) {
-          copy[char] = status.yellow;
-        } else {
-          copy[char] = status.gray;
-        }
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "addLetter":
+      if (state.isRevealing || state.isWon || state.currentGuess.length > 4) return state;
+      return { ...state, currentGuess: state.currentGuess + action.payload };
+    case "deleteLetter":
+      if (state.currentGuess.length === 0) return state;
+      return { ...state, currentGuess: state.currentGuess.slice(0, -1) };
+    case "addWord":
+      if (state.isRevealing || state.isWon || state.guesses.length === maxGuesses) return state;
+      const [valid, err] = isValidWord(state.currentGuess);
+      if (!valid) {
+        return { ...state, errorMsg: err };
       }
+      return {
+        ...state,
+        guesses: [...state.guesses, state.currentGuess],
+        currentGuess: "",
+        isWon: state.currentGuess === answerWord,
+        isRevealing: true,
+      };
+    case "setKeyboardColors":
+      const newColors = { ...state.keyboardColors };
+      [...action.payload].forEach((char, i) => {
+        if (newColors[char] === status.green) return;
+        if (answerWord[i] === char) {
+          newColors[char] = status.green;
+        } else if (answerWord.includes(char)) {
+          newColors[char] = status.yellow;
+        } else {
+          newColors[char] = status.gray;
+        }
+      }, {});
+      return {
+        ...state,
+        isRevealing: false,
+        keyboardColors: newColors,
+      };
+    case "clearError":
+      return { ...state, errorMsg: "" };
+    default:
+      return state;
+  }
+};
 
-      return copy;
-    });
-  }, [guesses, isRevealing]);
+const Game = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, errorMsg } = state;
+
+  const onAddLetter = useCallback((letter) => dispatch({ type: "addLetter", payload: letter }), []);
+  const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
+  const onDelete = useCallback(() => dispatch({ type: "deleteLetter" }), []);
 
   useEffect(() => {
-    //preloading image
+    //preloading TRUMP image
     const image = new Image();
     image.src = img;
   }, []);
 
+  useEffect(() => {
+    if (errorMsg.length === 0) return;
+    setTimeout(() => {
+      dispatch({ type: "clearError" });
+    }, 1000);
+  }, [errorMsg]);
+
+  useEffect(() => {
+    if (guesses.length === 0) return;
+    setTimeout(() => {
+      dispatch({ type: "setKeyboardColors", payload: guesses[guesses.length - 1] });
+    }, 5 * 350);
+  }, [guesses]);
+
+  if (isWon && !isRevealing) return <TrumpImg />;
   return (
     <Container>
-      <TrumpImg show={isWon && !isRevealing} />
       {errorMsg && <ErrorMsgContainer>{errorMsg}</ErrorMsgContainer>}
-      <Board
-        guesses={guesses}
-        currentGuess={currentGuess}
-        errorMsg={errorMsg}
-        isRevealing={isRevealing}
-      />
-      <Keyboard
-        onAddLetter={onAddLetter}
-        onEnterPress={onEnterPress}
-        onDeletePress={onDeletePress}
-        keyboardColors={keyboardColors}
-      />
+      <Board guesses={guesses} currentGuess={currentGuess} errorMsg={errorMsg} isRevealing={isRevealing} />
+      <Keyboard onAddLetter={onAddLetter} onEnter={onEnter} onDelete={onDelete} keyboardColors={keyboardColors} />
     </Container>
   );
 };

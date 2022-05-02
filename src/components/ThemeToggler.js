@@ -10,14 +10,13 @@ const Container = styled.div`
   width: 40px;
 `;
 
-const ThemeToggler = ({ onClick, theme }) => (
-  <Container onClick={onClick}>
-    {theme === "light" ? (
-      <SunIcon onClick={onClick} />
-    ) : (
-      <MoonIcon onClick={onClick} />
-    )}
-  </Container>
-);
+const ThemeToggler = ({ onClick, theme }) => {
+  const Icon = theme === "light" ? SunIcon : MoonIcon;
+  return (
+    <Container onClick={onClick}>
+      <Icon onClick={onClick} />
+    </Container>
+  );
+};
 
 export default ThemeToggler;
