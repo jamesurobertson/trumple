@@ -70,17 +70,22 @@ const Keyboard = ({ onAddLetter, onEnter, onDelete, keyboardColors }) => {
       if (e.ctrlKey || e.metaKey) {
         return;
       }
+
       if (e.code === "Enter") {
         onEnter();
-      } else if (e.code === "Backspace") {
+        return;
+      }
+
+      if (e.code === "Backspace") {
         onDelete();
-      } else {
-        const key = e.key.toUpperCase();
-        if (key.length === 1 && key >= "A" && key <= "Z") {
-          onAddLetter(key);
-        }
+        return;
+      }
+      const key = e.key.toUpperCase();
+      if (key.length === 1 && key >= "A" && key <= "Z") {
+        onAddLetter(key);
       }
     };
+
     window.addEventListener("keydown", listener);
     return () => {
       window.removeEventListener("keydown", listener);
