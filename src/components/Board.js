@@ -3,6 +3,7 @@ import FilledRow from "./FilledRow";
 import EmptyRow from "./EmptyRow";
 import CurrentRow from "./CurrentRow";
 import { maxGuesses } from "../config";
+import { useMemo } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -13,34 +14,29 @@ const Container = styled.div`
 
 const BoardGrid = styled.div`
   display: grid;
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-rows: ${({ maxGuesses }) => `repeat(${maxGuesses}, 1fr)`};
   grid-gap: 5px;
   height: 350px;
   width: 280px;
 `;
 
 const Board = ({ guesses, currentGuess, errorMsg, isRevealing }) => {
-  const emptyRows =
-    guesses.length < maxGuesses - 1
-      ? Array.from(Array(maxGuesses - 1 - guesses.length))
-      : [];
+  const { emptyRows, filledRows } = useMemo(() => {
+    const rows = guesses.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - guesses.length)) : [];
+    const _emptyRows = rows.map((_, i) => <EmptyRow key={i} />);
+
+    const _filledRows = guesses.map((word, i) => (
+      <FilledRow key={i} word={word} isRevealing={isRevealing && guesses.length - 1 === i} />
+    ));
+    return { emptyRows: _emptyRows, filledRows: _filledRows };
+  }, [guesses, isRevealing]);
 
   return (
     <Container>
-      <BoardGrid>
-        {guesses.map((word, i) => (
-          <FilledRow
-            key={i}
-            word={word}
-            isRevealing={isRevealing && guesses.length - 1 === i}
-          />
-        ))}
-        {guesses.length < maxGuesses && (
-          <CurrentRow word={currentGuess} hasError={errorMsg} />
-        )}
-        {emptyRows.map((_, i) => (
-          <EmptyRow key={i} />
-        ))}
+      <BoardGrid maxGuesses={maxGuesses}>
+        {filledRows}
+        {guesses.length < maxGuesses && <CurrentRow word={currentGuess} hasError={errorMsg} />}
+        {emptyRows}
       </BoardGrid>
     </Container>
   );

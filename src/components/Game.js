@@ -52,10 +52,12 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "addLetter":
-      if (state.isRevealing || state.isWon || state.currentGuess.length > 4) return state;
+      if (state.isRevealing || state.isWon || state.currentGuess.length > 4 || state.guesses.length === maxGuesses) {
+        return state;
+      }
       return { ...state, currentGuess: state.currentGuess + action.payload };
     case "deleteLetter":
-      if (state.currentGuess.length === 0) return state;
+      if (state.currentGuess.length === 0 || state.guesses.length === maxGuesses) return state;
       return { ...state, currentGuess: state.currentGuess.slice(0, -1) };
     case "addWord":
       if (state.isRevealing || state.isWon || state.guesses.length === maxGuesses) return state;
@@ -108,6 +110,7 @@ const Game = () => {
     image.src = img;
   }, []);
 
+  // Clears Error Message after 1 second
   useEffect(() => {
     if (errorMsg.length === 0) return;
     setTimeout(() => {
@@ -115,6 +118,7 @@ const Game = () => {
     }, 1000);
   }, [errorMsg]);
 
+  // Sets Keyboard colors after letters are flipped
   useEffect(() => {
     if (guesses.length === 0) return;
     setTimeout(() => {
