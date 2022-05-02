@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import FilledRow from "./FilledRow";
-import EmptyRow from "./EmptyRow";
-import CurrentRow from "./CurrentRow";
+import FilledRow from "./rows/FilledRow";
+import EmptyRow from "./rows/EmptyRow";
+import CurrentRow from "./rows/CurrentRow";
 import { maxGuesses } from "../config";
 import { useMemo } from "react";
 

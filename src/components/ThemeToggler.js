@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import MoonIcon from "./MoonIcon";
-import SunIcon from "./SunIcon";
+import MoonIcon from "./icons/MoonIcon";
+import SunIcon from "./icons/SunIcon";
 
 const Container = styled.div`
   display: flex;

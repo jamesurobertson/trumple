@@ -1,5 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
-import { status } from "../constants";
+import { status } from "../../constants";
 
 const flip = (props) => keyframes`
   0% {
@@ -82,28 +82,15 @@ const TileContainer = styled.div`
   text-transform: uppercase;
   transition: transform 0.25s ease-in-out;
   user-select: none;
-  ${({ hasLetter, isCurrentRow }) =>
-    hasLetter && isCurrentRow && onFillAnimation}
-  color: ${({ isCurrentRow, theme }) =>
-    isCurrentRow ? theme.tileColorCurrent : theme.tileColorFilled};
+  ${({ hasLetter, isCurrentRow }) => hasLetter && isCurrentRow && onFillAnimation}
+  color: ${({ isCurrentRow, theme }) => (isCurrentRow ? theme.tileColorCurrent : theme.tileColorFilled)};
   ${({ isRevealing }) => isRevealing && flipAnimation};
   border: 2px solid
     ${({ hasLetter, cellColor, theme }) =>
-      hasLetter
-        ? cellColor
-          ? cellColor
-          : theme.tileBorderFilled
-        : theme.tileBorderUnfilled};
-  background-color: ${({ cellColor }) =>
-    cellColor === status.unguessed ? "white" : cellColor};
+      hasLetter ? (cellColor ? cellColor : theme.tileBorderFilled) : theme.tileBorderUnfilled};
+  background-color: ${({ cellColor }) => (cellColor === status.unguessed ? "white" : cellColor)};
 `;
-const Tile = ({
-  cellColor,
-  letter,
-  isRevealing,
-  animationDelay,
-  isCurrentRow = false,
-}) => {
+const Tile = ({ cellColor, letter, isRevealing, animationDelay, isCurrentRow = false }) => {
   return (
     <TileContainer
       cellColor={cellColor}
@@ -112,10 +99,7 @@ const Tile = ({
       hasLetter={!!letter}
       isCurrentRow={isCurrentRow}
     >
-      <LetterContainer
-        isRevealing={isRevealing}
-        animationDelay={animationDelay}
-      >
+      <LetterContainer isRevealing={isRevealing} animationDelay={animationDelay}>
         {letter}
       </LetterContainer>
     </TileContainer>
