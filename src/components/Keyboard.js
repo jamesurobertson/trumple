@@ -9,6 +9,10 @@ const Container = styled.div`
 `;
 
 const LetterButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
   font-family: inherit;
   font-weight: bold;
   border: 0;
@@ -18,10 +22,6 @@ const LetterButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   text-transform: uppercase;
 
   background-color: ${({ letterColor }) => (letterColor === status.unguessed ? "#d3d6da" : letterColor)};
@@ -37,21 +37,10 @@ const HalfStep = styled.div`
   margin: 0 8px 0 0;
 `;
 
-const NonLetterButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 58px;
-  border-radius: 4px;
-  border: 0;
+const NonLetterButton = styled(LetterButton)`
   padding: 5px;
-  font-weight: bold;
-  margin: 0 6px 0 0;
   background-color: #d3d6da;
   color: black;
-  &:last-child {
-    margin: 0;
-  }
 `;
 
 const Row = styled.div`
@@ -96,7 +85,7 @@ const Keyboard = ({ onAddLetter, onEnter, onDelete, keyboardColors }) => {
     return keyboardLetters.map((row, idx) => (
       <Row key={idx}>
         {idx === 1 && <HalfStep />}
-        {idx === keyboardLetters.length - 1 && <NonLetterButton onClick={onEnter}>ENTER</NonLetterButton>}
+        {idx === keyboardLetters.length - 1 && <NonLetterButton onClick={onEnter}>enter</NonLetterButton>}
         {row.map((letter) => (
           <LetterButton key={letter} letterColor={keyboardColors[letter]} onClick={() => onAddLetter(letter)}>
             {letter}

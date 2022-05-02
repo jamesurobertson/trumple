@@ -8,13 +8,16 @@ const Container = styled.div`
   align-items: center;
   height: 40px;
   width: 40px;
+  position: absolute;
+  right: 10px;
 `;
 
-const ThemeToggler = ({ onClick, theme }) => {
+const ThemeToggler = ({ theme, toggleTheme }) => {
   const Icon = theme === "light" ? SunIcon : MoonIcon;
+
   return (
-    <Container onClick={onClick}>
-      <Icon onClick={onClick} />
+    <Container onClick={toggleTheme}>
+      <Icon />
     </Container>
   );
 };

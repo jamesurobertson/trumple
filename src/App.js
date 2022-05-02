@@ -11,7 +11,7 @@ function App() {
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
-      <Header onClick={toggleTheme} theme={theme} />
+      <Header toggleTheme={toggleTheme} theme={theme} />
       <Game />
     </ThemeProvider>
   );

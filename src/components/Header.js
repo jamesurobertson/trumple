@@ -8,7 +8,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Cont = styled.div`
+const Title = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.tileBorderUnfilled};
   display: flex;
   justify-content: space-between;
@@ -17,18 +17,11 @@ const Cont = styled.div`
   font-size: 2.5rem;
 `;
 
-const ToggleContainer = styled.div`
-  position: absolute;
-  right: 10px;
-`;
-
-const Header = ({ onClick, theme }) => {
+const Header = ({ toggleTheme, theme }) => {
   return (
     <Container>
-      <Cont>TRUMPLE</Cont>
-      <ToggleContainer>
-        <ThemeToggler onClick={onClick} theme={theme} />
-      </ToggleContainer>
+      <Title>TRUMPLE</Title>
+      <ThemeToggler toggleTheme={toggleTheme} theme={theme} />
     </Container>
   );
 };

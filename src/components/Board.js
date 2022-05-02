@@ -20,14 +20,15 @@ const BoardGrid = styled.div`
   width: 280px;
 `;
 
-const Board = ({ guesses, currentGuess, errorMsg, isRevealing }) => {
-  const { emptyRows, filledRows } = useMemo(() => {
-    const rows = guesses.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - guesses.length)) : [];
-    const _emptyRows = rows.map((_, i) => <EmptyRow key={i} />);
-
+const Board = ({ guesses, currentGuess, hasError, isRevealing }) => {
+  const { filledRows, emptyRows } = useMemo(() => {
     const _filledRows = guesses.map((word, i) => (
       <FilledRow key={i} word={word} isRevealing={isRevealing && guesses.length - 1 === i} />
     ));
+
+    const rows = guesses.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - guesses.length)) : [];
+    const _emptyRows = rows.map((_, i) => <EmptyRow key={i} />);
+
     return { emptyRows: _emptyRows, filledRows: _filledRows };
   }, [guesses, isRevealing]);
 
@@ -35,7 +36,7 @@ const Board = ({ guesses, currentGuess, errorMsg, isRevealing }) => {
     <Container>
       <BoardGrid maxGuesses={maxGuesses}>
         {filledRows}
-        {guesses.length < maxGuesses && <CurrentRow word={currentGuess} hasError={errorMsg} />}
+        {guesses.length < maxGuesses && <CurrentRow word={currentGuess} hasError={hasError} />}
         {emptyRows}
       </BoardGrid>
     </Container>

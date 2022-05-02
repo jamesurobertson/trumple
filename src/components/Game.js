@@ -103,8 +103,8 @@ const Game = () => {
   const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
   const onDelete = useCallback(() => dispatch({ type: "deleteLetter" }), []);
 
+  //preload TRUMP image
   useEffect(() => {
-    //preloading TRUMP image
     const image = new Image();
     image.src = "/images/trump.png";
   }, []);
@@ -129,7 +129,7 @@ const Game = () => {
   return (
     <Container>
       {errorMsg && <ErrorMsgContainer>{errorMsg}</ErrorMsgContainer>}
-      <Board guesses={guesses} currentGuess={currentGuess} errorMsg={errorMsg} isRevealing={isRevealing} />
+      <Board guesses={guesses} currentGuess={currentGuess} hasError={errorMsg.length > 0} isRevealing={isRevealing} />
       <Keyboard onAddLetter={onAddLetter} onEnter={onEnter} onDelete={onDelete} keyboardColors={keyboardColors} />
     </Container>
   );
