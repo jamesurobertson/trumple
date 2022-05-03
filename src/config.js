@@ -1,6 +1,6 @@
 module.exports = {
   answerWord: "TRUMP",
-  maxGuesses: 5,
+  maxGuesses: 6,
   maxWordLength: 5,
   gridGap: 5,
   tileSize: 52,
