@@ -20,8 +20,8 @@ const Toast = ({ message, timeout, onClear }) => {
   // Clears Toast after timeout
   useEffect(() => {
     if (message.length === 0) return;
-    setTimeout(() => onClear(), timeout);
-  }, [message]);
+    setTimeout(onClear, timeout);
+  }, [message, onClear, timeout]);
 
   if (!message) return null;
   return <Container>{message}</Container>;

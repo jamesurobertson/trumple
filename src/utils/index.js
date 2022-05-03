@@ -38,8 +38,8 @@ export function guessColor(word, guess, index) {
 
 export const isValidWord = (word) => {
   if (word.length < maxWordLength) return [false, "Not enough letters."];
-  //   if (!words.includes(word.toLowerCase())) {
-  //     return [false, "Not in word list."];
-  //   }
+  if (!words.includes(word.toLowerCase())) {
+    return [false, "Not in word list."];
+  }
   return [true];
 };
