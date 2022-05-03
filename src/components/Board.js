@@ -19,6 +19,7 @@ const BoardGrid = styled.div`
   height: ${({ gridHeight }) => `${gridHeight}px`};
   width: ${({ gridWidth }) => `${gridWidth}px`};
   max-width: calc(100% - 20px);
+  max-height: calc(100% - 20px);
 `;
 
 const Board = ({ guesses, currentGuess, hasError, isRevealing }) => {
