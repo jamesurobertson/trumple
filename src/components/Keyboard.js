@@ -1,6 +1,7 @@
 import { keyboardLetters, status } from "../constants";
 import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
+import useKeydownListener from "../hooks/useKeydownListener";
 
 const Container = styled.div`
   height: auto;
@@ -54,32 +55,7 @@ const Row = styled.div`
 `;
 
 const Keyboard = ({ onAddLetter, onEnter, onDelete, keyboardColors }) => {
-  useEffect(() => {
-    const listener = (e) => {
-      if (e.ctrlKey || e.metaKey) {
-        return;
-      }
-
-      if (e.code === "Enter") {
-        onEnter();
-        return;
-      }
-
-      if (e.code === "Backspace") {
-        onDelete();
-        return;
-      }
-      const key = e.key.toUpperCase();
-      if (key.length === 1 && key >= "A" && key <= "Z") {
-        onAddLetter(key);
-      }
-    };
-
-    window.addEventListener("keydown", listener);
-    return () => {
-      window.removeEventListener("keydown", listener);
-    };
-  }, [onEnter, onDelete, onAddLetter]);
+  useKeydownListener({ onEnter, onDelete, onAddLetter });
 
   const keys = useMemo(() => {
     return keyboardLetters.map((row, idx) => (

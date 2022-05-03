@@ -1,10 +1,12 @@
 import { useEffect, useCallback, useReducer } from "react";
 import styled from "styled-components";
-import Keyboard from "./Keyboard";
 import { letters, status } from "../constants";
 import { isValidWord } from "../utils";
 import { answerWord, maxGuesses } from "../config";
 import Board from "./Board";
+import Toast from "./Toast";
+import Keyboard from "./Keyboard";
+import WinningImageOverlay from "./WinningImageOverlay";
 
 const Container = styled.div`
   display: flex;
@@ -15,33 +17,12 @@ const Container = styled.div`
   height: calc(100% - 50px);
 `;
 
-const TrumpImg = styled.div`
-  background-image: url(/images/trump.png);
-  position: absolute;
-  inset: 0;
-`;
-
-const ErrorMsgContainer = styled.div`
-  display: flex;
-  position: absolute;
-  top: 9.5%;
-  left: 50%;
-  transform: translate(-50%, 0);
-  border: 1px solid #181a18;
-  border-radius: 4px;
-  padding: 10px;
-  color: ${({ theme }) => theme.errorColor};
-  font-weight: bold;
-  background-color: ${({ theme }) => theme.errorBackgroundColor};
-  z-index: 100;
-`;
-
 const initialState = {
   isWon: false,
   isRevealing: false,
   guesses: [],
   currentGuess: "",
-  errorMsg: "",
+  toastMessage: "",
   keyboardColors: letters.reduce((map, letter) => {
     map[letter] = status.unguessed;
     return map;
@@ -62,7 +43,7 @@ const reducer = (state, action) => {
       if (state.isRevealing || state.isWon || state.guesses.length === maxGuesses) return state;
       const [valid, err] = isValidWord(state.currentGuess);
       if (!valid) {
-        return { ...state, errorMsg: err };
+        return { ...state, toastMessage: err };
       }
       return {
         ...state,
@@ -71,9 +52,9 @@ const reducer = (state, action) => {
         isWon: state.currentGuess === answerWord,
         isRevealing: true,
       };
-    case "setKeyboardColors":
+    case "updateKeyboardColors":
       const newColors = { ...state.keyboardColors };
-      [...action.payload].forEach((char, i) => {
+      [...state.guesses[state.guesses.length - 1]].forEach((char, i) => {
         if (newColors[char] === status.green) return;
         if (answerWord[i] === char) {
           newColors[char] = status.green;
@@ -88,8 +69,8 @@ const reducer = (state, action) => {
         isRevealing: false,
         keyboardColors: newColors,
       };
-    case "clearError":
-      return { ...state, errorMsg: "" };
+    case "clearToast":
+      return { ...state, toastMessage: "" };
     default:
       return state;
   }
@@ -97,40 +78,26 @@ const reducer = (state, action) => {
 
 const Game = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, errorMsg } = state;
+  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = state;
 
   const onAddLetter = useCallback((letter) => dispatch({ type: "addLetter", payload: letter }), []);
   const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
   const onDelete = useCallback(() => dispatch({ type: "deleteLetter" }), []);
+  const onToastClear = useCallback(() => dispatch({ type: "clearToast" }), []);
+  const updateKeyboardColors = () => dispatch({ type: "updateKeyboardColors" });
 
-  //preload TRUMP image
-  useEffect(() => {
-    const image = new Image();
-    image.src = "/images/trump.png";
-  }, []);
-
-  // Clears Error Message after 1 second
-  useEffect(() => {
-    if (errorMsg.length === 0) return;
-    setTimeout(() => {
-      dispatch({ type: "clearError" });
-    }, 1000);
-  }, [errorMsg]);
-
-  // Sets Keyboard colors after tile letters are revealed / flipped
+  // updater keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
-    setTimeout(() => {
-      dispatch({ type: "setKeyboardColors", payload: guesses[guesses.length - 1] });
-    }, 5 * 350);
+    setTimeout(updateKeyboardColors, 5 * 350);
   }, [guesses]);
 
-  if (isWon && !isRevealing) return <TrumpImg />;
+  if (isWon && !isRevealing) return <WinningImageOverlay />;
   return (
     <Container>
-      {errorMsg && <ErrorMsgContainer>{errorMsg}</ErrorMsgContainer>}
-      <Board guesses={guesses} currentGuess={currentGuess} hasError={errorMsg.length > 0} isRevealing={isRevealing} />
-      <Keyboard onAddLetter={onAddLetter} onEnter={onEnter} onDelete={onDelete} keyboardColors={keyboardColors} />
+      {toastMessage.length > 0 && <Toast message={toastMessage} timeout={1000} onClear={onToastClear} />}
+      <Board {...{ guesses, currentGuess, isRevealing }} hasError={toastMessage.length > 0} />
+      <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
     </Container>
   );
 };
