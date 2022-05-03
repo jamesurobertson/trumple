@@ -1,7 +1,7 @@
 import styled, { keyframes, css } from "styled-components";
 import Tile from "./Tile";
 import { guessColor } from "../../utils";
-import { answerWord, maxWordLength } from "../../config";
+import { answerWord, wordLength } from "../../config";
 
 const shake = keyframes`
     10%, 90% {
@@ -21,29 +21,29 @@ const shake = keyframes`
   }
 `;
 
-const animation = (props) =>
+const animation = () =>
   css`
     animation: ${shake} 0.6s linear;
   `;
 
 export const RowContainer = styled.div`
   display: grid;
-  grid-template-columns: ${({ wordLength }) => `repeat(${wordLength}, 1fr)`};
+  grid-template-columns: ${({ length }) => `repeat(${length}, 1fr)`};
   grid-gap: 5px;
   ${({ shakeErr }) => shakeErr && animation}
 `;
 
-const FilledRow = ({ word, isRevealing }) => {
-  const cellColors = [...word].map((_, i) => guessColor(answerWord, word, i));
+const FilledRow = ({ rowValue, isRevealing }) => {
+  const backgroundColors = [...rowValue].map((_, idx) => guessColor(answerWord, rowValue, idx));
   return (
-    <RowContainer wordLength={maxWordLength}>
-      {[...word].map((letter, tileIdx) => (
+    <RowContainer length={wordLength}>
+      {[...rowValue].map((char, idx) => (
         <Tile
-          key={tileIdx}
-          animationDelay={`${tileIdx * 350}ms`}
+          key={idx}
+          animationDelay={`${idx * 350}ms`}
           isRevealing={isRevealing}
-          cellColor={cellColors[tileIdx]}
-          letter={letter}
+          backgroundColor={backgroundColors[idx]}
+          letter={char}
         ></Tile>
       ))}
     </RowContainer>

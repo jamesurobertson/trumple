@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useReducer } from "react";
 import styled from "styled-components";
 import { isValidWord } from "../utils";
-import { answerWord, maxGuesses, maxWordLength, letters, status } from "../config";
+import { answerWord, maxGuesses, wordLength, letters, status } from "../config";
 import Board from "./Board";
 import Toast from "./Toast";
 import Keyboard from "./Keyboard";
@@ -34,7 +34,7 @@ const reducer = (state, action) => {
       if (
         state.isRevealing ||
         state.isWon ||
-        state.currentGuess.length >= maxWordLength ||
+        state.currentGuess.length >= wordLength ||
         state.guesses.length === maxGuesses
       ) {
         return state;
@@ -76,6 +76,8 @@ const reducer = (state, action) => {
       };
     case "clearToast":
       return { ...state, toastMessage: "" };
+    case "toastMessage":
+      return { ...state, toastMessage: action.payload };
     default:
       return state;
   }
@@ -88,20 +90,23 @@ const Game = () => {
   const onAddLetter = useCallback((letter) => dispatch({ type: "addLetter", payload: letter }), []);
   const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
   const onDelete = useCallback(() => dispatch({ type: "deleteLetter" }), []);
-  const onToastClear = useCallback(() => dispatch({ type: "clearToast" }), []);
-  const updateKeyboardColors = () => dispatch({ type: "updateKeyboardColors" });
 
-  // updater keyboard colors after tile letters are revealed / flipped
+  // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
-    setTimeout(updateKeyboardColors, maxWordLength * 350);
+    setTimeout(() => dispatch({ type: "updateKeyboardColors" }), wordLength * 350);
   }, [guesses]);
 
   if (isWon && !isRevealing) return <WinningImageOverlay />;
   return (
     <Container>
-      {toastMessage.length > 0 && <Toast message={toastMessage} timeout={1000} onClear={onToastClear} />}
-      <Board {...{ guesses, currentGuess, isRevealing }} hasError={toastMessage.length > 0} />
+      {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={() => dispatch({ type: "clearToast" })} />}
+      <Board
+        completedRowValues={guesses}
+        currentRowValue={currentGuess}
+        isRevealing={isRevealing}
+        hasError={toastMessage.length > 0}
+      />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
     </Container>
   );

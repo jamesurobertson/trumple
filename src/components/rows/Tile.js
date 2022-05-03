@@ -11,8 +11,8 @@ const flip = (props) => keyframes`
   }
 
   50%{
-    background-color: ${props.cellColor};
-    border-color: ${props.cellColor};
+    background-color: ${props.backgroundColor};
+    border-color: ${props.backgroundColor};
     color: ${props.theme.tileColorFilled};
 
   }
@@ -85,15 +85,15 @@ const TileContainer = styled.div`
   color: ${({ isCurrentRow, theme }) => (isCurrentRow ? theme.tileColorCurrent : theme.tileColorFilled)};
   ${({ isRevealing }) => isRevealing && flipAnimation};
   border: 2px solid
-    ${({ hasLetter, cellColor, theme }) =>
-      hasLetter ? (cellColor ? cellColor : theme.tileBorderFilled) : theme.tileBorderUnfilled};
-  background-color: ${({ cellColor }) => (cellColor === status.unguessed ? "white" : cellColor)};
+    ${({ hasLetter, backgroundColor, theme }) =>
+      hasLetter ? (backgroundColor ? backgroundColor : theme.tileBorderFilled) : theme.tileBorderUnfilled};
+  background-color: ${({ backgroundColor }) => (backgroundColor === status.unguessed ? "white" : backgroundColor)};
 `;
 
-const Tile = ({ cellColor, letter, isRevealing, animationDelay, isCurrentRow = false }) => {
+const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentRow = false }) => {
   return (
     <TileContainer
-      cellColor={cellColor}
+      backgroundColor={backgroundColor}
       isRevealing={isRevealing}
       animationDelay={animationDelay}
       hasLetter={!!letter}

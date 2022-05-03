@@ -1,15 +1,15 @@
-import { maxWordLength } from "../../config";
+import { wordLength } from "../../config";
 import { RowContainer } from "./FilledRow";
 import Tile from "./Tile";
 
-const CurrentRow = ({ word, hasError }) => {
-  const filledCells = [...word];
-  const emptyCells = Array.from(Array(maxWordLength - word.length));
+const CurrentRow = ({ rowValue, hasError }) => {
+  const filledCells = [...rowValue];
+  const emptyCells = Array.from(Array(wordLength - rowValue.length));
   const row = [...filledCells, ...emptyCells];
   return (
-    <RowContainer shakeErr={hasError} wordLength={maxWordLength}>
+    <RowContainer shakeErr={hasError} length={wordLength}>
       {row.map((tile, idx) => (
-        <Tile key={idx} hasLetter={tile !== ""} letter={tile} isCurrentRow={true}></Tile>
+        <Tile key={idx} letter={tile} isCurrentRow={true} />
       ))}
     </RowContainer>
   );

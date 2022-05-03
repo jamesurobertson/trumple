@@ -16,12 +16,11 @@ const Container = styled.div`
   z-index: 100;
 `;
 
-const Toast = ({ message, timeout, onClear }) => {
-  // Clears Toast after timeout
+const Toast = ({ message, clearToast }) => {
   useEffect(() => {
     if (message.length === 0) return;
-    setTimeout(onClear, timeout);
-  }, [message, onClear, timeout]);
+    setTimeout(clearToast, 1000);
+  }, [message]);
 
   if (!message) return null;
   return <Container>{message}</Container>;

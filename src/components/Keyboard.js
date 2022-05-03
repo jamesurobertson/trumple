@@ -70,7 +70,7 @@ const Keyboard = ({ onAddLetter, onEnter, onDelete, keyboardColors }) => {
         {idx === 1 && <HalfStep />}
 
         {idx === keyboardLetters.length - 1 && (
-          <NonLetterButton onClick={onDelete}>
+          <NonLetterButton aria-label="backspace" onClick={onDelete}>
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
               <path
                 fill="black"
