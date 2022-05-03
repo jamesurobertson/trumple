@@ -20,7 +20,7 @@ const Toast = ({ message, clearToast }) => {
   useEffect(() => {
     if (message.length === 0) return;
     setTimeout(clearToast, 1000);
-  }, [message]);
+  }, [message, clearToast]);
 
   if (!message) return null;
   return <Container>{message}</Container>;
