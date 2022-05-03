@@ -1,9 +1,10 @@
+import { maxWordLength } from "../../config";
 import { RowContainer } from "./FilledRow";
 import Tile from "./Tile";
 
 const EmptyRow = () => (
-  <RowContainer>
-    {Array.from(Array(5)).map((_, i) => (
+  <RowContainer wordLength={maxWordLength}>
+    {Array.from(Array(maxWordLength)).map((_, i) => (
       <Tile key={i} />
     ))}
   </RowContainer>

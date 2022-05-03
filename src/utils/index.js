@@ -1,4 +1,4 @@
-import { status } from "../constants";
+import { maxWordLength, status } from "../config";
 import { words } from "../words";
 
 export function guessColor(word, guess, index) {
@@ -37,9 +37,9 @@ export function guessColor(word, guess, index) {
 }
 
 export const isValidWord = (word) => {
-  if (word.length < 5) return [false, "Not enough letters."];
-  if (!words.includes(word.toLowerCase())) {
-    return [false, "Not in word list."];
-  }
+  if (word.length < maxWordLength) return [false, "Not enough letters."];
+  //   if (!words.includes(word.toLowerCase())) {
+  //     return [false, "Not in word list."];
+  //   }
   return [true];
 };

@@ -1,5 +1,5 @@
-import { keyboardLetters, status } from "../constants";
-import React, { useEffect, useMemo } from "react";
+import { keyboardLetters, status } from "../config";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import useKeydownListener from "../hooks/useKeydownListener";
 

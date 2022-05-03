@@ -1,5 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
-import { status } from "../../constants";
+import { status } from "../../config";
 
 const flip = (props) => keyframes`
   0% {
@@ -60,7 +60,6 @@ const onFill = (props) => keyframes`
       transform: scale(1);
       -webkit-transform: scale(1);
   }
-}
 `;
 
 const onFillAnimation = (props) => css`
@@ -90,6 +89,7 @@ const TileContainer = styled.div`
       hasLetter ? (cellColor ? cellColor : theme.tileBorderFilled) : theme.tileBorderUnfilled};
   background-color: ${({ cellColor }) => (cellColor === status.unguessed ? "white" : cellColor)};
 `;
+
 const Tile = ({ cellColor, letter, isRevealing, animationDelay, isCurrentRow = false }) => {
   return (
     <TileContainer

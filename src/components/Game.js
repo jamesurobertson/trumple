@@ -1,8 +1,7 @@
 import { useEffect, useCallback, useReducer } from "react";
 import styled from "styled-components";
-import { letters, status } from "../constants";
 import { isValidWord } from "../utils";
-import { answerWord, maxGuesses } from "../config";
+import { answerWord, maxGuesses, maxWordLength, letters, status } from "../config";
 import Board from "./Board";
 import Toast from "./Toast";
 import Keyboard from "./Keyboard";
@@ -32,7 +31,12 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "addLetter":
-      if (state.isRevealing || state.isWon || state.currentGuess.length > 4 || state.guesses.length === maxGuesses) {
+      if (
+        state.isRevealing ||
+        state.isWon ||
+        state.currentGuess.length >= maxWordLength ||
+        state.guesses.length === maxGuesses
+      ) {
         return state;
       }
       return { ...state, currentGuess: state.currentGuess + action.payload };
@@ -54,7 +58,8 @@ const reducer = (state, action) => {
       };
     case "updateKeyboardColors":
       const newColors = { ...state.keyboardColors };
-      [...state.guesses[state.guesses.length - 1]].forEach((char, i) => {
+      const lastWord = state.guesses[state.guesses.length - 1];
+      [...lastWord].forEach((char, i) => {
         if (newColors[char] === status.green) return;
         if (answerWord[i] === char) {
           newColors[char] = status.green;
@@ -89,7 +94,7 @@ const Game = () => {
   // updater keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
-    setTimeout(updateKeyboardColors, 5 * 350);
+    setTimeout(updateKeyboardColors, maxWordLength * 350);
   }, [guesses]);
 
   if (isWon && !isRevealing) return <WinningImageOverlay />;
