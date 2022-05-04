@@ -91,6 +91,8 @@ const Game = () => {
   const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
   const onDelete = useCallback(() => dispatch({ type: "deleteLetter" }), []);
 
+  const clearToast = useCallback(() => dispatch({ type: "clearToast" }), []);
+
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
@@ -100,7 +102,7 @@ const Game = () => {
   if (isWon && !isRevealing) return <WinningImageOverlay />;
   return (
     <Container>
-      {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={() => dispatch({ type: "clearToast" })} />}
+      {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
       <Board
         completedRowValues={guesses}
         currentRowValue={currentGuess}
