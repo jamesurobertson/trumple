@@ -1,5 +1,7 @@
+const { words } = require("./words");
+
 module.exports = {
-  answerWord: "TRUMP",
+  answerWord: words[Math.floor(Date.now() / 8.64e7) % words.length].toUpperCase(),
   maxGuesses: 6,
   wordLength: 5,
   gridGap: 5,
