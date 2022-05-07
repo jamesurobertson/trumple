@@ -10,9 +10,9 @@ const Container = styled.div`
   border: 1px solid #181a18;
   border-radius: 4px;
   padding: 10px;
-  color: ${({ theme }) => theme.errorColor};
+  color: ${({ theme }) => theme.backgroundColor};
   font-weight: bold;
-  background-color: ${({ theme }) => theme.errorBackgroundColor};
+  background-color: ${({ theme }) => theme.color};
   z-index: 100;
 `;
 

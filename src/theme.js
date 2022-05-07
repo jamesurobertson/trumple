@@ -1,21 +1,14 @@
 export const lightTheme = {
-  body: "white",
   color: "black",
+  colorSecondary: "white",
   backgroundColor: "white",
-  tileColorFilled: "white",
-  tileColorCurrent: "black",
-  tileBorderFilled: "black",
-  tileBorderUnfilled: "#787c7e",
-  errorColor: "white",
-  errorBackgroundColor: "black",
+  borderColor: "black",
+  borderColorSecondary: "#787c7e",
 };
 export const darkTheme = {
   color: "white",
+  colorSecondary: "white",
   backgroundColor: "black",
-  tileColorFilled: "white",
-  tileColorCurrent: "white",
-  tileBorderFilled: "#d3d6da",
-  tileBorderUnfilled: "#787c7e",
-  errorColor: "black",
-  errorBackgroundColor: "white",
+  borderColor: "#d3d6da",
+  borderColorSecondary: "#787c7e",
 };

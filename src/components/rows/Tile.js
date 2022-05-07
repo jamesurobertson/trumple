@@ -6,16 +6,15 @@ const flip = (props) => keyframes`
     transform: rotateX(0deg);
     -webkit-transform: rotateX(0deg);
     background-color: ${props.theme.backgroundColor};
-    border-color: ${props.theme.tileBorderFilled};
-    color: ${props.theme.tileColorCurrent};
+    border-color: ${props.theme.borderColor};
+    color: ${props.theme.color};
   }
 
   50%{
     background-color: ${props.backgroundColor};
-    border-color: ${props.backgroundColor};
-    color: ${props.theme.tileColorFilled};
-
+    color: ${props.theme.colorSecondary};
   }
+  
   100% {
     transform: rotateX(180deg);
     -webkit-transform: rotateX(180deg);
@@ -82,11 +81,11 @@ const TileContainer = styled.div`
   transition: transform 0.25s ease-in-out;
   user-select: none;
   ${({ hasLetter, isCurrentRow }) => hasLetter && isCurrentRow && onFillAnimation}
-  color: ${({ isCurrentRow, theme }) => (isCurrentRow ? theme.tileColorCurrent : theme.tileColorFilled)};
+  color: ${({ isCurrentRow, theme }) => (isCurrentRow ? theme.color : theme.colorSecondary)};
   ${({ isRevealing }) => isRevealing && flipAnimation};
   border: 2px solid
     ${({ hasLetter, backgroundColor, theme }) =>
-      hasLetter ? (backgroundColor ? backgroundColor : theme.tileBorderFilled) : theme.tileBorderUnfilled};
+      hasLetter ? (backgroundColor ? backgroundColor : theme.borderColor) : theme.borderColorSecondary};
   background-color: ${({ backgroundColor }) => (backgroundColor === status.unguessed ? "white" : backgroundColor)};
 `;
 
