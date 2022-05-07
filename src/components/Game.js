@@ -28,6 +28,9 @@ const initialState = {
   }, {}),
 };
 
+const initializer = (initialValue) =>
+  JSON.parse(localStorage.getItem("gameState")) || initialValue;
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "addLetter":
@@ -41,10 +44,19 @@ const reducer = (state, action) => {
       }
       return { ...state, currentGuess: state.currentGuess + action.payload };
     case "deleteLetter":
-      if (state.currentGuess.length === 0 || state.guesses.length === maxGuesses) return state;
+      if (
+        state.currentGuess.length === 0 ||
+        state.guesses.length === maxGuesses
+      )
+        return state;
       return { ...state, currentGuess: state.currentGuess.slice(0, -1) };
     case "addWord":
-      if (state.isRevealing || state.isWon || state.guesses.length === maxGuesses) return state;
+      if (
+        state.isRevealing ||
+        state.isWon ||
+        state.guesses.length === maxGuesses
+      )
+        return state;
       const [valid, err] = isValidWord(state.currentGuess);
       if (!valid) {
         return { ...state, toastMessage: err };
@@ -84,10 +96,24 @@ const reducer = (state, action) => {
 };
 
 const Game = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = state;
+  const [state, dispatch] = useReducer(reducer, initialState, initializer);
+  const {
+    guesses,
+    currentGuess,
+    keyboardColors,
+    isWon,
+    isRevealing,
+    toastMessage,
+  } = state;
 
-  const onAddLetter = useCallback((letter) => dispatch({ type: "addLetter", payload: letter }), []);
+  useEffect(() => {
+    localStorage.setItem("gameState", JSON.stringify(state));
+  }, [state]);
+
+  const onAddLetter = useCallback(
+    (letter) => dispatch({ type: "addLetter", payload: letter }),
+    []
+  );
   const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
   const onDelete = useCallback(() => dispatch({ type: "deleteLetter" }), []);
 
@@ -96,13 +122,18 @@ const Game = () => {
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
-    setTimeout(() => dispatch({ type: "updateKeyboardColors" }), wordLength * 350);
+    setTimeout(
+      () => dispatch({ type: "updateKeyboardColors" }),
+      wordLength * 350
+    );
   }, [guesses]);
 
   if (isWon && !isRevealing) return <WinningImageOverlay />;
   return (
     <Container>
-      {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
+      {toastMessage.length > 0 && (
+        <Toast message={toastMessage} clearToast={clearToast} />
+      )}
       <Board
         completedRowValues={guesses}
         currentRowValue={currentGuess}
