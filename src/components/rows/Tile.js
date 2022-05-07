@@ -89,20 +89,18 @@ const TileContainer = styled.div`
   background-color: ${({ backgroundColor }) => (backgroundColor === status.unguessed ? "white" : backgroundColor)};
 `;
 
-const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentRow = false }) => {
-  return (
-    <TileContainer
-      backgroundColor={backgroundColor}
-      isRevealing={isRevealing}
-      animationDelay={animationDelay}
-      hasLetter={!!letter}
-      isCurrentRow={isCurrentRow}
-    >
-      <LetterContainer isRevealing={isRevealing} animationDelay={animationDelay}>
-        {letter}
-      </LetterContainer>
-    </TileContainer>
-  );
-};
+const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentRow = false }) => (
+  <TileContainer
+    backgroundColor={backgroundColor}
+    isRevealing={isRevealing}
+    animationDelay={animationDelay}
+    hasLetter={!!letter}
+    isCurrentRow={isCurrentRow}
+  >
+    <LetterContainer isRevealing={isRevealing} animationDelay={animationDelay}>
+      {letter}
+    </LetterContainer>
+  </TileContainer>
+);
 
 export default Tile;

@@ -17,13 +17,11 @@ const Title = styled.div`
   font-size: 2.5rem;
 `;
 
-const Header = ({ toggleTheme, theme }) => {
-  return (
-    <Container>
-      <Title>TRUMPLE</Title>
-      <ThemeToggler toggleTheme={toggleTheme} theme={theme} />
-    </Container>
-  );
-};
+const Header = ({ toggleTheme, theme }) => (
+  <Container>
+    <Title>TRUMPLE</Title>
+    <ThemeToggler toggleTheme={toggleTheme} theme={theme} />
+  </Container>
+);
 
 export default Header;
