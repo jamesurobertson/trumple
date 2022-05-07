@@ -28,7 +28,7 @@ const initialState = {
   }, {}),
 };
 
-const initializer = (initialValue = initialState) =>
+const initializer = (initialValue) =>
   JSON.parse(localStorage.getItem("gameState")) || initialValue;
 
 const reducer = (state, action) => {
@@ -96,7 +96,7 @@ const reducer = (state, action) => {
 };
 
 const Game = () => {
-  const [state, dispatch] = useReducer(reducer, [], initializer);
+  const [state, dispatch] = useReducer(reducer, initialState, initializer);
   const {
     guesses,
     currentGuess,
