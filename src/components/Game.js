@@ -86,12 +86,13 @@ const reducer = (state, action) => {
 };
 
 const Game = () => {
-  const [state, dispatch] = useReducer(reducer, initialState, initializer);
+  //   const [state, dispatch] = useReducer(reducer, initialState, initializer);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = state;
 
-  useEffect(() => {
-    localStorage.setItem("gameState", JSON.stringify(state));
-  }, [state]);
+  //   useEffect(() => {
+  //     localStorage.setItem("gameState", JSON.stringify(state));
+  //   }, [state]);
 
   const onAddLetter = useCallback((letter) => dispatch({ type: "addLetter", payload: letter }), []);
   const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
