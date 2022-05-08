@@ -5,6 +5,7 @@ import { answerWord, maxGuesses, wordLength, letters, status } from "../config";
 import Board from "./Board";
 import Toast from "./Toast";
 import Keyboard from "./Keyboard";
+import Modal from "./Modal";
 import WinningImageOverlay from "./WinningImageOverlay";
 
 const Container = styled.div`
@@ -80,14 +81,43 @@ const reducer = (state, action) => {
       return { ...state, toastMessage: "" };
     case "toastMessage":
       return { ...state, toastMessage: action.payload };
+    case "reset":
+      return initialState;
     default:
       return state;
   }
 };
 
+const statsInitialState = {
+  stats: {
+    Played: 1,
+    "Win %": 100,
+    "Current Streak": 2,
+    "Max Streak": 0,
+  },
+  guesses: {
+    1: 0,
+    2: 3,
+    3: 3,
+    4: 9,
+    5: 2,
+    6: 1,
+  },
+  gamesWon: 0,
+  averageGuesses: null,
+};
+
+const statsInitializer = (initialValue) => JSON.parse(localStorage.getItem("gameStats") || initialValue);
+const statsReducer = (state, action) => {
+  return state;
+};
+
 const Game = () => {
   const [state, dispatch] = useReducer(reducer, initialState, initializer);
   const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = state;
+  let [modalIsOpen, toggleModal] = useReducer((state) => !state, false);
+
+  const [statState, statsDispatch] = useReducer(statsReducer, statsInitialState);
 
   useEffect(() => {
     localStorage.setItem("gameState", JSON.stringify(state));
@@ -102,7 +132,18 @@ const Game = () => {
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
-    setTimeout(() => dispatch({ type: "updateKeyboardColors" }), wordLength * 350);
+    setTimeout(() => {
+      dispatch({ type: "updateKeyboardColors" });
+      if (guesses.length === maxGuesses) {
+        dispatch({ type: "toastMessage", payload: answerWord });
+      }
+    }, wordLength * 350);
+
+    if (guesses.length === maxGuesses || isWon) {
+      setTimeout(() => {
+        toggleModal();
+      }, 3000);
+    }
   }, [guesses]);
 
   //   if (isWon && !isRevealing) return <WinningImageOverlay />;
@@ -116,6 +157,7 @@ const Game = () => {
         hasError={toastMessage.length > 0}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
+      <Modal reset={() => dispatch({ type: "reset" })} close={toggleModal} isOpen={modalIsOpen} stats={statState} />
     </Container>
   );
 };
