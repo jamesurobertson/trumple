@@ -30,12 +30,10 @@ export const SectionLabel = styled.div`
   text-transform: uppercase;
 `;
 
-const Modal = ({ close, children }) => {
-  return (
-    <Backdrop onClick={close}>
-      <Container onClick={(e) => e.stopPropagation()}>{children}</Container>
-    </Backdrop>
-  );
-};
+const Modal = ({ close, children }) => (
+  <Backdrop onClick={close}>
+    <Container onClick={(e) => e.stopPropagation()}>{children}</Container>
+  </Backdrop>
+);
 
 export default Modal;
