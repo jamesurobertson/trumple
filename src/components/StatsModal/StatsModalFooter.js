@@ -1,8 +1,20 @@
-import { useEffect, useState } from "react";
 import { status } from "../../config";
-import { timeTillMidnight } from "../../utils";
 import styled from "styled-components";
 import { SectionLabel } from "./StatsModal";
+import CountdownTimer from "./CountdownTimer";
+
+const Container = styled.div`
+  display: flex;
+  padding-top: 10px;
+  width: 100%;
+  justify-content: center;
+`;
+
+const FlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const Button = styled.button`
   display: flex;
@@ -16,38 +28,27 @@ const Button = styled.button`
   z-index: 100;
 `;
 
-const StatsModalFooter = ({ close, reset }) => {
-  const [time, setTime] = useState("");
+const Divider = styled.div`
+  border: 1px solid ${({ theme }) => theme.color};
+  margin: 0 10px;
+`;
 
-  useEffect(() => {
-    setTime(timeTillMidnight());
-    const setTimeTillMidnight = () => {
-      const t = timeTillMidnight();
-      setTime(t);
-    };
-    const interval = setInterval(setTimeTillMidnight, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (time.length === 0) return null;
-
-  return (
-    <div style={{ display: "flex", paddingTop: "10px", width: "100%", justifyContent: "center" }}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <SectionLabel>Next Trumple</SectionLabel>
-        {time}
-      </div>
-      <div style={{ border: "1px solid black", margin: "0 10px" }} />
-      <Button
-        onClick={() => {
-          close();
-          reset();
-        }}
-      >
-        Reset Game
-      </Button>
-    </div>
-  );
-};
+const StatsModalFooter = ({ close, reset }) => (
+  <Container>
+    <FlexColumn>
+      <SectionLabel>Next Trumple</SectionLabel>
+      <CountdownTimer />
+    </FlexColumn>
+    <Divider />
+    <Button
+      onClick={() => {
+        close();
+        reset();
+      }}
+    >
+      Reset Game
+    </Button>
+  </Container>
+);
 
 export default StatsModalFooter;

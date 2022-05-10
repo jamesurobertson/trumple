@@ -21,7 +21,6 @@ export const initialState = {
 
 export const initializer = (initialValue) => {
   const local = JSON.parse(localStorage.getItem("statistics"));
-  console.log(local);
   return local || initialValue;
 };
 export const reducer = (state, action) => {
@@ -39,6 +38,8 @@ export const reducer = (state, action) => {
       const newStreak = isWon ? currentStreak + 1 : 0;
       const newMaxStreak = newStreak > maxStreak ? newStreak : maxStreak;
 
+      const newGuessDistribution = isWon ? state.guesses[guesses.length] + 1 : state.guesses[guesses.length];
+
       return {
         ...state,
         stats: {
@@ -49,7 +50,7 @@ export const reducer = (state, action) => {
         },
         guesses: {
           ...state.guesses,
-          [guesses.length]: isWon ? state.guesses[guesses.length] + 1 : state.guesses[guesses.length],
+          [guesses.length]: newGuessDistribution,
         },
         gamesWon: newGamesWon,
         lastDatePlayed: now,

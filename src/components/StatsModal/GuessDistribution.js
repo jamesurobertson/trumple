@@ -13,7 +13,7 @@ const DistributionContainer = styled.div`
 
 const DistributionBar = styled.div`
   display: flex;
-  justify-content: right;
+  justify-content: end;
   align-items: center;
   color: white;
   padding-right: 5px;
