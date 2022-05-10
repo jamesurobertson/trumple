@@ -52,7 +52,7 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
         toggleStatsModal();
       }, 3000);
     }
-  }, [guesses]);
+  }, [guesses, isWon, toggleStatsModal]);
 
   return (
     <Container>
