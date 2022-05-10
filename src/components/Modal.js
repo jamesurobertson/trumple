@@ -1,11 +1,19 @@
 import { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import { status } from "../config";
+import { timeTillMidnight } from "../utils";
+import CloseIcon from "./icons/CloseIcon";
+
+const Backdrop = styled.div`
+  position: absolute;
+  inset: 0;
+  background-color: ${({ theme }) => `${theme.modalBackdropColor}`};
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: absolute;
+  position: relative;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -14,11 +22,11 @@ const Container = styled.div`
   max-width: 500px;
   height: 90%;
   max-height: 400px;
-  background-color: ${({ theme }) => theme.backgroundColor};
+  background-color: ${({ theme }) => theme.modalBackgroundColor};
   color: ${({ theme }) => theme.color};
-  border: 1px solid ${({ theme }) => theme.borderColor};
   border-radius: 8px;
   padding: 16px;
+  box-shadow: 0 4px 23px 0 rgb(0 0 0 / 20%);
 `;
 
 const SectionLabel = styled.div`
@@ -77,78 +85,67 @@ const Button = styled.button`
   z-index: 100;
 `;
 
-const Modal = ({ reset, close, isOpen, stats }) => {
+const Modal = ({ reset, close, stats }) => {
   const [time, setTime] = useState("");
 
   useEffect(() => {
-    const interval = () => {
-      const toDate = new Date();
-      const tomorrow = new Date();
-
-      tomorrow.setHours(24, 0, 0, 0);
-
-      let diffMS = tomorrow.getTime() / 1000 - toDate.getTime() / 1000;
-      let diffHr = Math.floor(diffMS / 3600);
-
-      diffMS = diffMS - diffHr * 3600;
-      let diffMi = Math.floor(diffMS / 60);
-      diffMS = diffMS - diffMi * 60;
-      let diffS = Math.floor(diffMS);
-      let result = diffHr < 10 ? "0" + diffHr : diffHr;
-      result += ":" + (diffMi < 10 ? "0" + diffMi : diffMi);
-      result += ":" + (diffS < 10 ? "0" + diffS : diffS);
-      setTime(result);
+    setTime(timeTillMidnight());
+    const setTimeTillMidnight = () => {
+      const t = timeTillMidnight();
+      setTime(t);
     };
-    setInterval(interval, 1000);
+    const interval = setInterval(setTimeTillMidnight, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  if (!isOpen || time.length === 0) return null;
+  if (time.length === 0) return null;
   const sum = Object.values(stats.guesses).reduce((sum, num) => sum + num, 0);
   return (
-    <Container>
-      <div style={{ height: "16px", display: "flex", justifyContent: "right", width: "100%" }}>
-        <div style={{ cursor: "pointer" }} onClick={close}>
-          x
+    <Backdrop onClick={close}>
+      <Container onClick={(e) => e.stopPropagation()}>
+        <div style={{ height: "16px", display: "flex", justifyContent: "right", width: "100%" }}>
+          <div style={{ cursor: "pointer" }} onClick={close}>
+            <CloseIcon />
+          </div>
         </div>
-      </div>
-      <SectionLabel style={{ height: "30px", fontWeight: "bold" }}>Statistics</SectionLabel>
-      <Flex style={{ height: "80px" }}>
-        {Object.entries(stats.stats).map(([key, val]) => (
-          <StatsContainer key={key}>
-            <Stat>{val}</Stat>
-            <StatsLabel>{key}</StatsLabel>
-          </StatsContainer>
-        ))}
-      </Flex>
-      <SectionLabel>Guess Distribution</SectionLabel>
-      <div style={{ width: "80%" }}>
-        {Object.values(stats.guesses).map((guess, idx) => {
-          return (
-            <div style={{ width: "100%", display: "flex", alignItems: "center" }}>
-              <div>{idx + 1}</div>
-              <DistributionContainer guess={(guess / sum) * 100}>{guess}</DistributionContainer>
-            </div>
-          );
-        })}
-      </div>
+        <SectionLabel style={{ height: "30px", fontWeight: "bold" }}>Statistics</SectionLabel>
+        <Flex style={{ height: "80px" }}>
+          {Object.entries(stats.stats).map(([key, val]) => (
+            <StatsContainer key={key}>
+              <Stat>{val}</Stat>
+              <StatsLabel>{key}</StatsLabel>
+            </StatsContainer>
+          ))}
+        </Flex>
+        <SectionLabel>Guess Distribution</SectionLabel>
+        <div style={{ width: "80%" }}>
+          {Object.values(stats.guesses).map((guess, idx) => {
+            return (
+              <div key={idx} style={{ width: "100%", display: "flex", alignItems: "center" }}>
+                <div>{idx + 1}</div>
+                <DistributionContainer guess={(guess / sum) * 100}>{guess}</DistributionContainer>
+              </div>
+            );
+          })}
+        </div>
 
-      <div style={{ display: "flex", paddingTop: "10px", width: "100%", justifyContent: "center" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <SectionLabel>Next Trumple</SectionLabel>
-          {time}
+        <div style={{ display: "flex", paddingTop: "10px", width: "100%", justifyContent: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <SectionLabel>Next Trumple</SectionLabel>
+            {time}
+          </div>
+          <div style={{ border: "1px solid black", margin: "0 10px" }} />
+          <Button
+            onClick={() => {
+              close();
+              reset();
+            }}
+          >
+            Reset Game
+          </Button>
         </div>
-        <div style={{ border: "1px solid black", margin: "0 10px" }} />
-        <Button
-          onClick={() => {
-            close();
-            reset();
-          }}
-        >
-          Rest Game
-        </Button>
-      </div>
-    </Container>
+      </Container>
+    </Backdrop>
   );
 };
 

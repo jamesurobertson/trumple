@@ -36,6 +36,26 @@ export function guessColor(word, guess, index) {
   return status.gray;
 }
 
+export const timeTillMidnight = () => {
+  const now = new Date();
+  const tomorrow = new Date();
+
+  tomorrow.setHours(24, 0, 0, 0);
+
+  let diffMS = tomorrow.getTime() / 1000 - now.getTime() / 1000;
+  let diffHr = Math.floor(diffMS / 3600);
+
+  diffMS = diffMS - diffHr * 3600;
+  let diffMi = Math.floor(diffMS / 60);
+  diffMS = diffMS - diffMi * 60;
+  let diffS = Math.floor(diffMS);
+  let result = diffHr < 10 ? "0" + diffHr : diffHr;
+  result += ":" + (diffMi < 10 ? "0" + diffMi : diffMi);
+  result += ":" + (diffS < 10 ? "0" + diffS : diffS);
+
+  return result;
+};
+
 export const isValidWord = (word) => {
   if (word.length < wordLength) return [false, "Not enough letters."];
   if (!words.includes(word.toLowerCase())) {

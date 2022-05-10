@@ -90,18 +90,18 @@ const reducer = (state, action) => {
 
 const statsInitialState = {
   stats: {
-    Played: 1,
-    "Win %": 100,
-    "Current Streak": 2,
+    Played: 0,
+    "Win %": 0,
+    "Current Streak": 0,
     "Max Streak": 0,
   },
   guesses: {
     1: 0,
-    2: 3,
-    3: 3,
-    4: 9,
-    5: 2,
-    6: 1,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
   },
   gamesWon: 0,
   averageGuesses: null,
@@ -109,15 +109,40 @@ const statsInitialState = {
 
 const statsInitializer = (initialValue) => JSON.parse(localStorage.getItem("gameStats") || initialValue);
 const statsReducer = (state, action) => {
-  return state;
+  switch (action.type) {
+    case "updateStats":
+      const { guesses, isWon } = action.payload;
+      const { Played, "Max Streak": maxStreak, "Current Streak": currentStreak } = state.stats;
+
+      const newPlayed = Played + 1;
+      const newGamesWon = isWon ? state.gamesWon + 1 : state.gamesWon;
+      const newWinPercentage = Math.floor((newGamesWon / newPlayed) * 100);
+      const newStreak = isWon ? currentStreak + 1 : 0;
+      const newMaxStreak = newStreak > maxStreak ? newStreak : maxStreak;
+
+      return {
+        ...state,
+        stats: {
+          Played: newPlayed,
+          "Win %": newWinPercentage,
+          "Current Streak": newStreak,
+          "Max Streak": newMaxStreak,
+        },
+        guesses: {
+          ...state.guesses,
+          [guesses.length]: isWon ? state.guesses[guesses.length] + 1 : state.guesses[guesses.length],
+        },
+        gamesWon: newGamesWon,
+      };
+    default:
+      return state;
+  }
 };
 
-const Game = () => {
+const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
+  const [stats, statsDispatch] = useReducer(statsReducer, statsInitialState);
   const [state, dispatch] = useReducer(reducer, initialState, initializer);
   const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = state;
-  let [modalIsOpen, toggleModal] = useReducer((state) => !state, false);
-
-  const [statState, statsDispatch] = useReducer(statsReducer, statsInitialState);
 
   useEffect(() => {
     localStorage.setItem("gameState", JSON.stringify(state));
@@ -141,12 +166,12 @@ const Game = () => {
 
     if (guesses.length === maxGuesses || isWon) {
       setTimeout(() => {
-        toggleModal();
+        statsDispatch({ type: "updateStats", payload: { guesses, isWon } });
+        toggleStatsModal();
       }, 3000);
     }
   }, [guesses]);
 
-  //   if (isWon && !isRevealing) return <WinningImageOverlay />;
   return (
     <Container>
       {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
@@ -157,7 +182,7 @@ const Game = () => {
         hasError={toastMessage.length > 0}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
-      <Modal reset={() => dispatch({ type: "reset" })} close={toggleModal} isOpen={modalIsOpen} stats={statState} />
+      {statsModalIsOpen && <Modal reset={() => dispatch({ type: "reset" })} close={toggleStatsModal} stats={stats} />}
     </Container>
   );
 };
