@@ -5,8 +5,8 @@ import { answerWord, maxGuesses, wordLength, letters, status } from "../config";
 import Board from "./Board";
 import Toast from "./Toast";
 import Keyboard from "./Keyboard";
-import Modal from "./Modal";
 import WinningImageOverlay from "./WinningImageOverlay";
+import StatsModal from "./StatsModal/StatsModal";
 
 const Container = styled.div`
   display: flex;
@@ -182,7 +182,9 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
         hasError={toastMessage.length > 0}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
-      {statsModalIsOpen && <Modal reset={() => dispatch({ type: "reset" })} close={toggleStatsModal} stats={stats} />}
+      {statsModalIsOpen && (
+        <StatsModal reset={() => dispatch({ type: "reset" })} close={toggleStatsModal} analytics={stats} />
+      )}
     </Container>
   );
 };
