@@ -1,3 +1,4 @@
+import { useReducer } from "react";
 import { ThemeProvider } from "styled-components";
 import Game from "./components/Game";
 import Header from "./components/Header";
@@ -7,12 +8,13 @@ import { useTheme } from "./hooks/useTheme";
 
 function App() {
   const [theme, toggleTheme] = useTheme();
+  let [statsModalIsOpen, toggleStatsModal] = useReducer((state) => !state, false);
 
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
-      <Header toggleTheme={toggleTheme} theme={theme} />
-      <Game />
+      <Header toggleTheme={toggleTheme} theme={theme} toggleStatsModal={toggleStatsModal} />
+      <Game statsModalIsOpen={statsModalIsOpen} toggleStatsModal={toggleStatsModal} />
     </ThemeProvider>
   );
 }

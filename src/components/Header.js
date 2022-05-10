@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ThemeToggler from "./ThemeToggler";
+import HeaderIcons from "./icons/HeaderIcons";
 
 const Container = styled.div`
   height: 50px;
@@ -17,10 +17,10 @@ const Title = styled.div`
   font-size: 2.5rem;
 `;
 
-const Header = ({ toggleTheme, theme }) => (
+const Header = ({ toggleTheme, theme, toggleStatsModal }) => (
   <Container>
     <Title>TRUMPLE</Title>
-    <ThemeToggler toggleTheme={toggleTheme} theme={theme} />
+    <HeaderIcons toggleTheme={toggleTheme} theme={theme} toggleStatsModal={toggleStatsModal} />
   </Container>
 );
 
