@@ -34,13 +34,13 @@ export const SectionLabel = styled.div`
   text-transform: uppercase;
 `;
 
-const StatsModal = ({ reset, close, analytics }) => {
+const StatsModal = ({ reset, close, statistics }) => {
   return (
     <Backdrop onClick={close}>
       <Container onClick={(e) => e.stopPropagation()}>
         <StatsModalHeader close={close} />
-        <Statistics stats={analytics.stats} />
-        <GuessDistribution guesses={analytics.guesses} />
+        <Statistics stats={statistics.stats} />
+        <GuessDistribution guesses={statistics.guesses} />
         <StatsModalFooter close={close} reset={reset} />
       </Container>
     </Backdrop>
