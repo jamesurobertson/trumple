@@ -19,22 +19,23 @@ const DistributionBar = styled.div`
   padding-right: 5px;
   height: 20px;
   font-size: 14px;
-  width: ${({ guess }) => `${(guess || 0) + 8}%`};
+  width: ${({ percentile }) => `${percentile + 8}%`};
   background-color: gray;
   margin: 5px;
 `;
 
 const GuessDistribution = ({ guesses }) => {
-  const sum = Object.values(guesses).reduce((sum, num) => sum + num, 0);
+  const values = Object.values(guesses);
+  const totalGuesses = values.reduce((sum, num) => sum + num, 0);
 
   return (
     <>
       <SectionLabel>Guess Distribution</SectionLabel>
       <Container>
-        {Object.values(guesses).map((guess, idx) => (
+        {values.map((guess, idx) => (
           <DistributionContainer key={idx}>
             <div>{idx + 1}</div>
-            <DistributionBar guess={(guess / sum) * 100}>{guess}</DistributionBar>
+            <DistributionBar percentile={(guess / totalGuesses || 0) * 100}>{guess}</DistributionBar>
           </DistributionContainer>
         ))}
       </Container>
