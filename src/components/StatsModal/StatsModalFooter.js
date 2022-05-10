@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { status } from "../../config";
 import { timeTillMidnight } from "../../utils";
 import styled from "styled-components";
-import { SectionLabel } from "../Modal";
+import { SectionLabel } from "./StatsModal";
 
 const Button = styled.button`
   display: flex;

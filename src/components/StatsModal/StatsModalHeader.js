@@ -8,14 +8,12 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const StatsModalHeader = ({ close }) => {
-  return (
-    <Container>
-      <div style={{ cursor: "pointer" }} onClick={close}>
-        <CloseIcon />
-      </div>
-    </Container>
-  );
-};
+const StatsModalHeader = ({ close }) => (
+  <Container>
+    <div style={{ cursor: "pointer" }} onClick={close}>
+      <CloseIcon />
+    </div>
+  </Container>
+);
 
 export default StatsModalHeader;

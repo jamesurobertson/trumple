@@ -56,6 +56,12 @@ export const timeTillMidnight = () => {
   return result;
 };
 
+export const timeSinceMidnight = (date = new Date()) => {
+  const d = new Date();
+  const msSinceMidnight = date - d.setHours(0, 0, 0, 0);
+  return msSinceMidnight;
+};
+
 export const isValidWord = (word) => {
   if (word.length < wordLength) return [false, "Not enough letters."];
   if (!words.includes(word.toLowerCase())) {

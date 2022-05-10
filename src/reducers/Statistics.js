@@ -1,3 +1,5 @@
+import { timeSinceMidnight } from "../utils";
+
 export const initialState = {
   stats: {
     Played: 0,
@@ -14,7 +16,7 @@ export const initialState = {
     6: 0,
   },
   gamesWon: 0,
-  lastDatePlayed: null,
+  lastDatePlayed: -Infinity,
 };
 
 export const initializer = (initialValue) => {
@@ -25,6 +27,9 @@ export const initializer = (initialValue) => {
 export const reducer = (state, action) => {
   switch (action.type) {
     case "updateStats":
+      const now = new Date().getTime();
+      if (now - state.lastDatePlayed < timeSinceMidnight()) return state;
+
       const { guesses, isWon } = action.payload;
       const { Played, "Max Streak": maxStreak, "Current Streak": currentStreak } = state.stats;
 
@@ -47,6 +52,7 @@ export const reducer = (state, action) => {
           [guesses.length]: isWon ? state.guesses[guesses.length] + 1 : state.guesses[guesses.length],
         },
         gamesWon: newGamesWon,
+        lastDatePlayed: now,
       };
     default:
       return state;

@@ -1,8 +1,4 @@
 import styled from "styled-components";
-import GuessDistribution from "./StatsModal/GuessDistribution";
-import StatsModalHeader from "./StatsModal/StatsModalHeader";
-import Statistics from "./StatsModal/Statistics";
-import StatsModalFooter from "./StatsModal/StatsModalFooter";
 
 const Backdrop = styled.div`
   position: absolute;
@@ -34,15 +30,10 @@ export const SectionLabel = styled.div`
   text-transform: uppercase;
 `;
 
-const Modal = ({ reset, close, analytics }) => {
+const Modal = ({ close, children }) => {
   return (
     <Backdrop onClick={close}>
-      <Container onClick={(e) => e.stopPropagation()}>
-        <StatsModalHeader close={close} />
-        <Statistics stats={analytics.stats} />
-        <GuessDistribution guesses={analytics.guesses} />
-        <StatsModalFooter close={close} reset={reset} />
-      </Container>
+      <Container onClick={(e) => e.stopPropagation()}>{children}</Container>
     </Backdrop>
   );
 };

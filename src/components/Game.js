@@ -1,13 +1,13 @@
 import { useEffect, useCallback, useReducer } from "react";
 import styled from "styled-components";
-import { answerWord, maxGuesses, wordLength, letters, status } from "../config";
+import { answerWord, maxGuesses, wordLength } from "../config";
 import Board from "./Board";
 import Toast from "./Toast";
 import Keyboard from "./Keyboard";
-import WinningImageOverlay from "./WinningImageOverlay";
 import StatsModal from "./StatsModal/StatsModal";
 import * as GameState from "../reducers/GameState";
 import * as Statistics from "../reducers/Statistics";
+import Modal from "./Modal";
 
 const Container = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
   const [statsState, statsDispatch] = useReducer(Statistics.reducer, Statistics.initialState, Statistics.initializer);
-  const [gameState, dispatch] = useReducer(GameState.reducer, GameState.initialState, GameState.initializer);
+  const [gameState, gameDispatch] = useReducer(GameState.reducer, GameState.initialState, GameState.initializer);
   const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = gameState;
 
   useEffect(() => {
@@ -31,18 +31,18 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
     localStorage.setItem("statistics", JSON.stringify(statsState));
   }, [statsState]);
 
-  const onAddLetter = useCallback((letter) => dispatch({ type: "addLetter", payload: letter }), []);
-  const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
-  const onDelete = useCallback(() => dispatch({ type: "deleteLetter" }), []);
-  const clearToast = useCallback(() => dispatch({ type: "clearToast" }), []);
+  const onAddLetter = useCallback((letter) => gameDispatch({ type: "addLetter", payload: letter }), []);
+  const onEnter = useCallback(() => gameDispatch({ type: "addWord" }), []);
+  const onDelete = useCallback(() => gameDispatch({ type: "deleteLetter" }), []);
+  const clearToast = useCallback(() => gameDispatch({ type: "clearToast" }), []);
 
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
     setTimeout(() => {
-      dispatch({ type: "updateKeyboardColors" });
+      gameDispatch({ type: "updateKeyboardColors" });
       if (guesses.length === maxGuesses) {
-        dispatch({ type: "toastMessage", payload: answerWord });
+        gameDispatch({ type: "toastMessage", payload: answerWord });
       }
     }, wordLength * 350);
 
@@ -65,7 +65,9 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
       {statsModalIsOpen && (
-        <StatsModal reset={() => dispatch({ type: "reset" })} close={toggleStatsModal} statistics={statsState} />
+        <Modal close={toggleStatsModal}>
+          <StatsModal reset={() => gameDispatch({ type: "reset" })} close={toggleStatsModal} statistics={statsState} />
+        </Modal>
       )}
     </Container>
   );
