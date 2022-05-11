@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useReducer, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import * as Statistics from "../reducers/Statistics";
 
 const StatsContext = createContext();
@@ -15,8 +15,8 @@ const StatsModalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(Statistics.reducer, Statistics.initialState, Statistics.initializer);
   const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);
 
-  const toggleStatsModal = () => setStatsModalIsOpen((curr) => !curr);
-  const openStatsModal = () => setStatsModalIsOpen(true);
+  const toggleStatsModal = useCallback(() => setStatsModalIsOpen((curr) => !curr), []);
+  const openStatsModal = () => useCallback(() => setStatsModalIsOpen(true), []);
 
   useEffect(() => {
     localStorage.setItem("statistics", JSON.stringify(state));
