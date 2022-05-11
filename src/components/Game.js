@@ -113,6 +113,7 @@ const Game = ({theme}) => {
       return handleFirstTimeUser(true);
     } 
     return handleFirstTimeUser(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
   // update keyboard colors after tile letters are revealed / flipped
