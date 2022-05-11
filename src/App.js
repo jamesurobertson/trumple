@@ -6,6 +6,7 @@ import { GlobalStyles } from "./global";
 import { useTheme } from "./hooks/useTheme";
 import { useState } from "react";
 import { StatsModalContextProvider } from "./contexts/StatsContext";
+import { FirstTimeUserModalContextProvider } from "./contexts/FirstTimeUserContext";
 
 function App() {
   const [theme, toggleTheme] = useTheme();
@@ -15,16 +16,18 @@ function App() {
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
       <StatsModalContextProvider>
-        <Header 
-          toggleTheme={toggleTheme} 
-          theme={theme} 
-          resetFirstTimeUser={resetFirstTimeUser} 
-        />
-        <Game 
-          theme={theme} 
-          resetFirstTimeUser={resetFirstTimeUser} 
-          firstTimeUser={firstTimeUser} 
-        />
+        <FirstTimeUserModalContextProvider>
+          <Header
+            toggleTheme={toggleTheme}
+            theme={theme}
+            resetFirstTimeUser={resetFirstTimeUser}
+          />
+          <Game
+            theme={theme}
+            resetFirstTimeUser={resetFirstTimeUser}
+            firstTimeUser={firstTimeUser}
+          />
+        </FirstTimeUserModalContextProvider>
       </StatsModalContextProvider>
     </ThemeProvider>
   );

@@ -1,7 +1,20 @@
-import ThemeToggler from "../ThemeToggler";
-import { TitleContainer, Title, StyledHelpIcon, NavWrapper, NavContainer, DefaultContainer, HeaderWrapper } from "./Header.styles";
+// context
+import { useFirstTimeUser } from "../../contexts/FirstTimeUserContext";
+// components
+import HeaderIcons from "../icons/HeaderIcons";
+// styles
+import {
+  TitleContainer,
+  Title,
+  StyledHelpIcon,
+  NavWrapper,
+  NavContainer,
+  DefaultContainer,
+  HeaderWrapper
+} from "./Header.styles";
 
-const Header = ({ toggleTheme, theme, resetFirstTimeUser }) => {
+const Header = ({ toggleTheme, theme }) => {
+  const { resetFirstTimeUser } = useFirstTimeUser()
   const handleResetFirstTimeUser = () => resetFirstTimeUser(true);
   return (
     <HeaderWrapper>
@@ -12,7 +25,7 @@ const Header = ({ toggleTheme, theme, resetFirstTimeUser }) => {
       <NavContainer>
         <NavWrapper>
           <StyledHelpIcon onClick={handleResetFirstTimeUser} title={'Help'}/>
-          <ThemeToggler toggleTheme={toggleTheme} theme={theme} />  
+          <HeaderIcons toggleTheme={toggleTheme} theme={theme} />
         </NavWrapper>
       </NavContainer>
     </HeaderWrapper>

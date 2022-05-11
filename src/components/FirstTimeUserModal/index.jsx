@@ -13,11 +13,8 @@ import {
   ExampleWrapper
 } from './FirstTimeUserModal.styles'
 
-export default function FirstTimeUserModal({theme, handleFirstTimeUser, resetFirstTimeUser}) {
-  const handleClose = () => {
-    handleFirstTimeUser(false)
-    resetFirstTimeUser(null)
-  }
+export default function FirstTimeUserModal({ theme, resetFirstTimeUser }) {
+  const handleClose = () => resetFirstTimeUser(false)
   return (
     <>
       <FirstTimeUserModalWrapper theme={theme}>

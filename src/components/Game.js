@@ -9,6 +9,7 @@ import StatsModal from "./Modals/StatsModal/StatsModal";
 import * as GameState from "../reducers/GameState";
 import { useStats } from "../contexts/StatsContext";
 import FirstTimeUserModal from "./FirstTimeUserModal";
+import { useFirstTimeUser } from "../contexts/FirstTimeUserContext";
 
 const Container = styled.div`
   display: flex;
@@ -19,86 +20,12 @@ const Container = styled.div`
   height: calc(100% - 50px);
 `;
 
-const initialState = {
-  isWon: false,
-  isRevealing: false,
-  guesses: [],
-  currentGuess: "",
-  toastMessage: "",
-  keyboardColors: letters.reduce((map, letter) => {
-    map[letter] = status.unguessed;
-    return map;
-  }, {}),
-  isFirstTimeUser: false
-};
-
-const initializer = (initialValue) => JSON.parse(localStorage.getItem("gameState")) || initialValue;
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "addLetter":
-      if (
-        state.isRevealing ||
-        state.isWon ||
-        state.currentGuess.length >= wordLength ||
-        state.guesses.length === maxGuesses
-      ) {
-        return state;
-      }
-      return { ...state, currentGuess: state.currentGuess + action.payload };
-    case "deleteLetter":
-      if (state.currentGuess.length === 0 || state.guesses.length === maxGuesses) return state;
-      return { ...state, currentGuess: state.currentGuess.slice(0, -1) };
-    case "addWord":
-      if (state.isRevealing || state.isWon || state.guesses.length === maxGuesses) return state;
-      const [valid, err] = isValidWord(state.currentGuess);
-      if (!valid) {
-        return { ...state, toastMessage: err };
-      }
-      return {
-        ...state,
-        guesses: [...state.guesses, state.currentGuess],
-        currentGuess: "",
-        isWon: state.currentGuess === answerWord,
-        isRevealing: true,
-      };
-    case "updateKeyboardColors":
-      const newColors = { ...state.keyboardColors };
-      const lastWord = state.guesses[state.guesses.length - 1];
-      [...lastWord].forEach((char, i) => {
-        if (newColors[char] === status.green) return;
-        if (answerWord[i] === char) {
-          newColors[char] = status.green;
-        } else if (answerWord.includes(char)) {
-          newColors[char] = status.yellow;
-        } else {
-          newColors[char] = status.gray;
-        }
-      }, {});
-      return {
-        ...state,
-        isRevealing: false,
-        keyboardColors: newColors,
-      };
-    case "clearToast":
-      return { ...state, toastMessage: "" };
-    case "toastMessage":
-      return { ...state, toastMessage: action.payload };
-    case "firstTimeUser":
-      const firstTimeUser = action.payload;
-      localStorage.setItem("first-time-user", firstTimeUser);
-      return { ...state, isFirstTimeUser: firstTimeUser };
-    default:
-      return state;
-  }
-};
-
-const Game = () => {
+const Game = ({ theme }) => {
   const [gameState, gameDispatch] = useReducer(GameState.reducer, GameState.initialState, GameState.initializer);
-  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage, isFirstTimeUser } = gameState;
-
+  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = gameState;
 
   const { statsModalIsOpen, toggleStatsModal, openStatsModal, statsDispatch, statsState } = useStats();
+  const { firstTimeUser, resetFirstTimeUser } = useFirstTimeUser() 
   const gameIsOver = guesses.length === maxGuesses || isWon;
 
   useEffect(() => {
@@ -113,16 +40,6 @@ const Game = () => {
     gameDispatch({ type: "reset" });
     toggleStatsModal();
   }, [toggleStatsModal, gameDispatch]);
-
-  const handleFirstTimeUser = useCallback((bool) => dispatch({ type: "firstTimeUser", payload: bool }), []);
-  useEffect(() => {
-    const storage = JSON.parse(localStorage.getItem("first-time-user"));
-    if (storage || storage === null || firstTimeUser) { 
-      return handleFirstTimeUser(true);
-    }
-    return handleFirstTimeUser(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [firstTimeUser])
   
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
@@ -148,12 +65,11 @@ const Game = () => {
         hasError={toastMessage.length > 0 && !gameIsOver}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
-      {isFirstTimeUser && (
+      {firstTimeUser && (
         <FirstTimeUserModal 
-          theme={theme} 
-          handleFirstTimeUser={handleFirstTimeUser}
+          theme={theme}
           resetFirstTimeUser={resetFirstTimeUser}
-        />
+      />)}
       {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
       {statsModalIsOpen && (
         <Modal onClose={toggleStatsModal}>
