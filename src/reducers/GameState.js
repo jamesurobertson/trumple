@@ -1,5 +1,5 @@
 import { letters, status, wordLength, maxGuesses, answerWord } from "../config";
-import { isValidWord } from "../utils";
+import { isValidWord, timeSinceMidnight } from "../utils";
 
 export const initialState = {
   isWon: false,
@@ -13,7 +13,12 @@ export const initialState = {
   }, {}),
 };
 
-export const initializer = (initialValue) => JSON.parse(localStorage.getItem("gameState")) || initialValue;
+export const initializer = (initialValue) => {
+  const stats = JSON.parse(localStorage.getItem("statistics"));
+  const now = new Date().getTime();
+  if (stats && now - stats.lastDatePlayed > timeSinceMidnight()) return initialValue;
+  return JSON.parse(localStorage.getItem("gameState")) || initialValue;
+};
 
 export const reducer = (state, action) => {
   switch (action.type) {
