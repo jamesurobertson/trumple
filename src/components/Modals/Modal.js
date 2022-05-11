@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ModalHeader from "./modalHeader";
 
 const Backdrop = styled.div`
   position: absolute;
@@ -29,9 +30,12 @@ export const SectionLabel = styled.div`
   text-transform: uppercase;
 `;
 
-const Modal = ({ close, children }) => (
-  <Backdrop onClick={close}>
-    <Container onClick={(e) => e.stopPropagation()}>{children}</Container>
+const Modal = ({ onClose, children, title }) => (
+  <Backdrop onClick={onClose}>
+    <Container onClick={(e) => e.stopPropagation()}>
+      <ModalHeader onClose={onClose} title={title} />
+      {children}
+    </Container>
   </Backdrop>
 );
 

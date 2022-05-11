@@ -1,4 +1,4 @@
-import { status } from "../../config";
+import { status } from "../../../config";
 import styled from "styled-components";
 import { SectionLabel } from "./StatsModal";
 import CountdownTimer from "./CountdownTimer";
@@ -33,21 +33,14 @@ const Divider = styled.div`
   margin: 0 10px;
 `;
 
-const StatsModalFooter = ({ close, reset }) => (
+const StatsModalFooter = ({ closeAndReset }) => (
   <Container>
     <FlexColumn>
       <SectionLabel>Next Trumple</SectionLabel>
       <CountdownTimer />
     </FlexColumn>
     <Divider />
-    <Button
-      onClick={() => {
-        close();
-        reset();
-      }}
-    >
-      Reset Game
-    </Button>
+    <Button onClick={closeAndReset}>Reset Game</Button>
   </Container>
 );
 

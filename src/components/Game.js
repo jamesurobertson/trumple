@@ -4,10 +4,10 @@ import { answerWord, maxGuesses, wordLength } from "../config";
 import Board from "./Board";
 import Toast from "./Toast";
 import Keyboard from "./Keyboard";
-import StatsModal from "./StatsModal/StatsModal";
+import Modal from "./Modals/Modal";
+import StatsModal from "./Modals/StatsModal/StatsModal";
 import * as GameState from "../reducers/GameState";
 import * as Statistics from "../reducers/Statistics";
-import Modal from "./Modal";
 
 const Container = styled.div`
   display: flex;
@@ -35,6 +35,10 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
   const onEnter = useCallback(() => gameDispatch({ type: "addWord" }), []);
   const onDelete = useCallback(() => gameDispatch({ type: "deleteLetter" }), []);
   const clearToast = useCallback(() => gameDispatch({ type: "clearToast" }), []);
+  const closeAndReset = useCallback(() => {
+    gameDispatch({ type: "reset" });
+    toggleStatsModal();
+  }, [toggleStatsModal, gameDispatch]);
 
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
@@ -50,7 +54,7 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
       setTimeout(() => {
         statsDispatch({ type: "updateStats", payload: { guesses, isWon } });
         toggleStatsModal();
-      }, 3000);
+      }, 2000);
     }
   }, [guesses, isWon, toggleStatsModal]);
 
@@ -65,8 +69,8 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
       {statsModalIsOpen && (
-        <Modal close={toggleStatsModal}>
-          <StatsModal reset={() => gameDispatch({ type: "reset" })} close={toggleStatsModal} statistics={statsState} />
+        <Modal onClose={toggleStatsModal}>
+          <StatsModal closeAndReset={closeAndReset} statistics={statsState} />
         </Modal>
       )}
     </Container>

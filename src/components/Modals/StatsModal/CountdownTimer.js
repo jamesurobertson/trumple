@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { timeTillMidnight } from "../../utils";
+import { timeTillMidnight } from "../../../utils";
 
 const CountdownTimer = () => {
   const [time, setTime] = useState("");
