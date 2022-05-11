@@ -4,6 +4,9 @@ import Header from "./components/Header";
 import { darkTheme, lightTheme } from "./theme";
 import { GlobalStyles } from "./global";
 import { useTheme } from "./hooks/useTheme";
+import FirstTimeUserModal from "./components/FirstTimeUserModal";
+
+var firstTimeUser = true; // fake localStorage req
 
 function App() {
   const [theme, toggleTheme] = useTheme();
@@ -13,6 +16,7 @@ function App() {
       <GlobalStyles />
       <Header toggleTheme={toggleTheme} theme={theme} />
       <Game />
+      {firstTimeUser && <FirstTimeUserModal theme={theme}/>}
     </ThemeProvider>
   );
 }
