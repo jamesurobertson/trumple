@@ -34,7 +34,9 @@ const GuessDistribution = ({ guesses }) => {
         {Object.values(guesses).map((guess, idx) => (
           <DistributionContainer key={idx}>
             <div>{idx + 1}</div>
-            <DistributionBar percentile={(guess / totalGuesses || 0) * 100}>{guess}</DistributionBar>
+            <DistributionBar percentile={(guess / totalGuesses || 0) * 100}>
+              <div>{guess}</div>
+            </DistributionBar>
           </DistributionContainer>
         ))}
       </Container>
