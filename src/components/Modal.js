@@ -16,8 +16,7 @@ const Container = styled.div`
   z-index: 30;
   width: 90%;
   max-width: 500px;
-  height: 90%;
-  max-height: 400px;
+  max-height: 90%;
   background-color: ${({ theme }) => theme.modalBackgroundColor};
   color: ${({ theme }) => theme.color};
   border-radius: 8px;

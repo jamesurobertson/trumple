@@ -1,7 +1,7 @@
 const { words } = require("./words");
 
 module.exports = {
-  answerWord: words[Math.floor(Date.now() / 8.64e7) % words.length].toUpperCase(),
+  answerWord: words[Math.floor(new Date().setHours(0, 0, 0, 0) / 8.64e7) % words.length].toUpperCase(),
   maxGuesses: 6,
   wordLength: 5,
   gridGap: 5,

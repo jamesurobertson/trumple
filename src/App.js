@@ -8,7 +8,7 @@ import { useTheme } from "./hooks/useTheme";
 
 function App() {
   const [theme, toggleTheme] = useTheme();
-  let [statsModalIsOpen, toggleStatsModal] = useReducer((state) => !state, false);
+  const [statsModalIsOpen, toggleStatsModal] = useReducer((state) => !state, false);
 
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>

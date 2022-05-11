@@ -25,14 +25,13 @@ const DistributionBar = styled.div`
 `;
 
 const GuessDistribution = ({ guesses }) => {
-  const values = Object.values(guesses);
-  const totalGuesses = values.reduce((sum, num) => sum + num, 0);
+  const totalGuesses = Object.values(guesses).reduce((sum, num) => sum + num, 0);
 
   return (
     <>
       <SectionLabel>Guess Distribution</SectionLabel>
       <Container>
-        {values.map((guess, idx) => (
+        {Object.values(guesses).map((guess, idx) => (
           <DistributionContainer key={idx}>
             <div>{idx + 1}</div>
             <DistributionBar percentile={(guess / totalGuesses || 0) * 100}>{guess}</DistributionBar>
