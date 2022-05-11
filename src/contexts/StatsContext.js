@@ -24,7 +24,7 @@ const StatsModalContextProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({ statsState: state, statsDispatch: dispatch, statsModalIsOpen, toggleStatsModal, openStatsModal }),
-    [state, dispatch, statsModalIsOpen, toggleStatsModal]
+    [state, dispatch, statsModalIsOpen, toggleStatsModal, openStatsModal]
   );
 
   return <StatsContext.Provider value={value}>{children}</StatsContext.Provider>;
