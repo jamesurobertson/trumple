@@ -35,7 +35,7 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
   const onEnter = useCallback(() => gameDispatch({ type: "addWord" }), []);
   const onDelete = useCallback(() => gameDispatch({ type: "deleteLetter" }), []);
   const clearToast = useCallback(() => gameDispatch({ type: "clearToast" }), []);
-  const closeAndReset = useCallback(() => {
+  const closeModalAndReset = useCallback(() => {
     gameDispatch({ type: "reset" });
     toggleStatsModal();
   }, [toggleStatsModal, gameDispatch]);
@@ -60,7 +60,6 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
 
   return (
     <Container>
-      {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
       <Board
         completedRowValues={guesses}
         currentRowValue={currentGuess}
@@ -68,9 +67,10 @@ const Game = ({ statsModalIsOpen, toggleStatsModal }) => {
         hasError={toastMessage.length > 0}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
+      {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
       {statsModalIsOpen && (
         <Modal onClose={toggleStatsModal}>
-          <StatsModal closeAndReset={closeAndReset} statistics={statsState} />
+          <StatsModal closeAndReset={closeModalAndReset} statistics={statsState} />
         </Modal>
       )}
     </Container>

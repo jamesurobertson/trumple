@@ -1,33 +1,32 @@
 import styled, { keyframes, css } from "styled-components";
-import { status } from "../../config";
 
-const flip = (props) => keyframes`
+const flip = ({ theme }) => keyframes`
   0% {
     transform: rotateX(0deg);
     -webkit-transform: rotateX(0deg);
-    background-color: ${props.theme.backgroundColor};
-    border-color: ${props.theme.borderColor};
-    color: ${props.theme.color};
+    background-color: ${theme.backgroundColor};
+    border-color: ${theme.borderColor};
+    color: ${theme.color};
   }
 
   50%{
-    background-color: ${props.backgroundColor};
-    color: ${props.theme.colorSecondary};
+    background-color: ${theme.backgroundColor};
+    color: ${theme.colorSecondary};
   }
-  
+
   100% {
     transform: rotateX(180deg);
     -webkit-transform: rotateX(180deg);
   }
 `;
 
-const flipAnimation = (props) =>
+const flipAnimation = ({ animationDelay }) =>
   css`
     animation: ${flip} 350ms linear backwards;
-    animation-delay: ${props.animationDelay};
+    animation-delay: ${animationDelay};
   `;
 
-const offsetFlip = (props) => keyframes`
+const offsetFlip = () => keyframes`
     0% {
         transform: rotateX(0deg);
         -webkit-transform: rotateX(0deg);
@@ -38,13 +37,13 @@ const offsetFlip = (props) => keyframes`
     }
 `;
 
-const offSetFlipAnimation = (props) =>
+const offSetFlipAnimation = ({ animationDelay }) =>
   css`
     animation: ${offsetFlip} 350ms linear backwards;
-    animation-delay: ${props.animationDelay};
+    animation-delay: ${animationDelay};
   `;
 
-const onFill = (props) => keyframes`
+const onFill = () => keyframes`
   0% {
       transform: scale(1);
       -webkit-transform: scale(1);
@@ -61,7 +60,7 @@ const onFill = (props) => keyframes`
   }
 `;
 
-const onFillAnimation = (props) => css`
+const onFillAnimation = () => css`
   animation: ${onFill} 100ms linear;
 `;
 
@@ -74,19 +73,18 @@ const TileContainer = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 2rem;
-  line-height: 2rem;
   font-weight: bold;
-  vertical-align: middle;
   text-transform: uppercase;
-  transition: transform 0.25s ease-in-out;
   user-select: none;
-  ${({ hasLetter, isCurrentRow }) => hasLetter && isCurrentRow && onFillAnimation}
   color: ${({ isCurrentRow, theme }) => (isCurrentRow ? theme.color : theme.colorSecondary)};
-  ${({ isRevealing }) => isRevealing && flipAnimation};
+  background-color: ${({ backgroundColor }) => backgroundColor};
   border: 2px solid
-    ${({ hasLetter, backgroundColor, theme }) =>
-      hasLetter ? (backgroundColor ? backgroundColor : theme.borderColor) : theme.borderColorSecondary};
-  background-color: ${({ backgroundColor }) => (backgroundColor === status.unguessed ? "white" : backgroundColor)};
+    ${({ hasLetter, backgroundColor, theme }) => {
+      if (!hasLetter) return theme.borderColorSecondary;
+      return backgroundColor ? backgroundColor : theme.borderColor;
+    }};
+  ${({ hasLetter, isCurrentRow }) => hasLetter && isCurrentRow && onFillAnimation}
+  ${({ isRevealing }) => isRevealing && flipAnimation};
 `;
 
 const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentRow = false }) => (

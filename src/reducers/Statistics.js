@@ -1,4 +1,5 @@
 import { timeSinceMidnight } from "../utils";
+import { maxGuesses } from "../config";
 
 export const initialState = {
   stats: {
@@ -7,14 +8,12 @@ export const initialState = {
     "Current Streak": 0,
     "Max Streak": 0,
   },
-  guesses: {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-  },
+  guesses: Array(maxGuesses)
+    .fill(0)
+    .reduce((map, _, i) => {
+      map[i + 1] = 0;
+      return map;
+    }, {}),
   gamesWon: 0,
   lastDatePlayed: -Infinity,
 };

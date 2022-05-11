@@ -1,6 +1,6 @@
-import { keyboardLetters, status } from "../config";
 import React, { useMemo } from "react";
 import styled from "styled-components";
+import { keyboardLetters, status } from "../config";
 import useKeydownListener from "../hooks/useKeydownListener";
 
 const Container = styled.div`
@@ -14,7 +14,6 @@ const LetterButton = styled.button`
   justify-content: center;
   align-items: center;
   flex: 1;
-  font-family: inherit;
   font-weight: bold;
   border: 0;
   padding: 0;
