@@ -6,6 +6,7 @@ import Board from "./Board";
 import Toast from "./Toast";
 import Keyboard from "./Keyboard";
 import WinningImageOverlay from "./WinningImageOverlay";
+import FirstTimeUserModal from "./FirstTimeUserModal";
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ const initialState = {
     map[letter] = status.unguessed;
     return map;
   }, {}),
+  isFirstTimeUser: false
 };
 
 const initializer = (initialValue) => JSON.parse(localStorage.getItem("gameState")) || initialValue;
@@ -80,15 +82,19 @@ const reducer = (state, action) => {
       return { ...state, toastMessage: "" };
     case "toastMessage":
       return { ...state, toastMessage: action.payload };
+    case "firstTimeUser":
+      const firstTimeUser = action.payload;
+      localStorage.setItem("first-time-user", firstTimeUser);
+      return { ...state, isFirstTimeUser: firstTimeUser };
     default:
       return state;
   }
 };
 
-const Game = () => {
+const Game = ({theme}) => {
   //   const [state, dispatch] = useReducer(reducer, initialState, initializer);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = state;
+  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage, isFirstTimeUser } = state;
 
   //   useEffect(() => {
   //     localStorage.setItem("gameState", JSON.stringify(state));
@@ -100,6 +106,15 @@ const Game = () => {
 
   const clearToast = useCallback(() => dispatch({ type: "clearToast" }), []);
 
+  const handleFirstTimeUser = useCallback((bool) => dispatch({ type: "firstTimeUser", payload: bool }), []);
+  useEffect(() => {
+    const firstTimeUser = JSON.parse(localStorage.getItem("first-time-user"));
+    if (firstTimeUser || firstTimeUser === null) { 
+      return handleFirstTimeUser(true);
+    } 
+    return handleFirstTimeUser(false);
+  }, [])
+  
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
@@ -117,6 +132,12 @@ const Game = () => {
         hasError={toastMessage.length > 0}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
+      {isFirstTimeUser && (
+        <FirstTimeUserModal 
+          theme={theme} 
+          handleFirstTimeUser={handleFirstTimeUser} 
+        />
+      )}
     </Container>
   );
 };

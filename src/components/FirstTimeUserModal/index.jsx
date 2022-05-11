@@ -10,11 +10,11 @@ import {
   ExampleWrapper
 } from './FirstTimeUserModal.styles'
 
-export default function FirstTimeUserModal({theme}) {  
+export default function FirstTimeUserModal({theme, handleFirstTimeUser}) {
   return (
     <>
       <FirstTimeUserModalWrapper theme={theme}>
-        <StyledCloseIcon theme={theme} />
+        <StyledCloseIcon theme={theme} onClick={() => handleFirstTimeUser(false)}/>
         <FlexRow>
           <Text>{'Guess the'}</Text>&nbsp;
           <BoldText>{'TRUMPLE'}</BoldText>&nbsp;
