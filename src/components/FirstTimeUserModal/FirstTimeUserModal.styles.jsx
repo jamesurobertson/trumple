@@ -31,6 +31,20 @@ export const TextBlock = styled.div`
   align-items: center;
   justify-content: center;
   border: 1px solid ${({theme}) => (theme === "dark" ? "white" : "black")};
+  margin-right: .5rem;
+`;
+
+export const CorrectTextBlock = styled(TextBlock)`
+  background: #538d4e;
+`;
+
+export const IncorrectSpotTextBlock = styled(TextBlock)`
+  background: #b59f3a;
+`;
+
+export const IncorrectTextBlock = styled(TextBlock)`
+  background: #3a3a3d;
+  color: #FFFFFF;
 `;
 
 export const LineBreak = styled.div`

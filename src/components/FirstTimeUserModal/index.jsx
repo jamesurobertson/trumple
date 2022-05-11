@@ -1,6 +1,9 @@
 import {
   FirstTimeUserModalWrapper,
   Text,
+  CorrectTextBlock,
+  IncorrectSpotTextBlock,
+  IncorrectTextBlock,
   BoldText,
   TextBlock,
   LineBreak,
@@ -31,7 +34,7 @@ export default function FirstTimeUserModal({theme, handleFirstTimeUser, resetFir
         <Text>{'Examples'}</Text>
         <ExampleWrapper>
           <FlexRow>
-            <TextBlock theme={theme}>{'W'}</TextBlock>
+            <CorrectTextBlock theme={theme}>{'W'}</CorrectTextBlock>
             <TextBlock theme={theme}>{'E'}</TextBlock>
             <TextBlock theme={theme}>{'A'}</TextBlock>
             <TextBlock theme={theme}>{'R'}</TextBlock>
@@ -43,7 +46,7 @@ export default function FirstTimeUserModal({theme, handleFirstTimeUser, resetFir
         <ExampleWrapper>
           <FlexRow>
             <TextBlock theme={theme}>{'P'}</TextBlock>
-            <TextBlock theme={theme}>{'I'}</TextBlock>
+            <IncorrectSpotTextBlock theme={theme}>{'I'}</IncorrectSpotTextBlock>
             <TextBlock theme={theme}>{'L'}</TextBlock>
             <TextBlock theme={theme}>{'L'}</TextBlock>
             <TextBlock theme={theme}>{'S'}</TextBlock>
@@ -56,7 +59,7 @@ export default function FirstTimeUserModal({theme, handleFirstTimeUser, resetFir
             <TextBlock theme={theme}>{'V'}</TextBlock>
             <TextBlock theme={theme}>{'A'}</TextBlock>
             <TextBlock theme={theme}>{'G'}</TextBlock>
-            <TextBlock theme={theme}>{'U'}</TextBlock>
+            <IncorrectTextBlock theme={theme}>{'U'}</IncorrectTextBlock>
             <TextBlock theme={theme}>{'E'}</TextBlock>
           </FlexRow>
           <Text>{'The letter U is not in the word in any spot.'}</Text>
