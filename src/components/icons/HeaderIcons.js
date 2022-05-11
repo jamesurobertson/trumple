@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import StatisticsIcon from "./StatisticsIcon";
 import ThemeToggler from "../ThemeToggler";
+import { useStats } from "../../contexts/StatsContext";
 
 const IconsContainer = styled.div`
   display: flex;
@@ -12,13 +13,15 @@ const IconsContainer = styled.div`
   gap: 5px;
 `;
 
-const HeaderIcons = ({ toggleTheme, theme, toggleStatsModal }) => (
-  <IconsContainer>
-    <div onClick={toggleStatsModal}>
-      <StatisticsIcon toggleStatsModal={toggleStatsModal} />
-    </div>
-    <ThemeToggler toggleTheme={toggleTheme} theme={theme} />
-  </IconsContainer>
-);
-
+const HeaderIcons = ({ toggleTheme, theme }) => {
+  const { toggleStatsModal } = useStats();
+  return (
+    <IconsContainer>
+      <div onClick={toggleStatsModal}>
+        <StatisticsIcon />
+      </div>
+      <ThemeToggler toggleTheme={toggleTheme} theme={theme} />
+    </IconsContainer>
+  );
+};
 export default HeaderIcons;

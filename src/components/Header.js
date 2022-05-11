@@ -17,10 +17,10 @@ const Title = styled.div`
   font-size: 2.5rem;
 `;
 
-const Header = ({ toggleTheme, theme, toggleStatsModal }) => (
+const Header = ({ toggleTheme, theme }) => (
   <Container>
     <Title>TRUMPLE</Title>
-    <HeaderIcons toggleTheme={toggleTheme} theme={theme} toggleStatsModal={toggleStatsModal} />
+    <HeaderIcons toggleTheme={toggleTheme} theme={theme} />
   </Container>
 );
 
