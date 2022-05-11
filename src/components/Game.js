@@ -1,11 +1,13 @@
 import { useEffect, useCallback, useReducer } from "react";
 import styled from "styled-components";
-import { isValidWord } from "../utils";
-import { answerWord, maxGuesses, wordLength, letters, status } from "../config";
+import { maxGuesses, wordLength } from "../config";
 import Board from "./Board";
 import Toast from "./Toast";
 import Keyboard from "./Keyboard";
-import WinningImageOverlay from "./WinningImageOverlay";
+import Modal from "./Modals/Modal";
+import StatsModal from "./Modals/StatsModal/StatsModal";
+import * as GameState from "../reducers/GameState";
+import { useStats } from "../contexts/StatsContext";
 import FirstTimeUserModal from "./FirstTimeUserModal";
 
 const Container = styled.div`
@@ -91,20 +93,26 @@ const reducer = (state, action) => {
   }
 };
 
-const Game = ({theme, firstTimeUser, resetFirstTimeUser}) => {
-  //   const [state, dispatch] = useReducer(reducer, initialState, initializer);
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage, isFirstTimeUser } = state;
+const Game = () => {
+  const [gameState, gameDispatch] = useReducer(GameState.reducer, GameState.initialState, GameState.initializer);
+  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage, isFirstTimeUser } = gameState;
 
-  //   useEffect(() => {
-  //     localStorage.setItem("gameState", JSON.stringify(state));
-  //   }, [state]);
 
-  const onAddLetter = useCallback((letter) => dispatch({ type: "addLetter", payload: letter }), []);
-  const onEnter = useCallback(() => dispatch({ type: "addWord" }), []);
-  const onDelete = useCallback(() => dispatch({ type: "deleteLetter" }), []);
+  const { statsModalIsOpen, toggleStatsModal, openStatsModal, statsDispatch, statsState } = useStats();
+  const gameIsOver = guesses.length === maxGuesses || isWon;
 
-  const clearToast = useCallback(() => dispatch({ type: "clearToast" }), []);
+  useEffect(() => {
+    localStorage.setItem("gameState", JSON.stringify(gameState));
+  }, [gameState]);
+
+  const onAddLetter = useCallback((letter) => gameDispatch({ type: "addLetter", payload: letter }), []);
+  const onEnter = useCallback(() => gameDispatch({ type: "addWord" }), []);
+  const onDelete = useCallback(() => gameDispatch({ type: "deleteLetter" }), []);
+  const clearToast = useCallback(() => gameDispatch({ type: "clearToast" }), []);
+  const closeModalAndReset = useCallback(() => {
+    gameDispatch({ type: "reset" });
+    toggleStatsModal();
+  }, [toggleStatsModal, gameDispatch]);
 
   const handleFirstTimeUser = useCallback((bool) => dispatch({ type: "firstTimeUser", payload: bool }), []);
   useEffect(() => {
@@ -119,18 +127,25 @@ const Game = ({theme, firstTimeUser, resetFirstTimeUser}) => {
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
-    setTimeout(() => dispatch({ type: "updateKeyboardColors" }), wordLength * 350);
+    const timeToFlipTiles = wordLength * 350;
+    setTimeout(() => {
+      gameDispatch({ type: "updateKeyboardColors" });
+    }, timeToFlipTiles);
   }, [guesses]);
 
-  //   if (isWon && !isRevealing) return <WinningImageOverlay />;
+  useEffect(() => {
+    if (!gameIsOver) return;
+    statsDispatch({ type: "updateStats", payload: { guesses, isWon } });
+    setTimeout(() => openStatsModal(), 2000);
+  }, [gameIsOver, isWon, guesses, openStatsModal, statsDispatch]);
+
   return (
     <Container>
-      {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
       <Board
         completedRowValues={guesses}
         currentRowValue={currentGuess}
         isRevealing={isRevealing}
-        hasError={toastMessage.length > 0}
+        hasError={toastMessage.length > 0 && !gameIsOver}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
       {isFirstTimeUser && (
@@ -139,6 +154,11 @@ const Game = ({theme, firstTimeUser, resetFirstTimeUser}) => {
           handleFirstTimeUser={handleFirstTimeUser}
           resetFirstTimeUser={resetFirstTimeUser}
         />
+      {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
+      {statsModalIsOpen && (
+        <Modal onClose={toggleStatsModal}>
+          <StatsModal closeAndReset={closeModalAndReset} statistics={statsState} />
+        </Modal>
       )}
     </Container>
   );

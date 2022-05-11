@@ -19,7 +19,8 @@ const Container = styled.div`
 const Toast = ({ message, clearToast }) => {
   useEffect(() => {
     if (message.length === 0) return;
-    setTimeout(clearToast, 1000);
+    const timeout = setTimeout(clearToast, 1000);
+    return () => clearTimeout(timeout);
   }, [message, clearToast]);
 
   if (!message) return null;

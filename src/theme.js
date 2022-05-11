@@ -4,6 +4,8 @@ export const lightTheme = {
   backgroundColor: "white",
   borderColor: "black",
   borderColorSecondary: "#787c7e",
+  modalBackgroundColor: "white",
+  modalBackdropColor: "rgba(255, 255, 255, .5)",
 };
 export const darkTheme = {
   color: "white",
@@ -11,4 +13,6 @@ export const darkTheme = {
   backgroundColor: "black",
   borderColor: "#d3d6da",
   borderColorSecondary: "#787c7e",
+  modalBackgroundColor: "#121213",
+  modalBackdropColor: "rgba(0, 0, 0, .5)",
 };
