@@ -91,7 +91,7 @@ const reducer = (state, action) => {
   }
 };
 
-const Game = ({theme}) => {
+const Game = ({theme, firstTimeUser, resetFirstTimeUser}) => {
   //   const [state, dispatch] = useReducer(reducer, initialState, initializer);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage, isFirstTimeUser } = state;
@@ -108,13 +108,13 @@ const Game = ({theme}) => {
 
   const handleFirstTimeUser = useCallback((bool) => dispatch({ type: "firstTimeUser", payload: bool }), []);
   useEffect(() => {
-    const firstTimeUser = JSON.parse(localStorage.getItem("first-time-user"));
-    if (firstTimeUser || firstTimeUser === null) { 
+    const storage = JSON.parse(localStorage.getItem("first-time-user"));
+    if (storage || storage === null || firstTimeUser) { 
       return handleFirstTimeUser(true);
-    } 
+    }
     return handleFirstTimeUser(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [firstTimeUser])
   
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
@@ -136,7 +136,8 @@ const Game = ({theme}) => {
       {isFirstTimeUser && (
         <FirstTimeUserModal 
           theme={theme} 
-          handleFirstTimeUser={handleFirstTimeUser} 
+          handleFirstTimeUser={handleFirstTimeUser}
+          resetFirstTimeUser={resetFirstTimeUser}
         />
       )}
     </Container>

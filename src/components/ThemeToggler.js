@@ -8,8 +8,6 @@ const Container = styled.div`
   align-items: center;
   height: 40px;
   width: 40px;
-  position: absolute;
-  right: 10px;
 `;
 
 const ThemeToggler = ({ theme, toggleTheme }) => {
