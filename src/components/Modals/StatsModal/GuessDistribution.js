@@ -13,7 +13,7 @@ const DistributionContainer = styled.div`
 
 const DistributionBar = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   color: white;
   padding-right: 5px;
@@ -34,9 +34,7 @@ const GuessDistribution = ({ guesses }) => {
         {Object.values(guesses).map((guess, idx) => (
           <DistributionContainer key={idx}>
             <div>{idx + 1}</div>
-            <DistributionBar percentile={(guess / totalGuesses || 0) * 100}>
-              <div>{guess}</div>
-            </DistributionBar>
+            <DistributionBar percentile={(guess / totalGuesses || 0) * 100}>{guess}</DistributionBar>
           </DistributionContainer>
         ))}
       </Container>
