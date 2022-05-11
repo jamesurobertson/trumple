@@ -16,7 +16,7 @@ const StatsModalContextProvider = ({ children }) => {
   const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);
 
   const toggleStatsModal = useCallback(() => setStatsModalIsOpen((curr) => !curr), []);
-  const openStatsModal = () => useCallback(() => setStatsModalIsOpen(true), []);
+  const openStatsModal = useCallback(() => setStatsModalIsOpen(true), []);
 
   useEffect(() => {
     localStorage.setItem("statistics", JSON.stringify(state));
