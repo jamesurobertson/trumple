@@ -3,6 +3,7 @@ import HeaderIcons from "../icons/HeaderIcons";
 import HelpIcon from "../icons/HelpIcon";
 import { TitleContainer, Title, HelpIconContainer, HeaderWrapper } from "./Header.styles";
 
+
 const Header = ({ toggleTheme, theme }) => {
   const { resetFirstTimeUser } = useFirstTimeUser();
   const handleResetFirstTimeUser = () => resetFirstTimeUser(true);
@@ -17,6 +18,7 @@ const Header = ({ toggleTheme, theme }) => {
       <HeaderIcons toggleTheme={toggleTheme} theme={theme} />
     </HeaderWrapper>
   );
+
 };
 
 export default Header;

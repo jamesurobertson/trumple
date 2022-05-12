@@ -20,7 +20,7 @@ const Container = styled.div`
   height: calc(100% - 50px);
 `;
 
-const Game = () => {
+const Game = ({ theme }) => {
   const [gameState, gameDispatch] = useReducer(GameState.reducer, GameState.initialState, GameState.initializer);
   const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = gameState;
 
@@ -40,7 +40,7 @@ const Game = () => {
     gameDispatch({ type: "reset" });
     toggleStatsModal();
   }, [toggleStatsModal, gameDispatch]);
-
+  
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
@@ -65,6 +65,7 @@ const Game = () => {
         hasError={toastMessage.length > 0 && !gameIsOver}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
+      {firstTimeUser && <FirstTimeUserModal theme={theme}/>}
       {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
       {firstTimeUser && <FirstTimeUserModal />}
       {statsModalIsOpen && (

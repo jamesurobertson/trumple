@@ -10,6 +10,7 @@ const IconsContainer = styled.div`
   position: absolute;
   right: 10px;
   gap: 5px;
+  
 `;
 
 const HeaderIcons = ({ toggleTheme, theme }) => {

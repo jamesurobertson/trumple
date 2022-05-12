@@ -1,3 +1,4 @@
+
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from "react";
 import * as FirstTimeUserReducer from "../reducers/FirstTimeUserState";
 
@@ -14,6 +15,7 @@ const useFirstTimeUser = () => {
 const FirstTimeUserModalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(FirstTimeUserReducer.reducer, FirstTimeUserReducer.initialState);
   const handleFirstTimeUser = useCallback((bool) => dispatch({ type: "firstTimeUser", payload: bool }), []);
+  
   useEffect(() => {
     const storage = JSON.parse(localStorage.getItem("first-time-user"));
     if (storage || storage === null || state.isFirstTimeUser) {
