@@ -7,10 +7,8 @@ const IconsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  right: 10px;
-  padding: 10px;
   gap: 5px;
+  
 `;
 
 const HeaderIcons = ({ toggleTheme, theme }) => {
