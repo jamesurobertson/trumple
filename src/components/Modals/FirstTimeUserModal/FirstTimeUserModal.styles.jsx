@@ -1,18 +1,5 @@
 import styled from 'styled-components';
 
-export const FirstTimeUserModalWrapper = styled.section`
-  position: fixed;
-  z-index: 10;
-  left: 50%;
-  top: 4rem;
-  transform: translate(-50%, 0);
-  height: fit-content;
-  width: 500px;
-  background: ${({theme}) => (theme === "dark" ? "black" : "white" )};
-  padding: 2rem;
-  border: 1px solid ${({theme}) => (theme === "dark" ? "white" : "black")};
-`;
-
 export const Text = styled.p`
   font-size: 16px;  
 `;
@@ -55,21 +42,6 @@ export const LineBreak = styled.div`
 export const FlexRow = styled.div`
   display: flex;
   align-items: baseline;
-`;
-
-const CloseIcon = ({className, ...rest}) => (
-  <svg xmlns="http://www.w3.org/2000/svg" {...rest} className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-  </svg>
-);
-
-export const StyledCloseIcon = styled(CloseIcon)`
-  height: 1.5rem;
-  width: 1.5rem;
-  cursor: pointer;
-  position: absolute;
-  right: 2rem;
-  top: 2rem;
 `;
 
 export const Overlay = styled.div`

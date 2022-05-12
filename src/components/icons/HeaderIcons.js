@@ -8,6 +8,7 @@ const IconsContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
+  
 `;
 
 const HeaderIcons = ({ toggleTheme, theme }) => {

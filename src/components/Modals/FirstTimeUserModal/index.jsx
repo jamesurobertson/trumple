@@ -1,5 +1,6 @@
+import { useFirstTimeUser } from '../../../contexts/FirstTimeUserContext';
+import Modal from '../Modal';
 import {
-  FirstTimeUserModalWrapper,
   Text,
   CorrectTextBlock,
   IncorrectSpotTextBlock,
@@ -8,17 +9,16 @@ import {
   TextBlock,
   LineBreak,
   FlexRow,
-  StyledCloseIcon,
   Overlay,
   ExampleWrapper
-} from './FirstTimeUserModal.styles'
+} from './FirstTimeUserModal.styles';
 
-export default function FirstTimeUserModal({ theme, resetFirstTimeUser }) {
+export default function FirstTimeUserModal({ theme }) {
+  const { resetFirstTimeUser } = useFirstTimeUser();
   const handleClose = () => resetFirstTimeUser(false)
   return (
     <>
-      <FirstTimeUserModalWrapper theme={theme}>
-        <StyledCloseIcon theme={theme} onClick={handleClose}/>
+      <Modal onClose={handleClose}>
         <FlexRow>
           <Text>{'Guess the'}</Text>&nbsp;
           <BoldText>{'TRUMPLE'}</BoldText>&nbsp;
@@ -65,7 +65,7 @@ export default function FirstTimeUserModal({ theme, resetFirstTimeUser }) {
         <LineBreak theme={theme} />
 
         <BoldText>{'A new TRUMPLE will be available each day!'}</BoldText>
-      </FirstTimeUserModalWrapper>
+      </Modal>
       <Overlay theme={theme} />
     </>
   )

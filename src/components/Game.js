@@ -8,7 +8,7 @@ import Modal from "./Modals/Modal";
 import StatsModal from "./Modals/StatsModal/StatsModal";
 import * as GameState from "../reducers/GameState";
 import { useStats } from "../contexts/StatsContext";
-import FirstTimeUserModal from "./FirstTimeUserModal";
+import FirstTimeUserModal from "./Modals/FirstTimeUserModal";
 import { useFirstTimeUser } from "../contexts/FirstTimeUserContext";
 
 const Container = styled.div`
@@ -25,7 +25,7 @@ const Game = ({ theme }) => {
   const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = gameState;
 
   const { statsModalIsOpen, toggleStatsModal, openStatsModal, statsDispatch, statsState } = useStats();
-  const { firstTimeUser, resetFirstTimeUser } = useFirstTimeUser() 
+  const { firstTimeUser } = useFirstTimeUser();
   const gameIsOver = guesses.length === maxGuesses || isWon;
 
   useEffect(() => {
@@ -65,11 +65,7 @@ const Game = ({ theme }) => {
         hasError={toastMessage.length > 0 && !gameIsOver}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
-      {firstTimeUser && (
-        <FirstTimeUserModal 
-          theme={theme}
-          resetFirstTimeUser={resetFirstTimeUser}
-      />)}
+      {firstTimeUser && <FirstTimeUserModal theme={theme}/>}
       {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
       {statsModalIsOpen && (
         <Modal onClose={toggleStatsModal}>

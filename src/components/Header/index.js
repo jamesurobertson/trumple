@@ -14,17 +14,18 @@ import {
 } from "./Header.styles";
 
 const Header = ({ toggleTheme, theme }) => {
-  const { resetFirstTimeUser } = useFirstTimeUser()
+  const { resetFirstTimeUser } = useFirstTimeUser();
   const handleResetFirstTimeUser = () => resetFirstTimeUser(true);
   return (
     <HeaderWrapper>
-      <DefaultContainer />
+      <DefaultContainer>
+        <StyledHelpIcon onClick={handleResetFirstTimeUser} title={'Help'}/>
+      </DefaultContainer>
       <TitleContainer>
         <Title>TRUMPLE</Title>
       </TitleContainer>
       <NavContainer>
         <NavWrapper>
-          <StyledHelpIcon onClick={handleResetFirstTimeUser} title={'Help'}/>
           <HeaderIcons toggleTheme={toggleTheme} theme={theme} />
         </NavWrapper>
       </NavContainer>
