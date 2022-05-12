@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { SectionLabel } from "./StatsModal";
 
 const StatsContainer = styled.div`
   flex: 1;
@@ -24,17 +23,14 @@ const StatsLabel = styled.div`
 `;
 
 const Statistics = ({ stats }) => (
-  <>
-    <SectionLabel>Statistics</SectionLabel>
-    <div style={{ display: "flex", height: "80px" }}>
-      {Object.entries(stats).map(([key, val]) => (
-        <StatsContainer key={key}>
-          <Stat>{val}</Stat>
-          <StatsLabel>{key}</StatsLabel>
-        </StatsContainer>
-      ))}
-    </div>
-  </>
+  <div style={{ display: "flex", height: "80px" }}>
+    {Object.entries(stats).map(([key, val]) => (
+      <StatsContainer key={key}>
+        <Stat>{val}</Stat>
+        <StatsLabel>{key}</StatsLabel>
+      </StatsContainer>
+    ))}
+  </div>
 );
 
 export default Statistics;

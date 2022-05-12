@@ -39,10 +39,10 @@ module.exports = {
     ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
     ["Z", "X", "C", "V", "B", "N", "M"],
   ],
-  status: {
-    green: "#40916c",
-    yellow: "#f9c74f",
-    gray: "#8b8c89",
-    unguessed: "unguessed",
+  colors: {
+    correct: "#40916c",
+    present: "#f9c74f",
+    absent: "#8b8c89",
+    unguessed: "#d3d6da",
   },
 };

@@ -33,8 +33,8 @@ export const RowContainer = styled.div`
   ${({ shakeErr }) => shakeErr && animation}
 `;
 
-const FilledRow = ({ rowValue, isRevealing }) => {
-  const backgroundColors = [...rowValue].map((_, idx) => guessColor(answerWord, rowValue, idx));
+const FilledRow = ({ rowValue, isRevealing, answer = answerWord }) => {
+  const backgroundColors = [...rowValue].map((_, idx) => guessColor(answer, rowValue, idx));
   return (
     <RowContainer length={wordLength}>
       {[...rowValue].map((char, idx) => (

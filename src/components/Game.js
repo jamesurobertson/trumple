@@ -67,8 +67,9 @@ const Game = ({ theme }) => {
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
       {firstTimeUser && <FirstTimeUserModal theme={theme}/>}
       {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
+      {firstTimeUser && <FirstTimeUserModal />}
       {statsModalIsOpen && (
-        <Modal onClose={toggleStatsModal}>
+        <Modal onClose={toggleStatsModal} title="Statistics">
           <StatsModal closeAndReset={closeModalAndReset} statistics={statsState} />
         </Modal>
       )}

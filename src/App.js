@@ -15,7 +15,7 @@ function App() {
       <StatsModalContextProvider>
         <FirstTimeUserModalContextProvider>
           <Header toggleTheme={toggleTheme} />
-          <Game theme={theme} />
+          <Game />
         </FirstTimeUserModalContextProvider>
       </StatsModalContextProvider>
     </ThemeProvider>

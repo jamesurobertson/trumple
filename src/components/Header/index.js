@@ -1,36 +1,24 @@
-// context
 import { useFirstTimeUser } from "../../contexts/FirstTimeUserContext";
-// components
 import HeaderIcons from "../icons/HeaderIcons";
-// styles
-import {
-  TitleContainer,
-  Title,
-  StyledHelpIcon,
-  NavWrapper,
-  NavContainer,
-  DefaultContainer,
-  HeaderWrapper
-} from "./Header.styles";
+import HelpIcon from "../icons/HelpIcon";
+import { TitleContainer, Title, HelpIconContainer, HeaderWrapper } from "./Header.styles";
+
 
 const Header = ({ toggleTheme, theme }) => {
   const { resetFirstTimeUser } = useFirstTimeUser();
   const handleResetFirstTimeUser = () => resetFirstTimeUser(true);
   return (
     <HeaderWrapper>
-      <DefaultContainer>
-        <StyledHelpIcon onClick={handleResetFirstTimeUser} title={'Help'}/>
-      </DefaultContainer>
+      <HelpIconContainer onClick={handleResetFirstTimeUser} title={"Help"}>
+        <HelpIcon />
+      </HelpIconContainer>
       <TitleContainer>
         <Title>TRUMPLE</Title>
       </TitleContainer>
-      <NavContainer>
-        <NavWrapper>
-          <HeaderIcons toggleTheme={toggleTheme} theme={theme} />
-        </NavWrapper>
-      </NavContainer>
+      <HeaderIcons toggleTheme={toggleTheme} theme={theme} />
     </HeaderWrapper>
-  )
+  );
+
 };
 
 export default Header;

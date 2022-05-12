@@ -1,4 +1,4 @@
-import { status } from "../../../config";
+import { colors } from "../../../config";
 import styled from "styled-components";
 import { SectionLabel } from "./StatsModal";
 import CountdownTimer from "./CountdownTimer";
@@ -24,7 +24,7 @@ const Button = styled.button`
   padding: 10px;
   color: white;
   font-weight: bold;
-  background-color: ${status.green};
+  background-color: ${colors.correct};
   z-index: 100;
 `;
 
