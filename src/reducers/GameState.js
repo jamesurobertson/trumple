@@ -1,4 +1,4 @@
-import { letters, colors, wordLength, maxGuesses, answerWord } from "../config";
+import { letters, colors, wordLength, maxGuesses, answerWord, version } from "../config";
 import { isValidWord, timeSinceMidnight } from "../utils";
 
 export const initialState = {
@@ -15,7 +15,14 @@ export const initialState = {
 
 export const initializer = (initialValue) => {
   const stats = JSON.parse(localStorage.getItem("statistics"));
+  const currentSavedVersion = JSON.parse(localStorage.getItem("trumple-version"));
   const now = new Date().getTime();
+
+  if (currentSavedVersion !== version) {
+    localStorage.setItem("trumple-version", version);
+    return initialValue;
+  }
+
   if (stats && now - stats.lastDatePlayed > timeSinceMidnight()) return initialValue;
   return JSON.parse(localStorage.getItem("gameState")) || initialValue;
 };
