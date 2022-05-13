@@ -12,7 +12,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const BoardGrid = styled.div`
+export const BoardGrid = styled.div`
   display: grid;
   grid-template-rows: ${({ maxGuesses }) => `repeat(${maxGuesses}, 1fr)`};
   grid-gap: ${({ gridGap }) => `${gridGap}px`};
@@ -22,7 +22,7 @@ const BoardGrid = styled.div`
   max-height: calc(100% - 20px);
 `;
 
-const Board = ({ completedRowValues, currentRowValue, isRevealing, hasError }) => {
+const Board = ({ completedRowValues, currentRowValue, isRevealing, hasError, gap = gridGap }) => {
   const { filledRows, emptyRows } = useMemo(() => {
     const _filledRows = completedRowValues.map((rowValue, idx) => (
       <FilledRow key={idx} rowValue={rowValue} isRevealing={isRevealing && completedRowValues.length - 1 === idx} />
@@ -39,7 +39,7 @@ const Board = ({ completedRowValues, currentRowValue, isRevealing, hasError }) =
   const gridWidth = (wordLength - 1) * gridGap + wordLength * tileSize;
   return (
     <Container>
-      <BoardGrid maxGuesses={maxGuesses} gridHeight={gridHeight} gridWidth={gridWidth} gridGap={gridGap}>
+      <BoardGrid maxGuesses={maxGuesses} gridHeight={gridHeight} gridWidth={gridWidth} gridGap={gap}>
         {filledRows}
         {completedRowValues.length < maxGuesses && <CurrentRow rowValue={currentRowValue} hasError={hasError} />}
         {emptyRows}

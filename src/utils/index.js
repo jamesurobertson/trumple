@@ -1,10 +1,10 @@
-import { wordLength, status } from "../config";
+import { wordLength, colors } from "../config";
 import { words } from "../words";
 
 export function guessColor(word, guess, index) {
   // correct (matched) index letter
   if (guess[index] === word[index]) {
-    return status.green;
+    return colors.correct;
   }
 
   let wrongWord = 0;
@@ -27,13 +27,13 @@ export function guessColor(word, guess, index) {
         break;
       }
       if (wrongGuess <= wrongWord) {
-        return status.yellow;
+        return colors.present;
       }
     }
   }
 
   // otherwise not any
-  return status.gray;
+  return colors.absent;
 }
 
 export const timeTillMidnight = () => {

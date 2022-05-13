@@ -3,19 +3,12 @@ import styled from "styled-components";
 export const HeaderWrapper = styled.header`
   width: 100%;
   display: flex;
-  flex-wrap: flex-wrap;
+  height: 50px;
   align-items: center;
-  padding: .5rem;
-  @media (min-width: 768px) {
-    padding: 1rem;
-  }
 `;
 
 export const DefaultContainer = styled.div`
   width: 100%;
-  @media (min-width: 768px) {
-    width: 33%;
-  }
 `;
 
 export const TitleContainer = styled(DefaultContainer)`
@@ -45,15 +38,10 @@ export const NavWrapper = styled.nav`
   align-items: baseline;
 `;
 
-const HelpIcon = ({className, title, ...rest}) => (
-  <svg xmlns="http://www.w3.org/2000/svg" {...rest} className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    {title && title.length && <title>{title}</title>}
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
-);
-
-export const StyledHelpIcon = styled(HelpIcon)`
-  height: 1.5rem;
-  width: 1.5rem;
-  cursor: pointer;  
+export const HelpIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 10px;
 `;

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { keyboardLetters, status } from "../config";
+import { keyboardLetters, colors } from "../config";
 import useKeydownListener from "../hooks/useKeydownListener";
 
 const Container = styled.div`
@@ -23,10 +23,8 @@ const LetterButton = styled.button`
   cursor: pointer;
   user-select: none;
   text-transform: uppercase;
-
-  background-color: ${({ letterColor }) => (letterColor === status.unguessed ? "#d3d6da" : letterColor)};
-  color: ${({ letterColor }) => (letterColor === status.unguessed ? "black" : "white")};
-
+  background-color: ${({ letterColor }) => letterColor};
+  color: ${({ letterColor }) => (letterColor === colors.unguessed ? "black" : "white")};
   &:last-child {
     margin: 0;
   }
@@ -39,7 +37,7 @@ const HalfStep = styled.div`
 
 const NonLetterButton = styled(LetterButton)`
   padding: 5px;
-  background-color: #d3d6da;
+  background-color: ${colors.unguessed};
   color: black;
 `;
 

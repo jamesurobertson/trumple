@@ -1,4 +1,4 @@
-import { letters, status, wordLength, maxGuesses, answerWord } from "../config";
+import { letters, colors, wordLength, maxGuesses, answerWord } from "../config";
 import { isValidWord, timeSinceMidnight } from "../utils";
 
 export const initialState = {
@@ -8,7 +8,7 @@ export const initialState = {
   currentGuess: "",
   toastMessage: "",
   keyboardColors: letters.reduce((map, letter) => {
-    map[letter] = status.unguessed;
+    map[letter] = colors.unguessed;
     return map;
   }, {}),
 };
@@ -52,13 +52,13 @@ export const reducer = (state, action) => {
       const newColors = { ...state.keyboardColors };
       const lastWord = state.guesses[state.guesses.length - 1];
       [...lastWord].forEach((char, i) => {
-        if (newColors[char] === status.green) return;
+        if (newColors[char] === colors.correct) return;
         if (answerWord[i] === char) {
-          newColors[char] = status.green;
+          newColors[char] = colors.correct;
         } else if (answerWord.includes(char)) {
-          newColors[char] = status.yellow;
+          newColors[char] = colors.present;
         } else {
-          newColors[char] = status.gray;
+          newColors[char] = colors.absent;
         }
       }, {});
       return {
