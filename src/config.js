@@ -1,4 +1,4 @@
-const { words } = require('./words');
+// const { words } = require('./words');
 
 module.exports = {
   //   answerWord: words[Math.floor(new Date().setHours(0, 0, 0, 0) / 8.64e7) % words.length].toUpperCase(),
