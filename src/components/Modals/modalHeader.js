@@ -1,22 +1,22 @@
-import CloseIcon from "../icons/CloseIcon";
-import styled from "styled-components";
+import CloseIcon from '../icons/CloseIcon';
+import styled from 'styled-components';
+import IconContainer from '../icons/Icon';
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
-  height: 24px;
+  height: 1.5rem;
   width: 100%;
 `;
 
 const Title = styled.div`
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
   text-transform: uppercase;
 `;
 
-const IconContainer = styled.div`
-  cursor: pointer;
+const RightAbsolute = styled.div`
   position: absolute;
   right: 0;
 `;
@@ -24,9 +24,9 @@ const IconContainer = styled.div`
 const ModalHeader = ({ onClose, title }) => (
   <Container>
     <Title>{title}</Title>
-    <IconContainer onClick={onClose} aria-label="Close Modal">
-      <CloseIcon />
-    </IconContainer>
+    <RightAbsolute>
+      <IconContainer title="Close" onClick={onClose} Icon={CloseIcon} />
+    </RightAbsolute>
   </Container>
 );
 

@@ -5,7 +5,7 @@ const ImageOverlay = styled.div`
   background-size: cover;
   position: absolute;
   inset: 0;
-  z-index: 100;
+  z-index: 10;
 `;
 
 const WinningImageOverlay = () => <ImageOverlay />;

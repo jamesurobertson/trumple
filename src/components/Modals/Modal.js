@@ -5,6 +5,7 @@ const Backdrop = styled.div`
   position: absolute;
   inset: 0;
   background-color: ${({ theme }) => `${theme.modalBackdropColor}`};
+  z-index: 20;
 `;
 const Container = styled.div`
   display: flex;
