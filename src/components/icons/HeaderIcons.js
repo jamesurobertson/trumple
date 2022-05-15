@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import StatisticsIcon from "./StatisticsIcon";
-import ThemeToggler from "../ThemeToggler";
-import { useStats } from "../../contexts/StatsContext";
+import styled from 'styled-components';
+import StatisticsIcon from './StatisticsIcon';
+import ThemeToggler from '../ThemeToggler';
+import { useStats } from '../../contexts/StatsContext';
 
 const IconsContainer = styled.div`
   display: flex;
@@ -10,7 +10,6 @@ const IconsContainer = styled.div`
   position: absolute;
   right: 10px;
   gap: 5px;
-  
 `;
 
 const HeaderIcons = ({ toggleTheme, theme }) => {

@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { useFirstTimeUser } from "../../../contexts/FirstTimeUserContext";
-import Modal from "../Modal";
-import FilledRow from "../../rows/FilledRow";
-import { gridGap, tileSize, wordLength } from "../../../config";
-import { BoardGrid } from "../../Board";
+import styled from 'styled-components';
+import { useFirstTimeUser } from '../../../contexts/FirstTimeUserContext';
+import Modal from '../Modal';
+import FilledRow from '../../rows/FilledRow';
+import { gridGap, tileSize, wordLength } from '../../../config';
+import { BoardGrid } from '../../Board';
 
 export const Text = styled.div`
   margin: 10px 0;
@@ -39,7 +39,7 @@ const FirstTimeUserModal = () => {
         <LineBreak />
         <Text>Example</Text>
         <BoardGrid maxGuesses={1} gridHeight={tileSize} gridWidth={gridWidth}>
-          <FilledRow rowValue={"WORDS"} isRevealing={true} answer={"WXXRS"} />
+          <FilledRow rowValue={'WORDS'} isRevealing={true} answer={'WXXRS'} />
         </BoardGrid>
         <Text>
           The letters <BoldSpan>W</BoldSpan> and <BoldSpan>S</BoldSpan> are in the word and in the correct spot.

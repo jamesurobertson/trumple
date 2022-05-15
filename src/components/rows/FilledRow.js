@@ -1,7 +1,7 @@
-import styled, { keyframes, css } from "styled-components";
-import Tile from "./Tile";
-import { guessColor } from "../../utils";
-import { answerWord, wordLength } from "../../config";
+import styled, { keyframes, css } from 'styled-components';
+import Tile from './Tile';
+import { guessColor } from '../../utils';
+import { answerWord, wordLength } from '../../config';
 
 const shake = keyframes`
     10%, 90% {

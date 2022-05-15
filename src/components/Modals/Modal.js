@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import ModalHeader from "./modalHeader";
+import styled from 'styled-components';
+import ModalHeader from './modalHeader';
 
 const Backdrop = styled.div`
   position: absolute;
@@ -14,7 +14,7 @@ const Container = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 30;
+  z-index: 100;
   width: 90%;
   max-width: 500px;
   max-height: 90%;

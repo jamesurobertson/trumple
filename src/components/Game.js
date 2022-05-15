@@ -1,15 +1,15 @@
-import { useEffect, useCallback, useReducer } from "react";
-import styled from "styled-components";
-import { maxGuesses, wordLength } from "../config";
-import Board from "./Board";
-import Toast from "./Toast";
-import Keyboard from "./Keyboard";
-import Modal from "./Modals/Modal";
-import StatsModal from "./Modals/StatsModal/StatsModal";
-import * as GameState from "../reducers/GameState";
-import { useStats } from "../contexts/StatsContext";
-import FirstTimeUserModal from "./Modals/FirstTimeUserModal";
-import { useFirstTimeUser } from "../contexts/FirstTimeUserContext";
+import { useEffect, useCallback, useReducer } from 'react';
+import styled from 'styled-components';
+import { maxGuesses, wordLength } from '../config';
+import Board from './Board';
+import Toast from './Toast';
+import Keyboard from './Keyboard';
+import Modal from './Modals/Modal';
+import StatsModal from './Modals/StatsModal/StatsModal';
+import * as GameState from '../reducers/GameState';
+import { useStats } from '../contexts/StatsContext';
+import FirstTimeUserModal from './Modals/FirstTimeUserModal';
+import { useFirstTimeUser } from '../contexts/FirstTimeUserContext';
 
 const Container = styled.div`
   display: flex;
@@ -22,38 +22,38 @@ const Container = styled.div`
 
 const Game = ({ theme }) => {
   const [gameState, gameDispatch] = useReducer(GameState.reducer, GameState.initialState, GameState.initializer);
-  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage } = gameState;
+  const { guesses, currentGuess, keyboardColors, isWon, isRevealing, toastMessage, showOverlayImg } = gameState;
 
   const { statsModalIsOpen, toggleStatsModal, openStatsModal, statsDispatch, statsState } = useStats();
   const { firstTimeUser } = useFirstTimeUser();
   const gameIsOver = guesses.length === maxGuesses || isWon;
 
   useEffect(() => {
-    localStorage.setItem("gameState", JSON.stringify(gameState));
+    localStorage.setItem('gameState', JSON.stringify(gameState));
   }, [gameState]);
 
-  const onAddLetter = useCallback((letter) => gameDispatch({ type: "addLetter", payload: letter }), []);
-  const onEnter = useCallback(() => gameDispatch({ type: "addWord" }), []);
-  const onDelete = useCallback(() => gameDispatch({ type: "deleteLetter" }), []);
-  const clearToast = useCallback(() => gameDispatch({ type: "clearToast" }), []);
+  const onAddLetter = useCallback((letter) => gameDispatch({ type: 'addLetter', payload: letter }), []);
+  const onEnter = useCallback(() => gameDispatch({ type: 'addWord' }), []);
+  const onDelete = useCallback(() => gameDispatch({ type: 'deleteLetter' }), []);
+  const clearToast = useCallback(() => gameDispatch({ type: 'clearToast' }), []);
   const closeModalAndReset = useCallback(() => {
-    gameDispatch({ type: "reset" });
+    gameDispatch({ type: 'reset' });
     toggleStatsModal();
   }, [toggleStatsModal, gameDispatch]);
-  
+
   // update keyboard colors after tile letters are revealed / flipped
   useEffect(() => {
     if (guesses.length === 0) return;
     const timeToFlipTiles = wordLength * 350;
     setTimeout(() => {
-      gameDispatch({ type: "updateKeyboardColors" });
+      gameDispatch({ type: 'updateKeyboardColors' });
     }, timeToFlipTiles);
   }, [guesses]);
 
   useEffect(() => {
     if (!gameIsOver) return;
-    statsDispatch({ type: "updateStats", payload: { guesses, isWon } });
-    setTimeout(() => openStatsModal(), 2000);
+    statsDispatch({ type: 'updateStats', payload: { guesses, isWon } });
+    setTimeout(() => openStatsModal(), 3500);
   }, [gameIsOver, isWon, guesses, openStatsModal, statsDispatch]);
 
   return (
@@ -63,9 +63,10 @@ const Game = ({ theme }) => {
         currentRowValue={currentGuess}
         isRevealing={isRevealing}
         hasError={toastMessage.length > 0 && !gameIsOver}
+        showOverlayImg={showOverlayImg}
       />
       <Keyboard {...{ onAddLetter, onEnter, onDelete, keyboardColors }} />
-      {firstTimeUser && <FirstTimeUserModal theme={theme}/>}
+      {firstTimeUser && <FirstTimeUserModal />}
       {toastMessage.length > 0 && <Toast message={toastMessage} clearToast={clearToast} />}
       {firstTimeUser && <FirstTimeUserModal />}
       {statsModalIsOpen && (

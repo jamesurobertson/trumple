@@ -1,9 +1,10 @@
-import styled from "styled-components";
-import FilledRow from "./rows/FilledRow";
-import EmptyRow from "./rows/EmptyRow";
-import CurrentRow from "./rows/CurrentRow";
-import { gridGap, maxGuesses, wordLength, tileSize } from "../config";
-import { useMemo } from "react";
+import { useMemo } from 'react';
+import styled from 'styled-components';
+import FilledRow from './rows/FilledRow';
+import EmptyRow from './rows/EmptyRow';
+import CurrentRow from './rows/CurrentRow';
+import WinningImageOverlay from './WinningImageOverlay';
+import { gridGap, maxGuesses, wordLength, tileSize } from '../config';
 
 const Container = styled.div`
   display: flex;
@@ -13,6 +14,7 @@ const Container = styled.div`
 `;
 
 export const BoardGrid = styled.div`
+  position: relative;
   display: grid;
   grid-template-rows: ${({ maxGuesses }) => `repeat(${maxGuesses}, 1fr)`};
   grid-gap: ${({ gridGap }) => `${gridGap}px`};
@@ -22,7 +24,7 @@ export const BoardGrid = styled.div`
   max-height: calc(100% - 20px);
 `;
 
-const Board = ({ completedRowValues, currentRowValue, isRevealing, hasError, gap = gridGap }) => {
+const Board = ({ completedRowValues, currentRowValue, isRevealing, hasError, gap = gridGap, showOverlayImg }) => {
   const { filledRows, emptyRows } = useMemo(() => {
     const _filledRows = completedRowValues.map((rowValue, idx) => (
       <FilledRow key={idx} rowValue={rowValue} isRevealing={isRevealing && completedRowValues.length - 1 === idx} />
@@ -40,6 +42,7 @@ const Board = ({ completedRowValues, currentRowValue, isRevealing, hasError, gap
   return (
     <Container>
       <BoardGrid maxGuesses={maxGuesses} gridHeight={gridHeight} gridWidth={gridWidth} gridGap={gap}>
+        {showOverlayImg && <WinningImageOverlay />}
         {filledRows}
         {completedRowValues.length < maxGuesses && <CurrentRow rowValue={currentRowValue} hasError={hasError} />}
         {emptyRows}

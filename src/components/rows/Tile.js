@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes, css } from 'styled-components';
 
 const flip = ({ theme }) => keyframes`
   0% {
@@ -10,7 +10,6 @@ const flip = ({ theme }) => keyframes`
   }
 
   50%{
-    background-color: ${theme.backgroundColor};
     color: ${theme.colorSecondary};
   }
 
@@ -81,7 +80,7 @@ const TileContainer = styled.div`
   border: 2px solid
     ${({ hasLetter, backgroundColor, theme }) => {
       if (!hasLetter) return theme.borderColorSecondary;
-      return backgroundColor ? backgroundColor : theme.borderColor;
+      return !!backgroundColor ? backgroundColor : theme.borderColor;
     }};
   ${({ hasLetter, isCurrentRow }) => hasLetter && isCurrentRow && onFillAnimation}
   ${({ isRevealing }) => isRevealing && flipAnimation};

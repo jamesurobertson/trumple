@@ -1,7 +1,7 @@
-import { colors } from "../../../config";
-import styled from "styled-components";
-import { SectionLabel } from "./StatsModal";
-import CountdownTimer from "./CountdownTimer";
+import { colors } from '../../../config';
+import styled from 'styled-components';
+import { SectionLabel } from './StatsModal';
+import CountdownTimer from './CountdownTimer';
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +26,7 @@ const Button = styled.button`
   font-weight: bold;
   background-color: ${colors.correct};
   z-index: 100;
+  text-transform: uppercase;
 `;
 
 const Divider = styled.div`
@@ -40,6 +41,7 @@ const StatsModalFooter = ({ closeAndReset }) => (
       <CountdownTimer />
     </FlexColumn>
     <Divider />
+
     <Button onClick={closeAndReset}>Reset Game</Button>
   </Container>
 );
