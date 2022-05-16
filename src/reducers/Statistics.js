@@ -1,12 +1,12 @@
-import { timeSinceMidnight } from "../utils";
-import { maxGuesses } from "../config";
+import { timeSinceMidnight } from '../utils';
+import { maxGuesses } from '../config';
 
 export const initialState = {
   stats: {
     Played: 0,
-    "Win %": 0,
-    "Current Streak": 0,
-    "Max Streak": 0,
+    'Win %': 0,
+    'Current Streak': 0,
+    'Max Streak': 0,
   },
   guesses: Array(maxGuesses)
     .fill(0)
@@ -16,20 +16,21 @@ export const initialState = {
     }, {}),
   gamesWon: 0,
   lastDatePlayed: -Infinity,
+  isFirstTimeUser: true,
 };
 
 export const initializer = (initialValue) => {
-  const local = JSON.parse(localStorage.getItem("statistics"));
+  const local = JSON.parse(localStorage.getItem('statistics'));
   return local || initialValue;
 };
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "updateStats":
+    case 'updateStats':
       const now = new Date().getTime();
       if (now - state.lastDatePlayed < timeSinceMidnight()) return state;
 
       const { guesses, isWon } = action.payload;
-      const { Played, "Max Streak": maxStreak, "Current Streak": currentStreak } = state.stats;
+      const { Played, 'Max Streak': maxStreak, 'Current Streak': currentStreak } = state.stats;
 
       const newPlayed = Played + 1;
       const newGamesWon = isWon ? state.gamesWon + 1 : state.gamesWon;
@@ -43,9 +44,9 @@ export const reducer = (state, action) => {
         ...state,
         stats: {
           Played: newPlayed,
-          "Win %": newWinPercentage,
-          "Current Streak": newStreak,
-          "Max Streak": newMaxStreak,
+          'Win %': newWinPercentage,
+          'Current Streak': newStreak,
+          'Max Streak': newMaxStreak,
         },
         guesses: {
           ...state.guesses,
@@ -54,6 +55,8 @@ export const reducer = (state, action) => {
         gamesWon: newGamesWon,
         lastDatePlayed: now,
       };
+    case 'firstTimeUser':
+      return { ...state, isFirstTimeUser: !state.isFirstTimeUser };
     default:
       return state;
   }

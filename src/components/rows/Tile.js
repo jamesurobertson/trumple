@@ -82,16 +82,17 @@ const TileContainer = styled.div`
       if (!hasLetter) return theme.borderColorSecondary;
       return !!backgroundColor ? backgroundColor : theme.borderColor;
     }};
-  ${({ hasLetter, isCurrentRow }) => hasLetter && isCurrentRow && onFillAnimation}
+  ${({ hasLetter, isCurrentRow, inBoard }) => inBoard && hasLetter && isCurrentRow && onFillAnimation}
   ${({ isRevealing }) => isRevealing && flipAnimation};
 `;
 
-const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentRow = false }) => (
+const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentRow = false, inBoard }) => (
   <TileContainer
     backgroundColor={backgroundColor}
     isRevealing={isRevealing}
     animationDelay={animationDelay}
     hasLetter={!!letter}
+    inBoard={inBoard}
     isCurrentRow={isCurrentRow}
   >
     <LetterContainer isRevealing={isRevealing} animationDelay={animationDelay}>

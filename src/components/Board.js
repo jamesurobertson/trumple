@@ -5,6 +5,7 @@ import EmptyRow from './rows/EmptyRow';
 import CurrentRow from './rows/CurrentRow';
 import WinningImageOverlay from './WinningImageOverlay';
 import { gridGap, maxGuesses, wordLength, tileSize } from '../config';
+import { useGameState } from '../contexts/GameStateContext';
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +25,19 @@ export const BoardGrid = styled.div`
   max-height: calc(100% - 20px);
 `;
 
-const Board = ({ completedRowValues, currentRowValue, isRevealing, hasError, gap = gridGap, showOverlayImg }) => {
+const Board = () => {
+  const { gameState } = useGameState();
+  const {
+    guesses: completedRowValues,
+    currentGuess: currentRowValue,
+    isRevealing,
+    toastMessage,
+    isWon,
+    showOverlayImg,
+  } = gameState;
+  const gameIsOver = completedRowValues.length === maxGuesses || isWon;
+  const hasError = toastMessage.length > 0 && !gameIsOver;
+
   const { filledRows, emptyRows } = useMemo(() => {
     const _filledRows = completedRowValues.map((rowValue, idx) => (
       <FilledRow key={idx} rowValue={rowValue} isRevealing={isRevealing && completedRowValues.length - 1 === idx} />
@@ -37,11 +50,13 @@ const Board = ({ completedRowValues, currentRowValue, isRevealing, hasError, gap
     return { emptyRows: _emptyRows, filledRows: _filledRows };
   }, [completedRowValues, isRevealing]);
 
-  const gridHeight = (maxGuesses - 1) * gridGap + maxGuesses * tileSize;
-  const gridWidth = (wordLength - 1) * gridGap + wordLength * tileSize;
+  const gapHeight = (maxGuesses - 1) * gridGap;
+  const gapWidth = (wordLength - 1) * gridGap;
+  const gridHeight = gapHeight + maxGuesses * tileSize;
+  const gridWidth = gapWidth + wordLength * tileSize;
   return (
     <Container>
-      <BoardGrid maxGuesses={maxGuesses} gridHeight={gridHeight} gridWidth={gridWidth} gridGap={gap}>
+      <BoardGrid maxGuesses={maxGuesses} gridHeight={gridHeight} gridWidth={gridWidth} gridGap={gridGap}>
         {showOverlayImg && <WinningImageOverlay />}
         {filledRows}
         {completedRowValues.length < maxGuesses && <CurrentRow rowValue={currentRowValue} hasError={hasError} />}

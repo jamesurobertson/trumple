@@ -15,17 +15,18 @@ export const initialState = {
 };
 
 export const initializer = (initialValue) => {
-  const stats = JSON.parse(localStorage.getItem('statistics'));
   const currentSavedVersion = JSON.parse(localStorage.getItem('trumple-version'));
-  const now = new Date().getTime();
 
   if (currentSavedVersion !== version) {
     localStorage.setItem('trumple-version', version);
     return initialValue;
   }
 
+  const stats = JSON.parse(localStorage.getItem('statistics'));
+  const now = new Date().getTime();
   if (stats && now - stats.lastDatePlayed > timeSinceMidnight()) return initialValue;
-  return { ...JSON.parse(localStorage.getItem('gameState')), showOverlayImg: false } || initialValue;
+  const local = JSON.parse(localStorage.getItem('gameState'));
+  return local ? { ...local, showOverlayImg: false } : initialValue;
 };
 
 export const reducer = (state, action) => {

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { SectionLabel } from "./StatsModal";
+import styled from 'styled-components';
+import { SectionLabel } from '.';
 
 const Container = styled.div`
   width: 80%;

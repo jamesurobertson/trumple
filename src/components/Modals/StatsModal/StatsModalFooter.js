@@ -1,6 +1,6 @@
 import { colors } from '../../../config';
 import styled from 'styled-components';
-import { SectionLabel } from './StatsModal';
+import { SectionLabel } from '.';
 import CountdownTimer from './CountdownTimer';
 
 const Container = styled.div`

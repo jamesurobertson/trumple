@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import styled from "styled-components";
+import { useEffect } from 'react';
+import styled from 'styled-components';
+import { useGameState } from '../contexts/GameStateContext';
 
 const Container = styled.div`
   display: flex;
@@ -16,15 +17,20 @@ const Container = styled.div`
   z-index: 100;
 `;
 
-const Toast = ({ message, clearToast }) => {
+const Toast = () => {
+  const {
+    gameState: { toastMessage },
+    clearToast,
+  } = useGameState();
+
   useEffect(() => {
-    if (message.length === 0) return;
+    if (toastMessage.length === 0) return;
     const timeout = setTimeout(clearToast, 1000);
     return () => clearTimeout(timeout);
-  }, [message, clearToast]);
+  }, [toastMessage, clearToast]);
 
-  if (!message) return null;
-  return <Container>{message}</Container>;
+  if (!toastMessage) return null;
+  return <Container>{toastMessage}</Container>;
 };
 
 export default Toast;

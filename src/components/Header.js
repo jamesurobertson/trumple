@@ -1,11 +1,11 @@
-import { useFirstTimeUser } from '../../contexts/FirstTimeUserContext';
 import styled from 'styled-components';
-import HelpIcon from '../icons/HelpIcon';
-import { useStats } from '../../contexts/StatsContext';
-import SunIcon from '../icons/SunIcon';
-import MoonIcon from '../icons/MoonIcon';
-import StatisticsIcon from '../icons/StatisticsIcon';
-import IconContainer from '../icons/Icon';
+import HelpIcon from './icons/HelpIcon';
+import SunIcon from './icons/SunIcon';
+import MoonIcon from './icons/MoonIcon';
+import StatisticsIcon from './icons/StatisticsIcon';
+import IconContainer from './icons/Icon';
+import { useTheme } from '../contexts/ThemeContext';
+import { useStats } from '../contexts/StatsContext';
 
 const Container = styled.header`
   width: 100%;
@@ -35,15 +35,14 @@ const RightIcons = styled.div`
   right: 10px;
   gap: 5px;
 `;
-const Header = ({ toggleTheme, theme }) => {
-  const { resetFirstTimeUser } = useFirstTimeUser();
-  const { toggleStatsModal } = useStats();
-  const handleResetFirstTimeUser = () => resetFirstTimeUser(true);
+const Header = () => {
+  const { toggleStatsModal, toggleHelpModal } = useStats();
+  const { theme, toggleTheme } = useTheme();
   const ThemeIcon = theme === 'light' ? SunIcon : MoonIcon;
   return (
     <Container>
       <LeftIcons>
-        <IconContainer title="Help" onClick={handleResetFirstTimeUser} Icon={HelpIcon} />
+        <IconContainer title="Help" onClick={toggleHelpModal} Icon={HelpIcon} />
       </LeftIcons>
       <Title>TRUMPLE</Title>
       <RightIcons>
