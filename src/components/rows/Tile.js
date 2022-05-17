@@ -1,4 +1,5 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled, { keyframes, css } from "styled-components";
+import { flipAnimationDurationMS } from "../../config";
 
 const flip = ({ theme }) => keyframes`
   0% {
@@ -10,6 +11,7 @@ const flip = ({ theme }) => keyframes`
   }
 
   50%{
+    background-color: ${theme.backgroundColor};
     color: ${theme.colorSecondary};
   }
 
@@ -19,9 +21,9 @@ const flip = ({ theme }) => keyframes`
   }
 `;
 
-const flipAnimation = ({ animationDelay }) =>
+const flipAnimation = ({ animationDelay, animationDuration }) =>
   css`
-    animation: ${flip} 350ms linear backwards;
+    animation: ${flip} ${`${animationDuration}ms`} linear backwards;
     animation-delay: ${animationDelay};
   `;
 
@@ -36,9 +38,9 @@ const offsetFlip = () => keyframes`
     }
 `;
 
-const offSetFlipAnimation = ({ animationDelay }) =>
+const offSetFlipAnimation = ({ animationDelay, animationDuration }) =>
   css`
-    animation: ${offsetFlip} 350ms linear backwards;
+    animation: ${offsetFlip} ${`${animationDuration}ms`} linear backwards;
     animation-delay: ${animationDelay};
   `;
 
@@ -91,14 +93,18 @@ const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentR
     backgroundColor={backgroundColor}
     isRevealing={isRevealing}
     animationDelay={animationDelay}
+    animationDuration={flipAnimationDurationMS}
     hasLetter={!!letter}
     inBoard={inBoard}
     isCurrentRow={isCurrentRow}
   >
-    <LetterContainer isRevealing={isRevealing} animationDelay={animationDelay}>
+    <LetterContainer
+      isRevealing={isRevealing}
+      animationDelay={animationDelay}
+      animationDuration={flipAnimationDurationMS}
+    >
       {letter}
     </LetterContainer>
   </TileContainer>
 );
-
 export default Tile;

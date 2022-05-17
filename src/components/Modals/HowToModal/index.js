@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Modal from '../Modal';
-import FilledRow from '../../rows/FilledRow';
-import { gridGap, tileSize, wordLength } from '../../../config';
-import { BoardGrid } from '../../Board';
-import { useStats } from '../../../contexts/StatsContext';
-import CurrentRow from '../../rows/CurrentRow';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import Modal from "../Modal";
+import FilledRow from "../../rows/FilledRow";
+import { gridGap, tileSize, wordLength } from "../../../config";
+import { BoardGrid } from "../../Board";
+import { useStats } from "../../../contexts/StatsContext";
+import CurrentRow from "../../rows/CurrentRow";
 
 export const Text = styled.div`
   margin: 10px 0;
@@ -26,24 +26,13 @@ export const LineBreak = styled.div`
 `;
 
 const HowToModal = () => {
-  const [isRevealing, setIsReavealing] = useState(false);
   const {
     statsState: { isFirstTimeUser },
   } = useStats();
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsReavealing(true), 500);
-    return () => clearTimeout(timeout);
-  }, []);
-
   const { toggleHelpModal } = useStats();
-  const gridWidth = (wordLength - 1) * gridGap + wordLength * tileSize;
 
-  const row = isRevealing ? (
-    <FilledRow rowValue={'WORDS'} isRevealing={isRevealing} answer={'WXXRS'} />
-  ) : (
-    <CurrentRow rowValue="WORDS" inBoard={false} />
-  );
+  const gridWidth = (wordLength - 1) * gridGap + wordLength * tileSize;
 
   if (!isFirstTimeUser) return null;
 
@@ -58,7 +47,7 @@ const HowToModal = () => {
         <LineBreak />
         <Text>Example</Text>
         <BoardGrid maxGuesses={1} gridHeight={tileSize} gridWidth={gridWidth}>
-          {row}
+          <FilledRow rowValue={"WORDS"} isRevealing={true} answer={"WXXRS"} />
         </BoardGrid>
         <Text>
           The letters <BoldSpan>W</BoldSpan> and <BoldSpan>S</BoldSpan> are in the word and in the correct spot.

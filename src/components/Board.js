@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
-import styled from 'styled-components';
-import FilledRow from './rows/FilledRow';
-import EmptyRow from './rows/EmptyRow';
-import CurrentRow from './rows/CurrentRow';
-import WinningImageOverlay from './WinningImageOverlay';
-import { gridGap, maxGuesses, wordLength, tileSize } from '../config';
-import { useGameState } from '../contexts/GameStateContext';
+import { useMemo } from "react";
+import styled from "styled-components";
+import FilledRow from "./rows/FilledRow";
+import EmptyRow from "./rows/EmptyRow";
+import CurrentRow from "./rows/CurrentRow";
+import WinningImageOverlay from "./WinningImageOverlay";
+import { gridGap, maxGuesses, wordLength, tileSize } from "../config";
+import { useGameState } from "../contexts/GameStateContext";
 
 const Container = styled.div`
   display: flex;
@@ -35,6 +35,7 @@ const Board = () => {
     isWon,
     showOverlayImg,
   } = gameState;
+
   const gameIsOver = completedRowValues.length === maxGuesses || isWon;
   const hasError = toastMessage.length > 0 && !gameIsOver;
 
@@ -43,17 +44,18 @@ const Board = () => {
       <FilledRow key={idx} rowValue={rowValue} isRevealing={isRevealing && completedRowValues.length - 1 === idx} />
     ));
 
-    const rows =
-      completedRowValues.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - completedRowValues.length)) : [];
-    const _emptyRows = rows.map((_, idx) => <EmptyRow key={idx} />);
+    const _emptyRows = (
+      completedRowValues.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - completedRowValues.length)) : []
+    ).map((_, idx) => <EmptyRow key={idx} />);
 
     return { emptyRows: _emptyRows, filledRows: _filledRows };
   }, [completedRowValues, isRevealing]);
 
-  const gapHeight = (maxGuesses - 1) * gridGap;
-  const gapWidth = (wordLength - 1) * gridGap;
-  const gridHeight = gapHeight + maxGuesses * tileSize;
-  const gridWidth = gapWidth + wordLength * tileSize;
+  const totalGapHeight = (maxGuesses - 1) * gridGap;
+  const gridHeight = totalGapHeight + maxGuesses * tileSize;
+
+  const totalGapWidth = (wordLength - 1) * gridGap;
+  const gridWidth = totalGapWidth + wordLength * tileSize;
   return (
     <Container>
       <BoardGrid maxGuesses={maxGuesses} gridHeight={gridHeight} gridWidth={gridWidth} gridGap={gridGap}>

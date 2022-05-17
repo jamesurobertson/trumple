@@ -1,7 +1,7 @@
-import styled, { keyframes, css } from 'styled-components';
-import Tile from './Tile';
-import { guessColor } from '../../utils';
-import { answerWord, wordLength } from '../../config';
+import styled, { keyframes, css } from "styled-components";
+import Tile from "./Tile";
+import { guessColor } from "../../utils";
+import { answerWord, flipAnimationDelay, wordLength } from "../../config";
 
 const shake = keyframes`
     10%, 90% {
@@ -40,7 +40,7 @@ const FilledRow = ({ rowValue, isRevealing, answer = answerWord }) => {
       {[...rowValue].map((char, idx) => (
         <Tile
           key={idx}
-          animationDelay={`${idx * 350}ms`}
+          animationDelay={`${idx * flipAnimationDelay}ms`}
           isRevealing={isRevealing}
           backgroundColor={backgroundColors[idx]}
           letter={char}
