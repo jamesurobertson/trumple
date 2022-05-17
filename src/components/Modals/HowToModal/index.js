@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Modal from "../Modal";
 import FilledRow from "../../rows/FilledRow";
 import { gridGap, tileSize, wordLength } from "../../../config";
 import { BoardGrid } from "../../Board";
 import { useStats } from "../../../contexts/StatsContext";
-import CurrentRow from "../../rows/CurrentRow";
 
 export const Text = styled.div`
   margin: 10px 0;
