@@ -6,6 +6,7 @@ import StatisticsIcon from './icons/StatisticsIcon';
 import IconContainer from './icons/Icon';
 import { useTheme } from '../contexts/ThemeContext';
 import { useStats } from '../contexts/StatsContext';
+import { title } from '../config';
 
 const Container = styled.header`
   width: 100%;
@@ -17,6 +18,7 @@ const Container = styled.header`
 const Title = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.borderColor};
   font-size: 2.5rem;
+  text-transform: uppercase;
 `;
 
 const LeftIcons = styled.div`
@@ -44,7 +46,7 @@ const Header = () => {
       <LeftIcons>
         <IconContainer title="Help" onClick={toggleHelpModal} Icon={HelpIcon} />
       </LeftIcons>
-      <Title>TRUMPLE</Title>
+      <Title>{title}</Title>
       <RightIcons>
         <IconContainer title="Statistics" onClick={toggleStatsModal} Icon={StatisticsIcon} />
         <IconContainer title="Toggle Theme" onClick={toggleTheme} Icon={ThemeIcon} />

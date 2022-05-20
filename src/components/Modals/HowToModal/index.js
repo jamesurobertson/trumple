@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import Modal from "../Modal";
-import FilledRow from "../../rows/FilledRow";
-import { gridGap, tileSize, wordLength } from "../../../config";
-import { BoardGrid } from "../../Board";
-import { useStats } from "../../../contexts/StatsContext";
+import styled from 'styled-components';
+import Modal from '../Modal';
+import FilledRow from '../../rows/FilledRow';
+import { gridGap, tileSize, title, wordLength } from '../../../config';
+import { BoardGrid } from '../../Board';
+import { useStats } from '../../../contexts/StatsContext';
 
 export const Text = styled.div`
   margin: 10px 0;
@@ -38,14 +38,14 @@ const HowToModal = () => {
     <Modal onClose={toggleHelpModal} title="How To Play">
       <div>
         <Text>
-          Guess the <BoldSpan>TRUMPLE</BoldSpan> in six tries.
+          Guess the <BoldSpan>{title}</BoldSpan> in six tries.
         </Text>
         <Text> Each guess must be a valid five-letter word. Hit the enter button to submit. </Text>
         <Text>After each guess, the color of the tiles will change to show how close your guess was to the word.</Text>
         <LineBreak />
         <Text>Example</Text>
         <BoardGrid maxGuesses={1} gridHeight={tileSize} gridWidth={gridWidth}>
-          <FilledRow rowValue={"WORDS"} isRevealing={true} answer={"WXXRS"} />
+          <FilledRow rowValue={'WORDS'} isRevealing={true} answer={'WXXRS'} />
         </BoardGrid>
         <Text>
           The letters <BoldSpan>W</BoldSpan> and <BoldSpan>S</BoldSpan> are in the word and in the correct spot.
@@ -57,7 +57,7 @@ const HowToModal = () => {
           The letters <BoldSpan>O</BoldSpan> and <BoldSpan>D</BoldSpan> are not in the word in any spot.
         </Text>
         <LineBreak />
-        <BoldText>A new TRUMPLE will be available each day!</BoldText>
+        <BoldText>A new {title} will be available each day!</BoldText>
       </div>
     </Modal>
   );
