@@ -1,11 +1,11 @@
-import { useMemo } from "react";
-import styled from "styled-components";
-import FilledRow from "./rows/FilledRow";
-import EmptyRow from "./rows/EmptyRow";
-import CurrentRow from "./rows/CurrentRow";
-import WinningImageOverlay from "./WinningImageOverlay";
-import { gridGap, maxGuesses, wordLength, tileSize } from "../config";
-import { useGameState } from "../contexts/GameStateContext";
+import { useMemo } from 'react';
+import styled from 'styled-components';
+import FilledRow from './rows/FilledRow';
+import EmptyRow from './rows/EmptyRow';
+import CurrentRow from './rows/CurrentRow';
+import WinningImageOverlay from './WinningImageOverlay';
+import { gridGap, maxGuesses, wordLength, tileSize } from '../config';
+import { useGameState } from '../contexts/GameStateContext';
 
 const Container = styled.div`
   display: flex;
@@ -27,29 +27,22 @@ export const BoardGrid = styled.div`
 
 const Board = () => {
   const { gameState } = useGameState();
-  const {
-    guesses: completedRowValues,
-    currentGuess: currentRowValue,
-    isRevealing,
-    toastMessage,
-    isWon,
-    showOverlayImg,
-  } = gameState;
+  const { guesses, currentGuess, isRevealing, toastMessage, isWon, showOverlayImg } = gameState;
 
-  const gameIsOver = completedRowValues.length === maxGuesses || isWon;
+  const gameIsOver = guesses.length === maxGuesses || isWon;
   const hasError = toastMessage.length > 0 && !gameIsOver;
 
   const { filledRows, emptyRows } = useMemo(() => {
-    const _filledRows = completedRowValues.map((rowValue, idx) => (
-      <FilledRow key={idx} rowValue={rowValue} isRevealing={isRevealing && completedRowValues.length - 1 === idx} />
+    const _filledRows = guesses.map((guess, idx) => (
+      <FilledRow key={idx} guess={guess} isRevealing={isRevealing && guesses.length - 1 === idx} />
     ));
 
-    const _emptyRows = (
-      completedRowValues.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - completedRowValues.length)) : []
-    ).map((_, idx) => <EmptyRow key={idx} />);
+    const _emptyRows = (guesses.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - guesses.length)) : []).map(
+      (_, idx) => <EmptyRow key={idx} />
+    );
 
     return { emptyRows: _emptyRows, filledRows: _filledRows };
-  }, [completedRowValues, isRevealing]);
+  }, [guesses, isRevealing]);
 
   const totalGapHeight = (maxGuesses - 1) * gridGap;
   const gridHeight = totalGapHeight + maxGuesses * tileSize;
@@ -61,7 +54,7 @@ const Board = () => {
       <BoardGrid maxGuesses={maxGuesses} gridHeight={gridHeight} gridWidth={gridWidth} gridGap={gridGap}>
         {showOverlayImg && <WinningImageOverlay />}
         {filledRows}
-        {completedRowValues.length < maxGuesses && <CurrentRow rowValue={currentRowValue} hasError={hasError} />}
+        {guesses.length < maxGuesses && <CurrentRow currentGuess={currentGuess} hasError={hasError} />}
         {emptyRows}
       </BoardGrid>
     </Container>

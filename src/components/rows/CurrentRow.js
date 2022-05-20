@@ -2,9 +2,9 @@ import { wordLength } from '../../config';
 import { RowContainer } from './FilledRow';
 import Tile from './Tile';
 
-const CurrentRow = ({ rowValue, hasError, inBoard = true }) => {
-  const filledCells = [...rowValue];
-  const emptyCells = Array.from(Array(wordLength - rowValue.length));
+const CurrentRow = ({ currentGuess, hasError, inBoard = true }) => {
+  const filledCells = [...currentGuess];
+  const emptyCells = Array.from(Array(wordLength - currentGuess.length));
   const row = [...filledCells, ...emptyCells];
   return (
     <RowContainer shakeErr={hasError} length={wordLength}>
