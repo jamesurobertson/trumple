@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Modal from '../Modal';
 import FilledRow from '../../rows/FilledRow';
-import { gridGap, title, wordLength } from '../../../config';
+import { gridGap, tileSize, title, wordLength } from '../../../config';
 import { BoardGrid } from '../../Board';
 import { useStats } from '../../../contexts/StatsContext';
 
@@ -30,7 +30,6 @@ const HowToModal = () => {
 
   const { toggleHelpModal } = useStats();
 
-  const tileSize = 52;
   const gridWidth = (wordLength - 1) * gridGap + wordLength * tileSize;
 
   if (!isFirstTimeUser) return null;

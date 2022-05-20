@@ -4,7 +4,7 @@ module.exports = {
   maxGuesses: 6,
   wordLength: 5,
   gridGap: 5,
-  tileSize: 62,
+  tileSize: 52,
   flipAnimationDurationMS: 600,
   flipAnimationDelay: 400,
   letters: [
