@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Modal from '../Modal';
 import FilledRow from '../../rows/FilledRow';
-import { gridGap, tileSize, title, wordLength } from '../../../config';
+import { gridGap, title, wordLength } from '../../../config';
 import { BoardGrid } from '../../Board';
 import { useStats } from '../../../contexts/StatsContext';
 
@@ -30,6 +30,7 @@ const HowToModal = () => {
 
   const { toggleHelpModal } = useStats();
 
+  const tileSize = 52;
   const gridWidth = (wordLength - 1) * gridGap + wordLength * tileSize;
 
   if (!isFirstTimeUser) return null;
@@ -45,7 +46,7 @@ const HowToModal = () => {
         <LineBreak />
         <Text>Example</Text>
         <BoardGrid maxGuesses={1} gridHeight={tileSize} gridWidth={gridWidth}>
-          <FilledRow rowValue={'WORDS'} isRevealing={true} answer={'WXXRS'} />
+          <FilledRow guess={'WORDS'} isRevealing={true} answer={'WXXRS'} />
         </BoardGrid>
         <Text>
           The letters <BoldSpan>W</BoldSpan> and <BoldSpan>S</BoldSpan> are in the word and in the correct spot.

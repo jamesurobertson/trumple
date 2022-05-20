@@ -1,7 +1,7 @@
-import styled, { keyframes, css } from "styled-components";
-import { flipAnimationDurationMS } from "../../config";
+import styled, { keyframes, css } from 'styled-components';
+import { flipAnimationDurationMS } from '../../config';
 
-const flip = ({ theme }) => keyframes`
+const flip = ({ theme, backgroundColor }) => keyframes`
   0% {
     transform: rotateX(0deg);
     -webkit-transform: rotateX(0deg);
@@ -12,6 +12,12 @@ const flip = ({ theme }) => keyframes`
 
   50%{
     background-color: ${theme.backgroundColor};
+    border-color: ${theme.borderColor};
+    color: ${theme.colorSecondary};
+  }
+  50.1% {
+    background-color: ${backgroundColor};
+    border-color: ${backgroundColor};
     color: ${theme.colorSecondary};
   }
 
