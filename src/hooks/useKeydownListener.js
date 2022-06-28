@@ -14,6 +14,7 @@ const useKeydownListener = ({ onEnter, onDelete, onAddLetter }) => {
 
       if (e.code === "Backspace") {
         onDelete();
+
         return;
       }
       const key = e.key.toUpperCase();
@@ -23,9 +24,7 @@ const useKeydownListener = ({ onEnter, onDelete, onAddLetter }) => {
     };
 
     window.addEventListener("keydown", listener);
-    return () => {
-      window.removeEventListener("keydown", listener);
-    };
+    return () => window.removeEventListener("keydown", listener);
   }, [onEnter, onDelete, onAddLetter]);
 };
 

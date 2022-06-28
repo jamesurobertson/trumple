@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import Board from './Board';
-import Keyboard from './Keyboard';
+import styled from "styled-components";
+import Board from "./Board";
+import Keyboard from "./Keyboard";
 
 const Container = styled.div`
   display: flex;

@@ -1,12 +1,12 @@
-import styled from 'styled-components';
-import HelpIcon from './icons/HelpIcon';
-import SunIcon from './icons/SunIcon';
-import MoonIcon from './icons/MoonIcon';
-import StatisticsIcon from './icons/StatisticsIcon';
-import IconContainer from './icons/Icon';
-import { useTheme } from '../contexts/ThemeContext';
-import { useStats } from '../contexts/StatsContext';
-import { title } from '../config';
+import styled from "styled-components";
+import HelpIcon from "./icons/HelpIcon";
+import SunIcon from "./icons/SunIcon";
+import MoonIcon from "./icons/MoonIcon";
+import StatisticsIcon from "./icons/StatisticsIcon";
+import IconContainer from "./icons/Icon";
+import { useTheme } from "../contexts/ThemeContext";
+import { useStats } from "../contexts/StatsContext";
+import { title } from "../config";
 
 const Container = styled.header`
   width: 100%;
@@ -40,7 +40,8 @@ const RightIcons = styled.div`
 const Header = () => {
   const { toggleStatsModal, toggleHelpModal } = useStats();
   const { theme, toggleTheme } = useTheme();
-  const ThemeIcon = theme === 'light' ? SunIcon : MoonIcon;
+
+  const ThemeIcon = theme === "light" ? SunIcon : MoonIcon;
   return (
     <Container>
       <LeftIcons>

@@ -1,9 +1,10 @@
-import styled from 'styled-components';
-import { useStats } from '../../../contexts/StatsContext';
-import Modal from '../Modal';
-import GuessDistribution from './GuessDistribution';
-import Statistics from './Statistics';
-import StatsModalFooter from './StatsModalFooter';
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useStats } from "../../../contexts/StatsContext";
+import Modal from "../Modal";
+import GuessDistribution from "./GuessDistribution";
+import Statistics from "./Statistics";
+import StatsModalFooter from "./StatsModalFooter";
 
 export const SectionLabel = styled.div`
   font-weight: bold;

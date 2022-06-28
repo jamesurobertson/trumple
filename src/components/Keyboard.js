@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
-import { keyboardLetters, colors } from '../config';
-import { useGameState } from '../contexts/GameStateContext';
-import useKeydownListener from '../hooks/useKeydownListener';
-import Backspace from './icons/Backspace';
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import { keyboardLetters, colors } from "../config";
+import { useGameState } from "../contexts/GameStateContext";
+import useKeydownListener from "../hooks/useKeydownListener";
+import Backspace from "./icons/Backspace";
 
 const Container = styled.div`
   height: auto;
@@ -26,7 +26,7 @@ const LetterButton = styled.button`
   user-select: none;
   text-transform: uppercase;
   background-color: ${({ letterColor }) => letterColor};
-  color: ${({ letterColor }) => (letterColor === colors.unguessed ? 'black' : 'white')};
+  color: ${({ letterColor }) => (letterColor === colors.unguessed ? "black" : "white")};
   &:last-child {
     margin: 0;
   }
@@ -60,6 +60,7 @@ const Keyboard = () => {
     addWord,
     deleteLetter,
   } = useGameState();
+
   useKeydownListener({ onEnter: addWord, onDelete: deleteLetter, onAddLetter: addLetter });
 
   const keys = useMemo(() => {
