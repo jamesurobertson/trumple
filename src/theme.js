@@ -1,8 +1,8 @@
 export const lightTheme = {
-  color: "black",
+  color: "#202124",
   colorSecondary: "white",
   backgroundColor: "white",
-  borderColor: "black",
+  borderColor: "#202124",
   borderColorSecondary: "#787c7e",
   modalBackgroundColor: "white",
   modalBackdropColor: "rgba(255, 255, 255, .5)",
@@ -10,9 +10,9 @@ export const lightTheme = {
 export const darkTheme = {
   color: "white",
   colorSecondary: "white",
-  backgroundColor: "black",
+  backgroundColor: "#202124",
   borderColor: "#d3d6da",
   borderColorSecondary: "#787c7e",
-  modalBackgroundColor: "#121213",
-  modalBackdropColor: "rgba(0, 0, 0, .5)",
+  modalBackgroundColor: "#202124",
+  modalBackdropColor: "rgba(32, 33, 36, .5)",
 };
