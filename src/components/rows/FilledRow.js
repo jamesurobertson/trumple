@@ -1,7 +1,7 @@
 import styled, { keyframes, css } from 'styled-components';
 import Tile from './Tile';
 import { guessColor } from '../../utils';
-import { answerWord, flipAnimationDelay, wordLength } from '../../config';
+import { answerWord, flipAnimationDelay, wordLength, winAnimationDelay } from '../../config';
 
 const shake = keyframes`
     10%, 90% {
@@ -33,7 +33,7 @@ export const RowContainer = styled.div`
   ${({ shakeErr }) => shakeErr && animation}
 `;
 
-const FilledRow = ({ guess, isRevealing, answer = answerWord }) => {
+const FilledRow = ({ guess, isRevealing, answer = answerWord, triggerWinAnimation }) => {
   const backgroundColors = [...guess].map((_, idx) => guessColor(answer, guess, idx));
   return (
     <RowContainer length={wordLength}>
@@ -44,6 +44,8 @@ const FilledRow = ({ guess, isRevealing, answer = answerWord }) => {
           isRevealing={isRevealing}
           backgroundColor={backgroundColors[idx]}
           letter={char}
+          winAnimationDelay={`${idx * winAnimationDelay}ms`}
+          triggerWinAnimation={guess === answer ? triggerWinAnimation : null}
         ></Tile>
       ))}
     </RowContainer>
