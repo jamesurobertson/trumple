@@ -20,6 +20,19 @@ $> npm run start
 
 The 5,757 word list comes from Donald Knuth's [The Stanford Graphbase](https://www-cs-faculty.stanford.edu/~knuth/sgb.html)
 
+### Configuration
+
+In the [config](https://github.com/jamesurobertson/trumple/blob/master/src/config.js) file there are many configurations you can set up which will automatically take effect. Inlcuding:
+
+- Max guesses (# of rows)
+- Word Length
+- Grid gap and tile size
+- Flip and win animation duration and delay.
+- Title displayed in the Header.
+- Colors for correct, present, absent, and unguessed tiles. For theme colors you can navigate to [theme.js](https://github.com/jamesurobertson/trumple/blob/master/src/theme.js)
+
+If you change the word length you will need to provide a new list of words in [words.js](https://github.com/jamesurobertson/trumple/blob/master/src/words.js). I have only included 5 letter words.
+
 ### Contributing
 
 Feel free to open an issue or submit a PR for review.
