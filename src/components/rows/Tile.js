@@ -1,5 +1,32 @@
 import styled, { keyframes, css } from 'styled-components';
-import { flipAnimationDurationMS } from '../../config';
+import { flipAnimationDurationMS, winAnimationDurationMS } from '../../config';
+
+const onWin = () => keyframes`
+  0% {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+  }
+
+  40%{
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+  }
+  80% {
+    transform: translateY(10%);
+    -webkit-transform: translateY(10%);
+  }
+
+  100% {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+  }
+`;
+
+const winAnimation = ({ winAnimationDelay, winAnimationDuration }) =>
+css`
+    animation: ${onWin} ${`${winAnimationDuration}ms`} ease-in-out;
+    animation-delay: ${winAnimationDelay};
+  `
 
 const flip = ({ theme, backgroundColor }) => keyframes`
   0% {
@@ -91,18 +118,22 @@ const TileContainer = styled.div`
       return !!backgroundColor ? backgroundColor : theme.borderColor;
     }};
   ${({ hasLetter, isCurrentRow, inBoard }) => inBoard && hasLetter && isCurrentRow && onFillAnimation}
-  ${({ isRevealing }) => isRevealing && flipAnimation};
+  ${({ isRevealing, triggerWinAnimation }) => isRevealing && !triggerWinAnimation && flipAnimation};
+  ${({ triggerWinAnimation }) => triggerWinAnimation && winAnimation};
 `;
 
-const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentRow = false, inBoard }) => (
+const Tile = ({ backgroundColor, letter, isRevealing, animationDelay, isCurrentRow = false, inBoard, triggerWinAnimation, winAnimationDelay }) => (
   <TileContainer
     backgroundColor={backgroundColor}
     isRevealing={isRevealing}
     animationDelay={animationDelay}
     animationDuration={flipAnimationDurationMS}
+    winAnimationDelay={winAnimationDelay}
+    winAnimationDuration={winAnimationDurationMS}
     hasLetter={!!letter}
     inBoard={inBoard}
     isCurrentRow={isCurrentRow}
+    triggerWinAnimation={triggerWinAnimation}
   >
     <LetterContainer
       isRevealing={isRevealing}

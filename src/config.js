@@ -9,6 +9,8 @@ module.exports = {
   tileSize: 52,
   flipAnimationDurationMS: 600,
   flipAnimationDelay: 400,
+  winAnimationDurationMS: 350,
+  winAnimationDelay: 75,
   letters: [
     "A",
     "B",

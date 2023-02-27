@@ -27,14 +27,14 @@ export const BoardGrid = styled.div`
 
 const Board = () => {
   const { gameState } = useGameState();
-  const { guesses, currentGuess, isRevealing, toastMessage, isWon, showOverlayImg } = gameState;
+  const { guesses, currentGuess, isRevealing, toastMessage, isWon, triggerWinAnimation } = gameState;
 
   const gameIsOver = guesses.length === maxGuesses || isWon;
   const hasError = toastMessage.length > 0 && !gameIsOver;
 
   const { filledRows, emptyRows } = useMemo(() => {
     const _filledRows = guesses.map((guess, idx) => (
-      <FilledRow key={idx} guess={guess} isRevealing={isRevealing && guesses.length - 1 === idx} />
+      <FilledRow triggerWinAnimation={triggerWinAnimation} key={idx} guess={guess} isRevealing={isRevealing && guesses.length - 1 === idx} />
     ));
 
     const _emptyRows = (guesses.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - guesses.length)) : []).map(
@@ -42,7 +42,7 @@ const Board = () => {
     );
 
     return { emptyRows: _emptyRows, filledRows: _filledRows };
-  }, [guesses, isRevealing]);
+  }, [guesses, isRevealing, triggerWinAnimation]);
 
   const totalGapHeight = (maxGuesses - 1) * gridGap;
   const gridHeight = totalGapHeight + maxGuesses * tileSize;
@@ -52,7 +52,7 @@ const Board = () => {
   return (
     <Container>
       <BoardGrid maxGuesses={maxGuesses} gridHeight={gridHeight} gridWidth={gridWidth} gridGap={gridGap}>
-        {showOverlayImg && <WinningImageOverlay />}
+        {triggerWinAnimation && <WinningImageOverlay />}
         {filledRows}
         {guesses.length < maxGuesses && <CurrentRow currentGuess={currentGuess} hasError={hasError} />}
         {emptyRows}

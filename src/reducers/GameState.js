@@ -11,7 +11,7 @@ export const initialState = {
     map[letter] = colors.unguessed;
     return map;
   }, {}),
-  showOverlayImg: false,
+  triggerWinAnimation: false,
 };
 
 export const initializer = (initialValue) => {
@@ -26,7 +26,7 @@ export const initializer = (initialValue) => {
   const now = new Date().getTime();
   if (stats && now - stats.lastDatePlayed > timeSinceMidnight()) return initialValue;
   const local = JSON.parse(localStorage.getItem("gameState"));
-  return local ? { ...local, showOverlayImg: false } : initialValue;
+  return local ? { ...local, triggerWinAnimation: false } : initialValue;
 };
 
 export const reducer = (state, action) => {
@@ -74,7 +74,7 @@ export const reducer = (state, action) => {
         ...state,
         isRevealing: false,
         keyboardColors: newColors,
-        showOverlayImg: state.isWon,
+        triggerWinAnimation: state.isWon,
       };
     case "clearToast":
       return { ...state, toastMessage: "" };
