@@ -18,13 +18,12 @@ export const initializer = (initialValue) => {
   const currentSavedVersion = JSON.parse(localStorage.getItem("trumple-version"));
 
   if (currentSavedVersion !== version) {
-    localStorage.setItem("trumple-version", version);
     return initialValue;
   }
 
   const stats = JSON.parse(localStorage.getItem("statistics"));
   const now = new Date().getTime();
-  if (stats && now - stats.lastDatePlayed > timeSinceMidnight()) return initialValue;
+  if (stats && now - stats.timestamps?.lastPlayed > timeSinceMidnight()) return initialValue;
   const local = JSON.parse(localStorage.getItem("gameState"));
   return local ? { ...local, triggerWinAnimation: false } : initialValue;
 };

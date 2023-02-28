@@ -62,6 +62,22 @@ export const timeSinceMidnight = (date = new Date()) => {
   return msSinceMidnight;
 };
 
+export const isYesterday = (date) => {
+  if (date == null) return false;
+  if (!(date instanceof Date)) {
+    throw new Error('Invalid argument: you must provide a "date" instance');
+  }
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  return (
+    date.getDate() === yesterday.getDate() &&
+    date.getMonth() === yesterday.getMonth() &&
+    date.getFullYear() === yesterday.getFullYear()
+  );
+};
+
 export const isValidWord = (word) => {
   if (word.length < wordLength) return [false, "Not enough letters."];
   if (!words.includes(word.toLowerCase())) {
