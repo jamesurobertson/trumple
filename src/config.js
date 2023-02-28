@@ -50,5 +50,5 @@ module.exports = {
     absent: "#8b8c89",
     unguessed: "#d3d6da",
   },
-  version: 1.1,
+  version: 1.2,
 };

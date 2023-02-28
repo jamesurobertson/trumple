@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
-import styled from 'styled-components';
-import FilledRow from './rows/FilledRow';
-import EmptyRow from './rows/EmptyRow';
-import CurrentRow from './rows/CurrentRow';
-import WinningImageOverlay from './WinningImageOverlay';
-import { gridGap, maxGuesses, wordLength, tileSize } from '../config';
-import { useGameState } from '../contexts/GameStateContext';
+import { useMemo } from "react";
+import styled from "styled-components";
+import FilledRow from "./rows/FilledRow";
+import EmptyRow from "./rows/EmptyRow";
+import CurrentRow from "./rows/CurrentRow";
+import WinningImageOverlay from "./WinningImageOverlay";
+import { gridGap, maxGuesses, wordLength, tileSize } from "../config";
+import { useGameState } from "../contexts/GameStateContext";
 
 const Container = styled.div`
   display: flex;
@@ -34,7 +34,12 @@ const Board = () => {
 
   const { filledRows, emptyRows } = useMemo(() => {
     const _filledRows = guesses.map((guess, idx) => (
-      <FilledRow triggerWinAnimation={triggerWinAnimation} key={idx} guess={guess} isRevealing={isRevealing && guesses.length - 1 === idx} />
+      <FilledRow
+        key={idx}
+        triggerWinAnimation={triggerWinAnimation}
+        guess={guess}
+        isRevealing={isRevealing && guesses.length - 1 === idx}
+      />
     ));
 
     const _emptyRows = (guesses.length < maxGuesses - 1 ? Array.from(Array(maxGuesses - 1 - guesses.length)) : []).map(
