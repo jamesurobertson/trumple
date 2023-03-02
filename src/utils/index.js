@@ -64,12 +64,11 @@ export const timeSinceMidnight = (date = new Date()) => {
 
 export const isYesterday = (date) => {
   if (date == null) return false;
-  if (!(date instanceof Date)) {
-    throw new Error('Invalid argument: you must provide a "date" instance');
-  }
 
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
+
+  date = new Date(date);
 
   return (
     date.getDate() === yesterday.getDate() &&
