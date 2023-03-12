@@ -28,6 +28,12 @@ export const initializer = (initialValue) => {
   return local ? { ...local, triggerWinAnimation: false } : initialValue;
 };
 
+const getColorForCharacter = ({ char, i, answerWord, colors }) => {
+  if (answerWord[i] === char) return colors.correct;
+  if (answerWord.includes(char)) return colors.present;
+  return colors.absent;
+};
+
 export const reducer = (state, action) => {
   switch (action.type) {
     case "addLetter":
@@ -61,14 +67,9 @@ export const reducer = (state, action) => {
       const lastWord = state.guesses[state.guesses.length - 1];
       [...lastWord].forEach((char, i) => {
         if (newColors[char] === colors.correct) return;
-        if (answerWord[i] === char) {
-          newColors[char] = colors.correct;
-        } else if (answerWord.includes(char)) {
-          newColors[char] = colors.present;
-        } else {
-          newColors[char] = colors.absent;
-        }
-      }, {});
+        const color = getColorForCharacter({ char, i, answerWord, colors });
+        newColors[char] = color;
+      });
       return {
         ...state,
         isRevealing: false,

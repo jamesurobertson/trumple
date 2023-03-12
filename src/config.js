@@ -1,8 +1,11 @@
 const { words } = require("./words");
 
+const todaysWord = words[Math.floor(new Date().setHours(0, 0, 0, 0) / 8.64e7) % words.length];
+
 module.exports = {
   title: "Trumple",
-  answerWord: words[Math.floor(new Date().setHours(0, 0, 0, 0) / 8.64e7) % words.length].toUpperCase(),
+  answerWord: todaysWord.toUpperCase(),
+  gameNumber: words.indexOf(todaysWord),
   maxGuesses: 6,
   wordLength: 5,
   gridGap: 5,
@@ -49,6 +52,11 @@ module.exports = {
     present: "#f9c74f",
     absent: "#8b8c89",
     unguessed: "#d3d6da",
+  },
+  emojiMap: {
+    "#40916c": "🟩",
+    "#f9c74f": "🟨",
+    "#8b8c89": "⬛",
   },
   version: 1.2,
 };

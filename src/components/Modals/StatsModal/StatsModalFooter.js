@@ -1,7 +1,9 @@
-import { colors } from '../../../config';
-import styled from 'styled-components';
-import { SectionLabel } from '.';
-import CountdownTimer from './CountdownTimer';
+import { colors } from "../../../config";
+import styled from "styled-components";
+import { SectionLabel } from ".";
+import CountdownTimer from "./CountdownTimer";
+import Share from "../../icons/Share";
+import Reset from "../../icons/Reset";
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +20,8 @@ const FlexColumn = styled.div`
 
 const Button = styled.button`
   display: flex;
+  gap: 5px;
+  align-items: center;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -34,15 +38,22 @@ const Divider = styled.div`
   margin: 0 10px;
 `;
 
-const StatsModalFooter = ({ closeAndReset }) => (
+const StatsModalFooter = ({ closeAndReset, copyGameResultsToClipboard }) => (
   <Container>
     <FlexColumn>
       <SectionLabel>Next Trumple</SectionLabel>
       <CountdownTimer />
     </FlexColumn>
     <Divider />
-
-    <Button onClick={closeAndReset}>Reset Game</Button>
+    <Button onClick={copyGameResultsToClipboard}>
+      Share
+      <Share />
+    </Button>
+    <Divider />
+    <Button onClick={closeAndReset}>
+      Reset Game
+      <Reset />
+    </Button>
   </Container>
 );
 

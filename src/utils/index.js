@@ -1,7 +1,7 @@
-import { wordLength, colors } from "../config";
+import { wordLength, colors, maxGuesses, answerWord, emojiMap, gameNumber } from "../config";
 import { words } from "../words";
 
-export function guessColor(word, guess, index) {
+export const guessColor = (word, guess, index) => {
   // correct (matched) index letter
   if (guess[index] === word[index]) {
     return colors.correct;
@@ -34,7 +34,11 @@ export function guessColor(word, guess, index) {
 
   // otherwise not any
   return colors.absent;
-}
+};
+
+export const isGameOver = ({ guesses, isWon }) => {
+  return guesses.length === maxGuesses || isWon;
+};
 
 export const timeTillMidnight = () => {
   const now = new Date();
@@ -83,4 +87,12 @@ export const isValidWord = (word) => {
     return [false, "Not in word list."];
   }
   return [true];
+};
+
+export const constructClipboardString = ({ guesses, isWon }) => {
+  const tileColors = [...guesses].map((guess) => {
+    return [...guess].map((_, idx) => guessColor(answerWord, guess, idx));
+  });
+  const emojiString = tileColors.map((colors) => colors.map((color) => emojiMap[color]).join("")).join("\n");
+  return `Trumple ${gameNumber} ${isWon ? guesses.length : "x"}/${maxGuesses}\n\n${emojiString}`;
 };

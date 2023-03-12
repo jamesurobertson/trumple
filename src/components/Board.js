@@ -6,6 +6,7 @@ import CurrentRow from "./rows/CurrentRow";
 import WinningImageOverlay from "./WinningImageOverlay";
 import { gridGap, maxGuesses, wordLength, tileSize } from "../config";
 import { useGameState } from "../contexts/GameStateContext";
+import { isGameOver } from "../utils";
 
 const Container = styled.div`
   display: flex;
@@ -27,10 +28,9 @@ export const BoardGrid = styled.div`
 
 const Board = () => {
   const { gameState } = useGameState();
-  const { guesses, currentGuess, isRevealing, toastMessage, isWon, triggerWinAnimation } = gameState;
+  const { guesses, currentGuess, isRevealing, toastMessage, triggerWinAnimation } = gameState;
 
-  const gameIsOver = guesses.length === maxGuesses || isWon;
-  const hasError = toastMessage.length > 0 && !gameIsOver;
+  const hasError = toastMessage.length > 0 && !isGameOver(gameState);
 
   const { filledRows, emptyRows } = useMemo(() => {
     const _filledRows = guesses.map((guess, idx) => (

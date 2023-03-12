@@ -30,6 +30,7 @@ In the [config](https://github.com/jamesurobertson/trumple/blob/master/src/confi
 - Flip and win animation duration and delay.
 - Title displayed in the Header.
 - Colors for correct, present, absent, and unguessed tiles. For theme colors you can navigate to [theme.js](https://github.com/jamesurobertson/trumple/blob/master/src/theme.js)
+- If you change the colors, be sure to change the emojiMap as well or the shareable str won't work properly.
 
 If you change the word length you will need to provide a new list of words in [words.js](https://github.com/jamesurobertson/trumple/blob/master/src/words.js). I have only included 5 letter words.
 
