@@ -10,7 +10,7 @@ import { isGameOver } from "../utils";
 
 const Container = styled.div`
   display: flex;
-  flex-grow: 1;
+  /* flex-grow: 1;   */
   justify-content: center;
   align-items: center;
 `;

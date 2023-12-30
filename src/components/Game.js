@@ -5,6 +5,7 @@ import Keyboard from "./Keyboard";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
