@@ -3,7 +3,7 @@
 Clone of [Wordle](https://www.nytimes.com/games/wordle/index.html)
 Built using React and styled-components.
 
-[**Live Link**](https://trumple.app/)
+ 🌐 **Live site:** No longer available
 
 ### To Run Locally:
 
