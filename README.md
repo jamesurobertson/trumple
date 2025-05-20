@@ -3,7 +3,7 @@
 Clone of [Wordle](https://www.nytimes.com/games/wordle/index.html)
 Built using React and styled-components.
 
- 🌐 **Live site:** No longer available
+[Live Site](https://superb-paletas-1ede48.netlify.app/)
 
 ### To Run Locally:
 
