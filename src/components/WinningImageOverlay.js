@@ -31,7 +31,7 @@ const EmptyOverlay = styled.div`
 `;
 
 const ImageOverlay = styled(EmptyOverlay)`
-  background-image: url(/images/trump.png);
+  background-image: url(${process.env.PUBLIC_URL}/images/trump.png);
   ${onAppearAnimation};
 `;
 
